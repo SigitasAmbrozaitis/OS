@@ -16,6 +16,8 @@ class CCPU {
     private boolean regTI;
     private boolean regMOD;
 
+    public String[] registers = {"R", "PTR", "IC", "SP", "INT", "CT", "C", "PI", "SI", "TI", "MOD"};
+
     CCPU(String R, short PTR, short IC, short SP, short INT, short CT, boolean C, boolean PI, boolean SI, boolean TI, boolean MOD )
     {
         this.regR = R;
