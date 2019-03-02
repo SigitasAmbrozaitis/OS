@@ -78,7 +78,7 @@ public class CRM
                 cpu.setRegPTR((short) ((Character.getNumericValue(value.charAt(0)) * 10) +
                         (Character.getNumericValue(value.charAt(1)))));
                 break;
-                
+
             default:
                 System.out.println("Error finding command");
         }
