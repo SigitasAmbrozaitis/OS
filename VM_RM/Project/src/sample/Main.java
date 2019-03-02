@@ -12,13 +12,12 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("GUI");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setTitle("OS");
+        primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
-
+    }
         //TODO run RM
         //TODO display GUI
-    }
 
 
     public static void main(String[] args) {
