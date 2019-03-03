@@ -26,6 +26,21 @@ class CCPU {
                 "\nSP: " + regSP+ "\nINT: " + regINT +"\nPTR: " + regPTR);
     }
 
+    public void updateRegistersController(){
+        Controller.PIoutput = ""+regPI;
+        Controller.Routput = ""+regR;
+        Controller.PTRoutput = ""+regPTR;
+        Controller.ICoutput = ""+regIC;
+        Controller.SPoutput = ""+regSP;
+        Controller.INToutput = ""+regINT;
+        Controller.CToutput = ""+regCT;
+        Controller.Coutput = ""+regC;
+        Controller.PIoutput = ""+regPI;
+        Controller.SIoutput = ""+regSI;
+        Controller.TIoutput = ""+regTI;
+        Controller.MODoutput = ""+regMOD;
+    }
+
 
     CCPU(){
 

@@ -82,8 +82,8 @@ public class CRM
             default:
                 System.out.println("Error finding command");
         }
-        String output = "Execute command: " + cmdR[commandIndex] + " value: " + value;
-        System.out.println(output);
+        Controller.output = "Executed command: " + cmdR[commandIndex] + " value: " + value;
+        System.out.println(Controller.output);
     }
 
 
