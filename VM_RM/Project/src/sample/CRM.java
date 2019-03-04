@@ -69,77 +69,194 @@ public class CRM
     public void executeCommand(String command){
 
         CCommand cmd = new CCommand();
-        if(ValidateCommand(command, cmd) > 0) return;
+        int errorCode = ValidateCommand(command, cmd);
 
+        if(errorCode > 0) return; //handle error
 
+        boolean bNum = cmd.bNumber;
+
+        //TODO add method calls
+        //every command has different param type string/int/none
+        //check is executed before every function call
         switch(cmd.cmd)
         {
             case ERCommand.E_AD:
+                if(cmd.bNumber)
+                {
+                    //excute command with param Integer.parseInt(cmd.param)
+                }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_BS:
+                if(cmd.bNumber)
+                {
+                    //excute command with param Integer.parseInt(cmd.param)
+                }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_CA:
+                if(cmd.bNumber)
+                {
+                    //excute command with param Integer.parseInt(cmd.param)
+                }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_CALLI:
+                //no param execute command
                 break;
             case ERCommand.E_CHNGM:
+                //no param excute command
                 break;
             case ERCommand.E_CHNGR:
+                //no param execute command
                 break;
             case ERCommand.E_CR:
+                if(cmd.bNumber)
+                {
+                    //excute command with param Integer.parseInt(cmd.param)
+                }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_CZ:
+                if(!cmd.bNumber)
+                {
+                    //excute command with param cmd.param
+                }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_DB:
+                if(cmd.bNumber)
+                {
+                    //excute command with param Integer.parseInt(cmd.param)
+                }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_DI:
+                if(cmd.bNumber)
+                {
+                    //excute command with param Integer.parseInt(cmd.param)
+                }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_DT:
+                if(cmd.bNumber)
+                {
+                    //excute command with param Integer.parseInt(cmd.param)
+                }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_IN:
+                if(cmd.bNumber)
+                {
+                    //excute command with param Integer.parseInt(cmd.param)
+                }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_IRETN:
+                //no param excute command
                 break;
             case ERCommand.E_JC:
+                if(cmd.bNumber)
+                {
+                    //excute command with param Integer.parseInt(cmd.param)
+                }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_JP:
+                if(cmd.bNumber)
+                {
+                    //excute command with param Integer.parseInt(cmd.param)
+                }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_LO:
+                if(!cmd.bNumber)
+                {
+                    //excute command with param cmd.param
+                }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_LR:
+                if(cmd.bNumber)
+                {
+                    //excute command with param Integer.parseInt(cmd.param)
+                }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_MP:
+                if(cmd.bNumber)
+                {
+                    //excute command with param Integer.parseInt(cmd.param)
+                }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_PI:
+                if(cmd.bNumber)
+                {
+                    //excute command with param Integer.parseInt(cmd.param)
+                }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_PO:
+                if(!cmd.bNumber)
+                {
+                    //excute command with param cmd.param
+                }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_PTR:
+                if(cmd.bNumber)
+                {
+                    //excute command with param Integer.parseInt(cmd.param)
+                }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_PU:
+                if(!cmd.bNumber)
+                {
+                    //excute command with param cmd.param
+                }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_RG:
+                if(cmd.bNumber)
+                {
+                    //excute command with param Integer.parseInt(cmd.param)
+                }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_RL:
+                if(cmd.bNumber)
+                {
+                    //excute command with param Integer.parseInt(cmd.param)
+                }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_SB:
+                if(cmd.bNumber)
+                {
+                    //excute command with param Integer.parseInt(cmd.param)
+                }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_SP:
+                if(cmd.bNumber)
+                {
+                    //excute command with param Integer.parseInt(cmd.param)
+                }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_SR:
+                if(cmd.bNumber)
+                {
+                    //excute command with param Integer.parseInt(cmd.param)
+                }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_ST:
+                if(cmd.bNumber)
+                {
+                    //excute command with param Integer.parseInt(cmd.param)
+                }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_START:
+                //no param execute command
                 break;
             case ERCommand.E_SZ:
+                if(cmd.bNumber)
+                {
+                    //excute command with param Integer.parseInt(cmd.param)
+                }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_TI:
+                if(cmd.bNumber)
+                {
+                    //excute command with param Integer.parseInt(cmd.param)
+                }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_XCHNG:
+                //no param execute command
                 break;
 
         }
+        //TODO check whats needed, remove/keep after.
 
 //        int commandIndex;
 //        //get command name
@@ -225,7 +342,7 @@ public class CRM
 
     short ValidateCommand(String strCommand, CCommand command)
     {
-
+        //TODO check if validation is correct, had no time for that :D
         if(strCommand.length() != 5) return EError.COMMAND_VIOLATION;
 
         //Get command name
@@ -260,9 +377,6 @@ public class CRM
         if(nParam < 0 || nParam > 999) return EError.ACCESS_VIOLATION;
 
         //TODO check for other violations
-
-
-
         command.cmd = cmd;
         command.param = param;
         return EError.VALIDATION_SUCCESS;
