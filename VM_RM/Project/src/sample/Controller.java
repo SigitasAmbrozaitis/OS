@@ -91,6 +91,7 @@ public class Controller implements Initializable {
         label.setText(output);
         crm1.getCpu().updateRegistersController();
         updateRegistersGUI();
+        crm1.getCpu().printCPURegisters();
     }
 
     void setLabel(String text){
@@ -112,6 +113,7 @@ public class Controller implements Initializable {
         c.setText(Coutput);
         sp.setText(SPoutput);
         ti.setText(TIoutput);
+        si.setText(SIoutput);
         mod.setText(MODoutput);
     }
 }

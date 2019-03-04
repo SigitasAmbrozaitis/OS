@@ -63,28 +63,27 @@ class CCPU {
     public void setRegPI(char regPI) {
         this.regPI = regPI;
     }
-
     public char getRegPI() {
         return regPI;
     }
+
     public void setRegTI(char regTI) {
         this.regTI = regTI;
     }
-
     public char getRegTI() {
         return regTI;
     }
+
     public void setRegSP(short regSP) {
         this.regSP = regSP;
     }
-
     public short getRegSP() {
         return regSP;
     }
+
     public void setRegINT(short regINT) {
         this.regINT = regINT;
     }
-
     public short getRegINT() {
         return regINT;
     }
@@ -92,8 +91,17 @@ class CCPU {
     public void setRegPTR(short regPTR) {
         this.regPTR = regPTR;
     }
-
     public short getRegPTR() {
         return regPTR;
+    }
+
+    public void setRegMOD(){ regMOD = !regMOD; }
+    public boolean getRegMod(){return regMOD;}
+
+    public void setRegIC(short regIC) {
+        this.regIC = regIC;
+    }
+    public short getRegIC() {
+        return regIC;
     }
 }

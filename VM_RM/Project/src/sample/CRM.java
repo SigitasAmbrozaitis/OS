@@ -8,6 +8,7 @@ import java.util.Arrays;
 public class CRM
 {
     private CCPU cpu ;
+    private CCD cd;
     private CMemory memory;
 
     //getters for GUI
@@ -41,6 +42,8 @@ public class CRM
 
     CRM(){
         cpu = new CCPU();
+        cd = new CCD();
+        memory = new CMemory();
     }
 
     /*commands that can be executed by RM and VM */
@@ -73,17 +76,62 @@ public class CRM
                         (Character.getNumericValue(value.charAt(1)) * 10)
                         + (Character.getNumericValue(value.charAt(2)))));
                 break;
+            case 4:
+                cd.setRegSB((short)( (Character.getNumericValue(value.charAt(0)) * 100) +
+                        (Character.getNumericValue(value.charAt(1)) * 10)
+                        + (Character.getNumericValue(value.charAt(2)))));
+                break;
+            case 5:
+                cd.setRegDB((short)( (Character.getNumericValue(value.charAt(0)) * 100) +
+                        (Character.getNumericValue(value.charAt(1)) * 10)
+                        + (Character.getNumericValue(value.charAt(2)))));
+                break;
+            case 6:
+                cd.setRegST((short)( (Character.getNumericValue(value.charAt(0)) * 100) +
+                        (Character.getNumericValue(value.charAt(1)) * 10)
+                        + (Character.getNumericValue(value.charAt(2)))));
+                break;
+            case 7:
+                cd.setRegDT((short)( (Character.getNumericValue(value.charAt(0)) * 100) +
+                        (Character.getNumericValue(value.charAt(1)) * 10)
+                        + (Character.getNumericValue(value.charAt(2)))));
+                break;
+            case 8:
+                cd.setRegSZ((short)( (Character.getNumericValue(value.charAt(0)) * 100) +
+                        (Character.getNumericValue(value.charAt(1)) * 10)
+                        + (Character.getNumericValue(value.charAt(2)))));
+                break;
+
                 //kanalu irenginys BS DB ST DT SZ
             case 9:
                 cpu.setRegPTR((short) ((Character.getNumericValue(value.charAt(0)) * 10) +
                         (Character.getNumericValue(value.charAt(1)))));
                 break;
 
+            case 10:
+                cpu.setRegMOD();
+                break;
+            case 11:
+                memory.CALLI();
+                break;
+            case 12:
+                memory.IRETN();
+                break;
+            case 13:
+                START();
+                break;
+            case 14:
+                cd.XCHGN();
+                break;
             default:
                 System.out.println("Error finding command");
         }
         Controller.output = "Executed command: " + cmdR[commandIndex] + " value: " + value;
         System.out.println(Controller.output);
+    }
+
+    private void START(){
+        cpu.setRegIC((short)0);
     }
 
 
