@@ -2,11 +2,27 @@ package sample;
 
 /*imports*/
 
+
 import java.util.Arrays;
 
 /*Real Machine implementation*/
 public class CRM
 {
+    private class CCommand
+    {
+        public String cmd;
+        public String param;
+    }
+
+    private class EError
+    {
+        public final static short VALIDATION_SUCCESS = 0;
+        public final static short ACCESS_VIOLATION = 1;
+        public final static short COMMAND_VIOLATION = 2;
+        public final static short MEMORY_VIOLATION = 3;
+        public final static short ASSIGMENT_VIOLATION = 4;
+    }
+
     private CCPU cpu ;
     private CCD cd;
     private CMemory memory;
@@ -48,6 +64,10 @@ public class CRM
 
     /*commands that can be executed by RM and VM */
     public void executeCommand(String command){
+
+        CCommand cmdD = new CCommand();
+        if(ValidateCommand(command, cmdD) > 0) return;
+
         int commandIndex;
         //get command name
         String cmd = command.replaceAll("[^A-Za-z]+", "");
@@ -128,6 +148,19 @@ public class CRM
         }
         Controller.output = "Executed command: " + cmdR[commandIndex] + " value: " + value;
         System.out.println(Controller.output);
+    }
+
+    short ValidateCommand(String strCommand, CCommand command)
+    {
+        //TODO get command
+        //TODO check command
+        //TODO get param
+        //TODO check param
+
+
+
+
+        return EError.VALIDATION_SUCCESS;
     }
 
     private void START(){
