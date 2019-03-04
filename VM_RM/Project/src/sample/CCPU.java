@@ -19,7 +19,12 @@ class CCPU {
     private char regTI;
     private boolean regMOD;
 
-    public String[] registers = {"R", "PTR", "IC", "SP", "INT", "CT", "C", "PI", "SI", "TI", "MOD"};
+    //Registers are use placeholders to have common lenght
+    public String[] registers = {"__R", "__C", "_IC", "_SP", "_CT","_PI", "_SI", "_TI", "PTR", "INT", "MOD"};
+
+
+
+
 
     public void printCPURegisters(){
         System.out.println("PI: " + regPI + "\nTI:" + regTI +

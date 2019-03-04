@@ -1,5 +1,8 @@
 package sample;
 
+import java.util.Arrays;
+import java.util.Vector;
+
 public class CUtils {
 
     public static String g_allowedLetters ="ABCDEFGHIJKLMNOPRSTUVQXZY";
@@ -34,6 +37,16 @@ public class CUtils {
         }
         return -1;
     }
+
+    public static boolean StringIsInArray(String str, String[] strData, int lenght)
+    {
+        if(lenght<0) return false;
+        String subStr = str.substring(0, lenght);
+        return Arrays.asList(strData).indexOf(subStr)!=-1;
+    }
+
+
+
 
 
 }

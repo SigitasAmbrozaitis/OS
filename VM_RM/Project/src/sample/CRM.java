@@ -4,6 +4,7 @@ package sample;
 
 
 import java.util.Arrays;
+import java.util.Vector;
 
 /*Real Machine implementation*/
 public class CRM
@@ -12,6 +13,7 @@ public class CRM
     {
         public String cmd;
         public String param;
+        public boolean bNumber;
     }
 
     private class EError
@@ -54,31 +56,38 @@ public class CRM
     //todo implement command and its parameters recognition (register recognition too)
 
 
-    private String[] cmdR = { "PI","TI","SP","IN","BS","DB","ST","DT","SZ","PTR","CHNGM","CALLI","IRETN","START","XCHGN" };
+    private String[] cmd2 = { "PI","TI","SP","BS","DB","ST","DT","SZ",};
+    private String[] cmd3 = {"PTR", "INT"};
+    private String[] cmd5 = {"XCHGN", "START", "IRETN", "CALLI", "CHNGM"};
+    private Vector<String> commands = new Vector<String>();
 
     CRM(){
         cpu = new CCPU();
         cd = new CCD();
         memory = new CMemory();
+
+        commands.addAll( Arrays.asList(cmd2));
+        commands.addAll( Arrays.asList(cmd3));
+        commands.addAll( Arrays.asList(cmd5));
     }
 
     /*commands that can be executed by RM and VM */
     public void executeCommand(String command){
 
-        CCommand cmdD = new CCommand();
-        if(ValidateCommand(command, cmdD) > 0) return;
+        CCommand cmd = new CCommand();
+        if(ValidateCommand(command, cmd) > 0) return;
 
-        int commandIndex;
-        //get command name
-        String cmd = command.replaceAll("[^A-Za-z]+", "");
-        if(Arrays.asList(cmdR).indexOf(cmd) == -1){
-            System.out.println("No command found");
-            return;
-        }
-        //get passed value
-        String value = command.replaceAll("\\D+","");
+//        int commandIndex;
+//        //get command name
+//        String cmd = command.replaceAll("[^A-Za-z]+", "");
+//        if(Arrays.asList(commands).indexOf(cmd) == -1){
+//            System.out.println("No command found");
+//            return;
+//        }
+//        //get passed value
+//        String value = command.replaceAll("\\D+","");
         //get command index in cmdR
-        commandIndex = Arrays.asList(cmdR).indexOf(cmd);
+        int commandIndex = commands.indexOf(cmd.cmd);
         switch(commandIndex){
             case 0:
                 cpu.setRegPI(value.charAt(0));  //PIxyz PI = x x=0..9
@@ -152,16 +161,51 @@ public class CRM
 
     short ValidateCommand(String strCommand, CCommand command)
     {
-        //TODO get command
-        //TODO check command
-        //TODO get param
-        //TODO check param
+
+        if(strCommand.length() != 5) return EError.COMMAND_VIOLATION;
+
+        //Get command name
+        String cmd = "";
+        if(CUtils.StringIsInArray(strCommand, cmd5, 5))
+            cmd = strCommand;
+        else if(CUtils.StringIsInArray(strCommand,cmd3, 3))
+            cmd = strCommand.substring(0,3);
+        else if(CUtils.StringIsInArray(strCommand,cmd2,2))
+            cmd = strCommand.substring(0,2);
+
+        if(cmd == "") return EError.COMMAND_VIOLATION;
 
 
 
+        //Get command param
+        String param = strCommand.substring(cmd.length()-1);
+        //check if param is register
+        boolean bReg = CUtils.StringIsInArray(param, cpu.registers, 3);
+        boolean bNum = true;
+        int nParam = 0;
+        //check if param is number
+        try {
+            nParam = Integer.parseInt(param);
+        }
+        catch (NumberFormatException e)
+        {
+            bNum = false;
+        }
 
+        if(!bReg && !bNum) return EError.COMMAND_VIOLATION;
+        if(nParam < 0 || nParam > 999) return EError.ACCESS_VIOLATION;
+
+        //TODO check for other violations
+
+
+
+        command.cmd = cmd;
+        command.param = param;
         return EError.VALIDATION_SUCCESS;
     }
+
+
+
 
     private void START(){
         cpu.setRegIC((short)0);
