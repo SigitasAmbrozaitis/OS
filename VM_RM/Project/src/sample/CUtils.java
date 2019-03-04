@@ -3,6 +3,8 @@ package sample;
 import java.util.Arrays;
 import java.util.Vector;
 
+import sample.Enumerators.ERCommand;
+
 public class CUtils {
 
     public static String g_allowedLetters ="ABCDEFGHIJKLMNOPRSTUVQXZY";
@@ -44,6 +46,7 @@ public class CUtils {
         String subStr = str.substring(0, lenght);
         return Arrays.asList(strData).indexOf(subStr)!=-1;
     }
+
 
 
 
