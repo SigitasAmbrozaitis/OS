@@ -40,6 +40,7 @@ public class CRM
 
     /*commands that can be executed by rm*/
 
+    //TODO HIGH PRIORITY update todo list :D
     //todo jurgis implements this
     //todo implement commands string
     //todo implement commands
@@ -359,7 +360,7 @@ public class CRM
 
 
         //Get command param
-        String param = strCommand.substring(cmd.length()-1);
+        String param = strCommand.substring(cmd.length());
         //check if param is register
         boolean bReg = CUtils.StringIsInArray(param, cpu.registers, 3);
         boolean bNum = true;
