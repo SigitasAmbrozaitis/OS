@@ -9,6 +9,8 @@ import java.util.Vector;
 import sample.Enumerators.EError;
 import sample.Enumerators.ERCommand;
 
+import sample.Memory.CMemory;
+
 /*Real Machine implementation*/
 public class CRM
 {
@@ -301,7 +303,11 @@ public class CRM
 
     private short cmdPI(short input){cpu.setRegPI((short)(input%100)); return EError.VALIDATION_SUCCESS;}
     private short cmdTI(short input){cpu.setRegTI((short)(input%100)); return EError.VALIDATION_SUCCESS;}
-    private short cmdCHNGM(){ return EError.VALIDATION_SUCCESS;}//TODO implement
+    private short cmdCHNGM()
+    {
+        cpu.setRegMOD(!cpu.getRegMod());
+        return EError.VALIDATION_SUCCESS;
+    }
     private short cmdSP(short input){cpu.setRegPI(input); return EError.VALIDATION_SUCCESS;}
     private short cmdIN(short input){cpu.setRegINT(input); return EError.VALIDATION_SUCCESS;}
     private short cmdPTR(short input){cpu.setRegPTR(input); return EError.VALIDATION_SUCCESS;}

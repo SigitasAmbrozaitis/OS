@@ -4,7 +4,7 @@ class CCPU {
 
 
     //registers
-    private String regR;
+    private String regR; //Type CCell?
 
     private short regPTR;
     private short regIC;
@@ -98,7 +98,7 @@ class CCPU {
         return regPTR;
     }
 
-    public void setRegMOD(){ regMOD = !regMOD; }
+    public void setRegMOD(boolean regMOD){ this.regMOD = regMOD; }
     public boolean getRegMod(){return regMOD;}
 
     public void setRegIC(short regIC) {
