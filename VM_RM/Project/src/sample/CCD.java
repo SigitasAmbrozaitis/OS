@@ -28,6 +28,4 @@ public class CCD {
 
     public void setRegSZ(short regSZ){this.regSZ = regSZ;}
     public short getRegSZ(){ return regSZ;}
-
-    public void XCHGN(){}
 }

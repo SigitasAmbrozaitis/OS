@@ -35,6 +35,9 @@ public class ERCommand
     public static final String E_CA     = "CA";
     public static final String E_PU     = "PU";
     public static final String E_PO     = "PO";
+    public static final String E_RETRN  = "RETRN";
+    public static final String E_SY     = "SY";
+    public static final String E_LP     = "LP";
 }
 
 

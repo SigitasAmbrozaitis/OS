@@ -2,6 +2,7 @@ package sample;
 
 class CCPU {
 
+
     //registers
     private String regR;
 
@@ -10,14 +11,13 @@ class CCPU {
     private short regSP;
     private short regINT;
     private short regCT;
+    private short regPI;
+    private short regTI;
+    private short regSI;
+
+    private boolean regMOD;
 
     private boolean regC;
-
-    private char regPI;
-    private boolean regSI;
-
-    private char regTI;
-    private boolean regMOD;
 
     //Registers are use placeholders to have common lenght
     public String[] registers = {"__R", "__C", "_IC", "_SP", "_CT","_PI", "_SI", "_TI", "PTR", "INT", "MOD"};
@@ -51,31 +51,31 @@ class CCPU {
 
     }
 
-    CCPU(String R, short PTR, short IC, short SP, short INT, short CT, boolean C, char PI, boolean SI, char TI, boolean MOD )
+    CCPU(String R, short PTR, short IC, short SP, short INT, short CT, boolean C, short PI, short SI, short TI, boolean MOD )
     {
         this.regR = R;
-        this.regPTR = PTR;
-        this.regIC = IC;
-        this.regSP = SP;
-        this.regINT = INT;
+        this.regPTR = PTR;//
+        this.regIC = IC;//
+        this.regSP = SP;//
+        this.regINT = INT;//
         this.regCT = CT;
         this.regC = C;
         this.regPI = PI;
-        this.regSI = SI;
-        this.regTI = TI;
-        this.regMOD = MOD;
+        this.regSI = SI;//
+        this.regTI = TI;//
+        this.regMOD = MOD;//
     }
-    public void setRegPI(char regPI) {
+    public void setRegPI(short regPI) {
         this.regPI = regPI;
     }
-    public char getRegPI() {
+    public short getRegPI() {
         return regPI;
     }
 
-    public void setRegTI(char regTI) {
+    public void setRegTI(short regTI) {
         this.regTI = regTI;
     }
-    public char getRegTI() {
+    public short getRegTI() {
         return regTI;
     }
 
@@ -89,9 +89,7 @@ class CCPU {
     public void setRegINT(short regINT) {
         this.regINT = regINT;
     }
-    public short getRegINT() {
-        return regINT;
-    }
+    public short getRegINT() { return regINT; }
 
     public void setRegPTR(short regPTR) {
         this.regPTR = regPTR;
@@ -109,4 +107,19 @@ class CCPU {
     public short getRegIC() {
         return regIC;
     }
+
+    public String getRegR(){ return regR; }
+    public void setRegR(String regR) { this.regR = regR;  }
+
+    public short getRegCT() { return regCT; }
+    public void setRegCT(short regCT) { this.regCT = regCT; }
+
+    public short isRegSI() {return regSI; }
+    public void setRegSI(short regSI) {this.regSI = regSI; }
+
+    public boolean isRegC() { return regC;}
+    public void setRegC(boolean regC) { this.regC = regC; }
+
+
+
 }
