@@ -251,7 +251,7 @@ public class CRM
 
         if(errorCode!=EError.VALIDATION_SUCCESS)
         {
-            cmdSY((short)errorCode);
+            cmdPI((short)errorCode);
         }
     }
 
@@ -308,11 +308,37 @@ public class CRM
     private short cmdCALLI(){ return EError.VALIDATION_SUCCESS;}//TODO implement
     private short cmdRETN(){ return EError.VALIDATION_SUCCESS;}//TODO implement
     private short cmdSTART(){ return EError.VALIDATION_SUCCESS;}//TODO implement
-    private short cmdBS(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
-    private short cmdDB(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
-    private short cmdST(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
-    private short cmdDT(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
-    private short cmdSZ(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
+    private short cmdBS(short input)
+    {
+        if(input > 99) return EError.ACCESS_VIOLATION;//memory block cant be >99
+        cd.setRegSB(input);
+        return EError.VALIDATION_SUCCESS;
+    }
+    private short cmdDB(short input)
+    {
+        if(input > 99) return EError.ACCESS_VIOLATION;//memory block cant be >99
+        cd.setRegDB(input);
+        return EError.VALIDATION_SUCCESS;
+    }
+    private short cmdST(short input)
+    {
+        if(input > 99) return EError.ACCESS_VIOLATION;//memory block cant be >99
+        cd.setRegST(input);
+        return EError.VALIDATION_SUCCESS;
+    }
+    private short cmdDT(short input)
+    {
+        if(input > 99) return EError.ACCESS_VIOLATION;//memory block cant be >99
+        cd.setRegDT(input);
+        return EError.VALIDATION_SUCCESS;
+    }
+    private short cmdSZ(short input)
+    {
+        if(input > 99) return EError.ACCESS_VIOLATION;//memory block cant be >99
+        cd.setRegSZ(input);
+        return EError.VALIDATION_SUCCESS;
+    }
+
     private short cmdXCHGN(){ return EError.VALIDATION_SUCCESS;}//TODO implement
 
     private short cmdAD(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
