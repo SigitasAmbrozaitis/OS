@@ -295,6 +295,7 @@ public class CRM
 
         command.cmd = cmd;
         command.param = param;
+        command.bNumber = bNum;
         return EError.VALIDATION_SUCCESS;
     }
 //    private void START(){
