@@ -313,7 +313,7 @@ public class CRM
         cpu.setRegMOD(!cpu.getRegMod());
         return EError.VALIDATION_SUCCESS;
     }
-    private short cmdSP(short input){cpu.setRegPI(input); return EError.VALIDATION_SUCCESS;}
+    private short cmdSP(short input){cpu.setRegSP(input); return EError.VALIDATION_SUCCESS;}
     private short cmdIN(short input){cpu.setRegINT(input); return EError.VALIDATION_SUCCESS;}
     private short cmdPTR(short input){cpu.setRegPTR(input); return EError.VALIDATION_SUCCESS;}
     private short cmdCALLI(){ return EError.VALIDATION_SUCCESS;}//TODO implement
@@ -357,8 +357,8 @@ public class CRM
     private short cmdMP(short input){ cpu.getRegR().Mul(memory.GetAt(input)); return EError.VALIDATION_SUCCESS;}
     private short cmdDI(short input){ cpu.getRegR().Div(memory.GetAt(input)); return EError.VALIDATION_SUCCESS;}
     private short cmdCHNGR(){ cpu.setRegR( memory.GetAt((short)(cpu.getRegIC()+1))); return EError.VALIDATION_SUCCESS;}
-    private short cmdLR(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
-    private short cmdSR(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
+    private short cmdLR(short input){  cpu.setRegR( memory.GetAt(input)); return EError.VALIDATION_SUCCESS;}//TODO implement
+    private short cmdSR(short input){ memory.GetAt(input).cell = cpu.getRegR().cell; return EError.VALIDATION_SUCCESS;}//TODO implement
     private short cmdLO(String reg){ return EError.VALIDATION_SUCCESS;}//TODO implement
     private short cmdCR(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
     private short cmdRL(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
