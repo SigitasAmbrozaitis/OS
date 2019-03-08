@@ -8,6 +8,10 @@ public class CMemory {
     public CMemory()
     {
         memory = new Vector<CBlock>(100);
+        for(int i=0; i<100; ++i)
+        {
+            memory.add(new CBlock());
+        }
     }
 
     public CCell GetAt(short index)

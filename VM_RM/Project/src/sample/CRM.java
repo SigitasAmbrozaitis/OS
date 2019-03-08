@@ -301,8 +301,8 @@ public class CRM
 //        cpu.setRegIC((short)0);
 //    }
 
-    private short cmdPI(short input){cpu.setRegPI((short)(input%100)); return EError.VALIDATION_SUCCESS;}
-    private short cmdTI(short input){cpu.setRegTI((short)(input%100)); return EError.VALIDATION_SUCCESS;}
+    private short cmdPI(short input){cpu.setRegPI((short)(input/100)); return EError.VALIDATION_SUCCESS;}
+    private short cmdTI(short input){cpu.setRegTI((short)(input/100)); return EError.VALIDATION_SUCCESS;}
     private short cmdCHNGM()
     {
         cpu.setRegMOD(!cpu.getRegMod());

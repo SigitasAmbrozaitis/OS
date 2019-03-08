@@ -11,10 +11,18 @@ public class CCell {
         //free = true;
     }
 
+    public CCell(String cell)
+    {
+        this.cell = cell;
+    }
+
     //These will be called by RM/VM probably regC should be of type CCell too
     public short Add(CCell value)
     {
         //TODO implement
+
+
+
         return EError.VALIDATION_SUCCESS;
     }
 

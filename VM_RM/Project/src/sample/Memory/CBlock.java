@@ -7,6 +7,11 @@ public class CBlock {
 
     public CBlock()
     {
+
         block = new Vector<CCell>(10);
+        for(int i=0; i<10;++i)
+        {
+            block.add(new CCell());
+        }
     }
 }

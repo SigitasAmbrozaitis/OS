@@ -1,10 +1,12 @@
 package sample;
 
+import sample.Memory.CCell;
+
 class CCPU {
 
 
     //registers
-    private String regR; //Type CCell?
+    private CCell regR; //Type CCell?
 
     private short regPTR;
     private short regIC;
@@ -51,7 +53,7 @@ class CCPU {
 
     }
 
-    CCPU(String R, short PTR, short IC, short SP, short INT, short CT, boolean C, short PI, short SI, short TI, boolean MOD )
+    CCPU(CCell R, short PTR, short IC, short SP, short INT, short CT, boolean C, short PI, short SI, short TI, boolean MOD )
     {
         this.regR = R;
         this.regPTR = PTR;//
@@ -108,8 +110,8 @@ class CCPU {
         return regIC;
     }
 
-    public String getRegR(){ return regR; }
-    public void setRegR(String regR) { this.regR = regR;  }
+    public CCell getRegR(){ return regR; }
+    public void setRegR(CCell regR) { this.regR = regR;  }
 
     public short getRegCT() { return regCT; }
     public void setRegCT(short regCT) { this.regCT = regCT; }
