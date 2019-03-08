@@ -44,5 +44,10 @@ public class CCell {
         return EError.VALIDATION_SUCCESS;
     }
 
+    public boolean Cmp(CCell value)
+    {
+        return this.cell.compareTo(value.cell) == 0;
+    }
+
 
 }

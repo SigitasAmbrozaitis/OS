@@ -282,7 +282,7 @@ public class CRM
         //Get command param
         String param = strCommand.substring(cmd.length());
         //check if param is register
-        boolean bReg = CUtils.StringIsInArray(param, cpu.registers, 3);
+        boolean bReg = CUtils.StringIsInArray(param, cpu.registers, 5 - cmd.length());
         boolean bNum = true;
         int nParam = 0;
         //check if param is number
@@ -357,10 +357,15 @@ public class CRM
     private short cmdMP(short input){ cpu.getRegR().Mul(memory.GetAt(input)); return EError.VALIDATION_SUCCESS;}
     private short cmdDI(short input){ cpu.getRegR().Div(memory.GetAt(input)); return EError.VALIDATION_SUCCESS;}
     private short cmdCHNGR(){ cpu.setRegR( memory.GetAt((short)(cpu.getRegIC()+1))); return EError.VALIDATION_SUCCESS;}
-    private short cmdLR(short input){  cpu.setRegR( memory.GetAt(input)); return EError.VALIDATION_SUCCESS;}//TODO implement
-    private short cmdSR(short input){ memory.GetAt(input).cell = cpu.getRegR().cell; return EError.VALIDATION_SUCCESS;}//TODO implement
-    private short cmdLO(String reg){ return EError.VALIDATION_SUCCESS;}//TODO implement
-    private short cmdCR(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
+    private short cmdLR(short input){  cpu.setRegR( memory.GetAt(input)); return EError.VALIDATION_SUCCESS;}
+    private short cmdSR(short input){ memory.GetAt(input).cell = cpu.getRegR().cell; return EError.VALIDATION_SUCCESS;}
+    private short cmdLO(String reg) {  return EError.VALIDATION_SUCCESS;  }
+    private short cmdCR(short input)
+    {
+        boolean equal = cpu.getRegR().Cmp(memory.GetAt(input));
+        cpu.setRegC(equal);
+        return EError.VALIDATION_SUCCESS;
+    }
     private short cmdRL(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
     private short cmdRG(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
     private short cmdCZ(String reg){ return EError.VALIDATION_SUCCESS;}//TODO implement
