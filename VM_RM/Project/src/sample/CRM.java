@@ -347,11 +347,11 @@ public class CRM
 
     private short cmdXCHGN(){ return EError.VALIDATION_SUCCESS;}//TODO implement
 
-    private short cmdAD(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
-    private short cmdSB(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
-    private short cmdMP(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
-    private short cmdDI(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
-    private short cmdCHNGR(){ return EError.VALIDATION_SUCCESS;}//TODO implement
+    private short cmdAD(short input){ cpu.getRegR().Add(memory.GetAt(input)); return EError.VALIDATION_SUCCESS;}
+    private short cmdSB(short input){ cpu.getRegR().Sub(memory.GetAt(input)); return EError.VALIDATION_SUCCESS;}
+    private short cmdMP(short input){ cpu.getRegR().Mul(memory.GetAt(input)); return EError.VALIDATION_SUCCESS;}
+    private short cmdDI(short input){ cpu.getRegR().Div(memory.GetAt(input)); return EError.VALIDATION_SUCCESS;}
+    private short cmdCHNGR(){ cpu.setRegR( memory.GetAt((short)(cpu.getRegIC()+1))); return EError.VALIDATION_SUCCESS;}
     private short cmdLR(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
     private short cmdSR(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
     private short cmdLO(String reg){ return EError.VALIDATION_SUCCESS;}//TODO implement
