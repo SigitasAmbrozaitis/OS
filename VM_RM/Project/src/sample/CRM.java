@@ -58,7 +58,11 @@ public class CRM
         CCommand cmd = new CCommand();
         int errorCode = ValidateCommand(command, cmd);
 
-        if(errorCode > 0) return; //TODO handle error
+        if(errorCode!=EError.VALIDATION_SUCCESS)
+        {
+            cmdPI((short)errorCode);
+            return;
+        }
 
         boolean bNum = cmd.bNumber;
 
