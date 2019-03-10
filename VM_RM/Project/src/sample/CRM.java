@@ -30,6 +30,7 @@ public class CRM
     {
         return cpu;
     }
+    public CCD getCCD(){return cd;}
     public CMemory getMemory()
     {
         return memory;
@@ -264,6 +265,7 @@ public class CRM
     short ValidateCommand(String strCommand, CCommand command)
     {
         //TODO check if validation is correct, had no time for that :D
+        /**Everything seems OK*/
         if(strCommand.length() != 5) return EError.COMMAND_VIOLATION;
 
         //Get command name

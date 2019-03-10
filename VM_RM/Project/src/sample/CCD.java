@@ -1,7 +1,5 @@
 /**
  * Kanalu irenginio klase
- * maybe yes maybe no maybe i dont know
- * B-B-B-Bbookas
  */
 package sample;
 
@@ -12,6 +10,14 @@ public class CCD {
     private short regST;
     private short regDT;
     private short regSZ;
+
+    public void updateRegisterCCDController(){
+        Controller.SBoutput = ""+regSB;
+        Controller.DBoutput = ""+regDB;
+        Controller.SToutput = ""+regST;
+        Controller.DToutput = ""+regDT;
+        Controller.SZoutput = ""+regSZ;
+    }
 
 
     public void setRegSB(short regSB){this.regSB = regSB;}

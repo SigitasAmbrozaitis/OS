@@ -33,7 +33,7 @@ class CCPU {
                 "\nSP: " + regSP+ "\nINT: " + regINT +"\nPTR: " + regPTR);
     }
 
-    public void updateRegistersController(){
+    public void updateRegistersCCPUController(){
         Controller.PIoutput = ""+regPI;
         Controller.Routput = ""+regR;
         Controller.PTRoutput = ""+regPTR;

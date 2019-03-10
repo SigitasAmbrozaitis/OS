@@ -11,118 +11,176 @@
       <TextField fx:id="commandInput" layoutX="59.0" layoutY="53.0" />
       <Button fx:id="button_execute" layoutX="223.0" layoutY="53.0" mnemonicParsing="false" text="Execute" />
       <Label fx:id="label" layoutX="59.0" layoutY="98.0" prefHeight="17.0" prefWidth="223.0" />
-      <AnchorPane layoutX="300.0" layoutY="53.0" prefHeight="240.0" prefWidth="200.0">
+      <AnchorPane layoutX="310.0" layoutY="31.0" prefHeight="269.0" prefWidth="335.0">
          <children>
-            <Label layoutX="14.0" layoutY="1.0" prefHeight="17.0" prefWidth="46.0" text="MOD">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label layoutX="45.0" layoutY="20.0" text="R">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label layoutX="25.0" layoutY="40.0" text="PTR">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label layoutX="40.0" layoutY="60.0" text="IC">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label layoutX="30.0" layoutY="80.0" text="INT">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="s" layoutX="38.0" layoutY="100.0" text="SP">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label layoutX="45.0" layoutY="120.0" text="C">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label layoutX="42.0" layoutY="140.0" text="PI">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label layoutX="42.0" layoutY="159.0" text="SI">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label layoutX="41.0" layoutY="178.0" text="TI">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label layoutX="35.0" layoutY="195.0" text="CT">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="mod" layoutX="73.0" layoutY="1.0" prefHeight="27.0" prefWidth="65.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="r" layoutX="73.0" layoutY="20.0" prefHeight="27.0" prefWidth="65.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="ptr" layoutX="73.0" layoutY="40.0" prefHeight="27.0" prefWidth="65.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="ic" layoutX="73.0" layoutY="60.0" prefHeight="27.0" prefWidth="65.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="_int" layoutX="73.0" layoutY="80.0" prefHeight="27.0" prefWidth="65.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="sp" layoutX="73.0" layoutY="100.0" prefHeight="27.0" prefWidth="65.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="c" layoutX="73.0" layoutY="120.0" prefHeight="27.0" prefWidth="65.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="pi" layoutX="73.0" layoutY="140.0" prefHeight="27.0" prefWidth="65.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="ti" layoutX="73.0" layoutY="178.0" prefHeight="27.0" prefWidth="65.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="si" layoutX="73.0" layoutY="159.0" prefHeight="27.0" prefWidth="65.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="ct" layoutX="73.0" layoutY="195.0" prefHeight="27.0" prefWidth="65.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
+            <AnchorPane layoutX="14.0" layoutY="15.0" prefHeight="240.0" prefWidth="170.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="1.0" prefHeight="17.0" prefWidth="46.0" text="MOD">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="45.0" layoutY="20.0" text="R">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="25.0" layoutY="40.0" text="PTR">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="40.0" layoutY="60.0" text="IC">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="30.0" layoutY="80.0" text="INT">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="s" layoutX="38.0" layoutY="100.0" text="SP">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="45.0" layoutY="120.0" text="C">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="42.0" layoutY="140.0" text="PI">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="42.0" layoutY="159.0" text="SI">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="41.0" layoutY="178.0" text="TI">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="35.0" layoutY="195.0" text="CT">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="mod" layoutX="73.0" layoutY="1.0" prefHeight="27.0" prefWidth="65.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="r" layoutX="73.0" layoutY="20.0" prefHeight="27.0" prefWidth="65.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="ptr" layoutX="73.0" layoutY="40.0" prefHeight="27.0" prefWidth="65.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="ic" layoutX="73.0" layoutY="60.0" prefHeight="27.0" prefWidth="65.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="_int" layoutX="73.0" layoutY="80.0" prefHeight="27.0" prefWidth="65.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="sp" layoutX="73.0" layoutY="100.0" prefHeight="27.0" prefWidth="65.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="c" layoutX="73.0" layoutY="120.0" prefHeight="27.0" prefWidth="65.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="pi" layoutX="73.0" layoutY="140.0" prefHeight="27.0" prefWidth="65.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="ti" layoutX="73.0" layoutY="178.0" prefHeight="27.0" prefWidth="65.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="si" layoutX="73.0" layoutY="159.0" prefHeight="27.0" prefWidth="65.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="ct" layoutX="73.0" layoutY="195.0" prefHeight="27.0" prefWidth="65.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="184.0" layoutY="15.0" prefHeight="116.0" prefWidth="136.0">
+               <children>
+                  <Label layoutX="10.0" layoutY="1.0" prefHeight="17.0" prefWidth="46.0" text="SB">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="10.0" layoutY="21.0" text="DB">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="12.0" layoutY="40.0" text="ST">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="10.0" layoutY="60.0" text="DT">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="12.0" layoutY="80.0" text="SZ">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="sb" layoutX="41.0" layoutY="1.0" prefHeight="27.0" prefWidth="65.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="db" layoutX="41.0" layoutY="21.0" prefHeight="27.0" prefWidth="65.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="st" layoutX="41.0" layoutY="40.0" prefHeight="27.0" prefWidth="65.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="dt" layoutX="41.0" layoutY="60.0" prefHeight="27.0" prefWidth="65.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="sz" layoutX="41.0" layoutY="80.0" prefHeight="27.0" prefWidth="65.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
          </children>
       </AnchorPane>
    </children>
