@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
       <TextField fx:id="commandInput" layoutX="59.0" layoutY="53.0" />
       <Button fx:id="button_execute" layoutX="223.0" layoutY="53.0" mnemonicParsing="false" text="Execute" />
@@ -183,5 +183,6 @@
             </AnchorPane>
          </children>
       </AnchorPane>
+      <Button fx:id="butoon_tick" layoutX="223.0" layoutY="86.0" mnemonicParsing="false" text="Tick" />
    </children>
 </AnchorPane>

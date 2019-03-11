@@ -13,6 +13,7 @@ public class Controller implements Initializable {
     private CRM crm1;
     @FXML private TextField commandInput;
     @FXML private Button button_execute;
+    @FXML private Button button_tick;
     @FXML public Label label;
     @FXML private Label mod;
     @FXML private Label r;
@@ -62,6 +63,7 @@ public class Controller implements Initializable {
         updateRegistersGUI();
 
         button_execute.setOnAction(event -> execute());
+        button_tick.setOnAction(event -> Tick());
     }
 
     private void execute(){
