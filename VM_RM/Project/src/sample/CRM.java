@@ -38,9 +38,9 @@ public class CRM
 
 
     /*commands that can be executed by rm*/
-    private String[] cmd2 = { "PI","TI","SP","BS","DB","ST","DT","SZ","IN"};
+    private String[] cmd2 = { "PI","TI","SP","BS","DB","ST","DT","SZ","IN","AD","SB","MP","DI","LR","SR","LO","CR","RL","RG","CZ","JC","JP","CA","PU","PO","SY","LP"};
     private String[] cmd3 = {"PTR"};
-    private String[] cmd5 = {"XCHGN", "START", "IRETN", "CALLI", "CHNGM"};
+    private String[] cmd5 = {"XCHGN", "START", "IRETN", "CALLI", "CHNGM","CHNGR","RETRN"};
     private Vector<String> commands = new Vector<String>();
 
     CRM(){
