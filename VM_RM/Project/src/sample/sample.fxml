@@ -183,6 +183,6 @@
             </AnchorPane>
          </children>
       </AnchorPane>
-      <Button fx:id="butoon_tick" layoutX="223.0" layoutY="86.0" mnemonicParsing="false" text="Tick" />
+      <Button fx:id="button_tick" layoutX="223.0" layoutY="86.0" mnemonicParsing="false" text="Tick" />
    </children>
 </AnchorPane>
