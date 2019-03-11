@@ -53,6 +53,11 @@ public class CRM
         commands.addAll( Arrays.asList(cmd5));
     }
 
+    public void Tick()
+    {
+
+    }
+
     /*commands that can be executed by RM and VM */
     public void executeCommand(String command){
 
@@ -370,7 +375,7 @@ public class CRM
     }
     private short cmdRL(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
     private short cmdRG(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
-    private short cmdCZ(String reg){ return EError.VALIDATION_SUCCESS;}//TODO implement
+    private short cmdCZ(String reg) { return EError.VALIDATION_SUCCESS;}//TODO implement
     private short cmdJC(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
     private short cmdJP(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
     private short cmdCA(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement

@@ -103,4 +103,9 @@ public class Controller implements Initializable {
         dt.setText(DToutput);
         sz.setText(SZoutput);
     }
+
+    public void Tick()
+    {
+        crm1.Tick();
+    }
 }
