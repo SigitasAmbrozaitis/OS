@@ -16,6 +16,6 @@ public class CMemory {
 
     public CCell GetAt(short index)
     {
-        return memory.elementAt(index/100).block.elementAt(index%100);
+        return memory.elementAt(index/10).block.elementAt(index%10);
     }
 }

@@ -51,7 +51,17 @@ class CCPU {
 
 
     CCPU(){
-
+        this.regR =new CCell("00000");
+        this.regPTR = 0;
+        this.regIC = 0;
+        this.regSP = 999;
+        this.regINT = 0;
+        this.regCT = 0;
+        this.regC = false;
+        this.regPI = 0;
+        this.regSI = 0;
+        this.regTI = 0;
+        this.regMOD = false;
     }
 
     CCPU(CCell R, short PTR, short IC, short SP, short INT, short CT, boolean C, short PI, short SI, short TI, boolean MOD )
