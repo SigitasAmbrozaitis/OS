@@ -374,8 +374,20 @@ public class CRM
     private short cmdJC(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
     private short cmdJP(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
     private short cmdCA(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
-    private short cmdPU(String reg){ return EError.VALIDATION_SUCCESS;}//TODO implement
-    private short cmdPO(String reg){ return EError.VALIDATION_SUCCESS;}//TODO implement
+    private short cmdPU(String reg)
+    {
+        memory.GetAt(cpu.getRegSP()).cell = cpu.ConvertRegToCCell(reg).cell;
+        cmdSP((short)(cpu.getRegSP()-1));
+        return EError.VALIDATION_SUCCESS;
+    }
+    private short cmdPO(String reg)
+    {
+        short errorCode;
+        errorCode = cmdSP((short)(cpu.getRegSP()+1));
+        if (errorCode!=EError.VALIDATION_SUCCESS) return errorCode;
+        errorCode = cpu.SetRegFromCCell(reg, memory.GetAt(cpu.getRegSP()));
+        return errorCode;
+    }
     private short cmdRETRN(){ return EError.VALIDATION_SUCCESS;}//TODO implement
     private short cmdSY(short input){cpu.setRegSI(input); return EError.VALIDATION_SUCCESS;}
     private short cmdLP(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
