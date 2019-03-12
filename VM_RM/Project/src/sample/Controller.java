@@ -138,9 +138,7 @@ public class Controller implements Initializable {
         sz.setText(SZoutput);
     }
 
-    private void updateMemoryTableGUI(){
-        memoryTable.setItems(getCBlock());
-    }
+    private void updateMemoryTableGUI(){ memoryTable.setItems(getCBlock()); }
 
     private ObservableList<CBlock> getCBlock(){
         ObservableList<CBlock> memory = FXCollections.observableArrayList();
