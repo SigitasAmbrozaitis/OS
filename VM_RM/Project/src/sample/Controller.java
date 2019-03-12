@@ -1,13 +1,19 @@
 package sample;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import sample.Memory.CBlock;
+import sample.Memory.CMemory;
 
 import java.net.URL;
+import java.util.List;
+import java.util.Observable;
 import java.util.ResourceBundle;
+import java.util.Vector;
 
 public class Controller implements Initializable {
     private CRM crm1;
@@ -48,10 +54,42 @@ public class Controller implements Initializable {
     static String SToutput = "";
     static String DToutput = "";
     static String SZoutput = "";
+    @FXML private TableView<CBlock> memoryTable;
+    @FXML private TableColumn<CBlock, Integer> column_0;
+    @FXML private TableColumn<CBlock, String> column_1;
+    @FXML private TableColumn<CBlock, String> column_2;
+    @FXML private TableColumn<CBlock, String> column_3;
+    @FXML private TableColumn<CBlock, String> column_4;
+    @FXML private TableColumn<CBlock, String> column_5;
+    @FXML private TableColumn<CBlock, String> column_6;
+    @FXML private TableColumn<CBlock, String> column_7;
+    @FXML private TableColumn<CBlock, String> column_8;
+    @FXML private TableColumn<CBlock, String> column_9;
+    @FXML private TableColumn<CBlock, String> column_10;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         crm1 = new CRM();
+        //for testing purposes add values to memory cells
+//        crm1.getMemory().memory.get(0).block.get(0).cell = "a";
+//        crm1.getMemory().memory.get(0).block.get(1).cell = "b";
+//        crm1.getMemory().memory.get(1).block.get(1).cell = "basd";
+
+
+        column_0.setCellValueFactory(new PropertyValueFactory<>("blockNumber"));
+        column_1.setCellValueFactory(new PropertyValueFactory<>("cell0"));
+        column_2.setCellValueFactory(new PropertyValueFactory<>("cell1"));
+        column_3.setCellValueFactory(new PropertyValueFactory<>("cell2"));
+        column_4.setCellValueFactory(new PropertyValueFactory<>("cell3"));
+        column_5.setCellValueFactory(new PropertyValueFactory<>("cell4)"));
+        column_6.setCellValueFactory(new PropertyValueFactory<>("cell5"));
+        column_7.setCellValueFactory(new PropertyValueFactory<>("cell6"));
+        column_8.setCellValueFactory(new PropertyValueFactory<>("cell7"));
+        column_9.setCellValueFactory(new PropertyValueFactory<>("cell8"));
+        column_10.setCellValueFactory(new PropertyValueFactory<>("cell9)"));
+
+        memoryTable.setItems(getCBlock());
+
 //        crm1.executeCommand("PI101");
 //        crm1.executeCommand("TI401");
 //        crm1.executeCommand("SP111");
@@ -61,6 +99,7 @@ public class Controller implements Initializable {
         crm1.getCpu().updateRegistersCCPUController();
         crm1.getCCD().updateRegisterCCDController();
         updateRegistersGUI();
+        updateMemoryTableGUI();
 
         button_execute.setOnAction(event -> execute());
         button_tick.setOnAction(event -> Tick());
@@ -75,15 +114,8 @@ public class Controller implements Initializable {
         crm1.getCpu().updateRegistersCCPUController();
         crm1.getCCD().updateRegisterCCDController();
         updateRegistersGUI();
+        updateMemoryTableGUI();
         crm1.getCpu().printCPURegisters();
-    }
-
-    void setLabel(String text){
-        label.setText(text);
-    }
-
-    void clearLabel(){
-        label.setText("");
     }
 
     private void updateRegistersGUI(){
@@ -104,6 +136,18 @@ public class Controller implements Initializable {
         st.setText(SToutput);
         dt.setText(DToutput);
         sz.setText(SZoutput);
+    }
+
+    private void updateMemoryTableGUI(){
+        memoryTable.setItems(getCBlock());
+    }
+
+    private ObservableList<CBlock> getCBlock(){
+        ObservableList<CBlock> memory = FXCollections.observableArrayList();
+        for(int i = 0; i < 100; i++){
+            memory.add(crm1.getMemory().memory.get(i));
+        }
+        return memory;
     }
 
     public void Tick()

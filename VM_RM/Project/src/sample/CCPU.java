@@ -51,7 +51,7 @@ class CCPU {
 
 
     CCPU(){
-        this.regR =new CCell("00000");
+        this.regR = new CCell("00000");
         this.regPTR = 0;
         this.regIC = 0;
         this.regSP = 999;

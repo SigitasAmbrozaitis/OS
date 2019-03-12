@@ -11,6 +11,7 @@ public class CMemory {
         for(int i=0; i<100; ++i)
         {
             memory.add(new CBlock());
+            memory.get(i).blockNumber = i;
         }
     }
 
