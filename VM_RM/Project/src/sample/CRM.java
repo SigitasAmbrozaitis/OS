@@ -10,6 +10,7 @@ import sample.Enumerators.EError;
 import sample.Enumerators.ERCommand;
 
 import sample.Memory.CMemory;
+import sample.Memory.CCell;
 
 /*Real Machine implementation*/
 public class CRM
@@ -53,20 +54,50 @@ public class CRM
         commands.addAll( Arrays.asList(cmd5));
     }
 
+    public void  ReadCommandInput(String input)
+    {
+        //split string to commands
+        String[] commands = input.split(" ");
+        Vector<String> commandsVec = new Vector<>(Arrays.asList(commands));
+
+        short startIndex = (short)(cpu.getRegTI()>0?cpu.getRegIC()+cpu.getRegTI():0);
+        cpu.setRegIC(startIndex);
+        cpu.setRegTI((short)(commandsVec.size() + cpu.getRegTI()));
+
+        //keep in mind that three might be unexecuted commands
+        for(int i=0; i<commandsVec.size(); ++i)
+        {
+            memory.GetAt((short)( startIndex  + i)).cell = commandsVec.elementAt(i);
+        }
+    }
+
     public void Tick()
     {
+        if(cpu.getRegTI()>0 && cpu.getRegPI()==EError.VALIDATION_SUCCESS)
+        {
+            executeCommand(memory.GetAt(cpu.getRegIC()));
+            cpu.setRegIC((short)(cpu.getRegIC()+1));
+            cpu.setRegTI((short)(cpu.getRegTI()-1));
+        }
+    }
 
+    public void Run()
+    {
+        while(cpu.getRegTI()>0)
+        {
+            Tick();
+        }
     }
 
     /*commands that can be executed by RM and VM */
-    public void executeCommand(String command){
+    public void executeCommand(CCell command){
 
         CCommand cmd = new CCommand();
-        int errorCode = ValidateCommand(command, cmd);
+        int errorCode = ValidateCommand(command.cell, cmd);
 
         if(errorCode!=EError.VALIDATION_SUCCESS)
         {
-            cmdPI((short)errorCode);
+            cpu.setRegPI((short)errorCode);
             return;
         }
 
@@ -263,7 +294,7 @@ public class CRM
 
         if(errorCode!=EError.VALIDATION_SUCCESS)
         {
-            cmdPI((short)errorCode);
+            cpu.setRegPI((short)errorCode);
         }
     }
 
@@ -301,7 +332,7 @@ public class CRM
             bNum = false;
         }
 
-        if(!bReg && !bNum) return EError.COMMAND_VIOLATION;
+        if(!bReg && !bNum && cmd.length()!=5) return EError.COMMAND_VIOLATION;
         if(nParam < 0 || nParam > 999) return EError.ACCESS_VIOLATION;
 
         command.cmd = cmd;
@@ -363,7 +394,12 @@ public class CRM
     private short cmdSB(short input){ cpu.getRegR().Sub(memory.GetAt(input)); return EError.VALIDATION_SUCCESS;}
     private short cmdMP(short input){ cpu.getRegR().Mul(memory.GetAt(input)); return EError.VALIDATION_SUCCESS;}
     private short cmdDI(short input){ cpu.getRegR().Div(memory.GetAt(input)); return EError.VALIDATION_SUCCESS;}
-    private short cmdCHNGR(){ cpu.setRegR( memory.GetAt((short)(cpu.getRegIC()+1))); return EError.VALIDATION_SUCCESS;}
+    private short cmdCHNGR()
+    {
+        cpu.setRegR( memory.GetAt((short)(cpu.getRegIC()+1)));
+        cpu.setRegIC((short)(cpu.getRegIC()+1));
+        cpu.setRegTI((short)(cpu.getRegTI()-1));
+        return EError.VALIDATION_SUCCESS;}
     private short cmdLR(short input){  cpu.setRegR( memory.GetAt(input)); return EError.VALIDATION_SUCCESS;}
     private short cmdSR(short input){ memory.GetAt(input).cell = cpu.getRegR().cell; return EError.VALIDATION_SUCCESS;}
     private short cmdLO(String reg) {  return EError.VALIDATION_SUCCESS;  }

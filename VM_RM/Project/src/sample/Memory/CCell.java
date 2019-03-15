@@ -7,7 +7,7 @@ public class CCell {
 
     public CCell()
     {
-        cell = "";
+        cell = "00000";
         //free = true;
     }
 
@@ -19,32 +19,53 @@ public class CCell {
     //These will be called by RM/VM probably regC should be of type CCell too
     public short Add(CCell value)
     {
-        //TODO implement
-
-
-
+        try
+        {
+            this.cell = Integer.toString(Integer.parseInt(this.cell)  + Integer.parseInt(value.cell));
+        }catch(NumberFormatException e)
+        {
+            return EError.COMMAND_VIOLATION;
+        }
         return EError.VALIDATION_SUCCESS;
     }
 
     public short Sub(CCell value)
     {
-        //TODO implement
+        try
+        {
+            this.cell = Integer.toString(Integer.parseInt(this.cell)  - Integer.parseInt(value.cell));
+        }catch(NumberFormatException e)
+        {
+            return EError.COMMAND_VIOLATION;
+        }
         return EError.VALIDATION_SUCCESS;
     }
 
     public short Mul(CCell value)
     {
-        //TODO implement
+        try
+        {
+            this.cell = Integer.toString(Integer.parseInt(this.cell)  * Integer.parseInt(value.cell));
+        }catch(NumberFormatException e)
+        {
+            return EError.COMMAND_VIOLATION;
+        }
         return EError.VALIDATION_SUCCESS;
     }
 
-    public short Div(CCell value)
+    public short Div(CCell value) //TODO test
     {
-        //TODO implement
+        try
+        {
+            this.cell = Integer.toString(Integer.parseInt(this.cell)  / Integer.parseInt(value.cell));
+        }catch(NumberFormatException e)
+        {
+            return EError.COMMAND_VIOLATION;
+        }
         return EError.VALIDATION_SUCCESS;
     }
 
-    public boolean Cmp(CCell value)
+       public boolean Cmp(CCell value)
     {
         return this.cell.compareTo(value.cell) == 0;
     }

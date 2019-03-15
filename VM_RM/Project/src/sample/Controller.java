@@ -108,7 +108,7 @@ public class Controller implements Initializable {
     private void execute(){
         String command = commandInput.getText();
         System.out.println(command);
-        crm1.executeCommand(command);
+        crm1.ReadCommandInput(command);
         commandInput.clear();
         label.setText(output);
         crm1.getCpu().updateRegistersCCPUController();
@@ -151,5 +151,10 @@ public class Controller implements Initializable {
     public void Tick()
     {
         crm1.Tick();
+        crm1.getCpu().updateRegistersCCPUController();
+        crm1.getCCD().updateRegisterCCDController();
+        updateRegistersGUI();
+        updateMemoryTableGUI();
+        crm1.getCpu().printCPURegisters();
     }
 }

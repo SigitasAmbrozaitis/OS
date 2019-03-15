@@ -36,7 +36,7 @@ class CCPU {
 
     public void updateRegistersCCPUController(){
         Controller.PIoutput = ""+regPI;
-        Controller.Routput = ""+regR;
+        Controller.Routput = ""+regR.cell;
         Controller.PTRoutput = ""+regPTR;
         Controller.ICoutput = ""+regIC;
         Controller.SPoutput = ""+regSP;
