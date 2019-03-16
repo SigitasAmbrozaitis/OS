@@ -1,8 +1,10 @@
 package sample.Memory;
 
+import sample.VMBlock;
+
 import java.util.Vector;
 
-public class CBlock {
+public class CBlock{
     public Vector<CCell> block;
     int blockNumber;
 

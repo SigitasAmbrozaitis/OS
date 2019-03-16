@@ -20,9 +20,6 @@ public class CCell {
     public short Add(CCell value)
     {
         //TODO implement
-
-
-
         return EError.VALIDATION_SUCCESS;
     }
 
