@@ -22,7 +22,7 @@ public class CRM
         public boolean bNumber;
     }
 
-    private CCPU cpu ;
+    private CCPU cpu;
     private CCD cd;
     private CMemory memory;
 

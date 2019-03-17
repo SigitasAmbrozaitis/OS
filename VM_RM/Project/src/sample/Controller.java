@@ -7,13 +7,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import sample.Memory.CBlock;
-import sample.Memory.CMemory;
 
 import java.net.URL;
-import java.util.List;
-import java.util.Observable;
 import java.util.ResourceBundle;
-import java.util.Vector;
 
 public class Controller implements Initializable {
     private CRM crm1;
@@ -67,26 +63,35 @@ public class Controller implements Initializable {
     @FXML private TableColumn<CBlock, String> column_9;
     @FXML private TableColumn<CBlock, String> column_10;
 
+    @FXML
+    private Label vm_count;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         crm1 = new CRM();
         //for testing purposes add values to memory cells
 //        crm1.getMemory().memory.get(0).block.get(0).cell = "a";
 //        crm1.getMemory().memory.get(0).block.get(1).cell = "b";
+//        crm1.getMemory().memory.get(0).block.get(2).cell = "b";
+//        crm1.getMemory().memory.get(0).block.get(3).cell = "b";
+//        crm1.getMemory().memory.get(0).block.get(4).cell = "b";
 //        crm1.getMemory().memory.get(2).block.get(1).cell = "basd";
+//        crm1.getMemory().memory.get(0).block.get(4).cell = "basd";
+
+        System.out.println(crm1.getMemory().memory.get(0).block.get(4).cell);
 
 
         column_0.setCellValueFactory(new PropertyValueFactory<>("blockNumber"));
-        column_1.setCellValueFactory(new PropertyValueFactory<>("cell0"));
-        column_2.setCellValueFactory(new PropertyValueFactory<>("cell1"));
-        column_3.setCellValueFactory(new PropertyValueFactory<>("cell2"));
-        column_4.setCellValueFactory(new PropertyValueFactory<>("cell3"));
-        column_5.setCellValueFactory(new PropertyValueFactory<>("cell4)"));
-        column_6.setCellValueFactory(new PropertyValueFactory<>("cell5"));
-        column_7.setCellValueFactory(new PropertyValueFactory<>("cell6"));
-        column_8.setCellValueFactory(new PropertyValueFactory<>("cell7"));
-        column_9.setCellValueFactory(new PropertyValueFactory<>("cell8"));
-        column_10.setCellValueFactory(new PropertyValueFactory<>("cell9)"));
+        column_1.setCellValueFactory(new PropertyValueFactory<>("Cell0"));
+        column_2.setCellValueFactory(new PropertyValueFactory<>("Cell1"));
+        column_3.setCellValueFactory(new PropertyValueFactory<>("Cell2"));
+        column_4.setCellValueFactory(new PropertyValueFactory<>("Cell3"));
+        column_5.setCellValueFactory(new PropertyValueFactory<>("Cell4"));
+        column_6.setCellValueFactory(new PropertyValueFactory<>("Cell5"));
+        column_7.setCellValueFactory(new PropertyValueFactory<>("Cell6"));
+        column_8.setCellValueFactory(new PropertyValueFactory<>("Cell7"));
+        column_9.setCellValueFactory(new PropertyValueFactory<>("Cell8"));
+        column_10.setCellValueFactory(new PropertyValueFactory<>("Cell9"));
 
         memoryTable.setItems(getCBlock());
 
@@ -100,6 +105,7 @@ public class Controller implements Initializable {
         crm1.getCCD().updateRegisterCCDController();
         updateRegistersGUI();
         updateMemoryTableGUI();
+        updateVMcount();
 
         button_execute.setOnAction(event -> execute());
         button_tick.setOnAction(event -> Tick());
@@ -127,7 +133,6 @@ public class Controller implements Initializable {
         _int.setText(INToutput);
         ct.setText(CToutput);
         c.setText(Coutput);
-        sp.setText(SPoutput);
         ti.setText(TIoutput);
         si.setText(SIoutput);
         mod.setText(MODoutput);
@@ -148,7 +153,11 @@ public class Controller implements Initializable {
         return memory;
     }
 
-    public void Tick()
+    private void updateVMcount(){
+        vm_count.setText(""+CVM.VMcounter);
+    }
+
+    private void Tick()
     {
         crm1.Tick();
         crm1.getCpu().updateRegistersCCPUController();
