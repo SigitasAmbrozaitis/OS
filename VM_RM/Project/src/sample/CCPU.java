@@ -55,7 +55,7 @@ class CCPU {
         this.regPTR = 0;
         this.regIC = 0;
         this.regSP = 999;
-        this.regINT = 0;
+        this.regINT = 200;
         this.regCT = 0;
         this.regC = false;
         this.regPI = 0;

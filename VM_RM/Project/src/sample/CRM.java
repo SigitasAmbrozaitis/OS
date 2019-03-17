@@ -73,11 +73,14 @@ public class CRM
 
     public void Tick()
     {
+        short errorCode = EError.VALIDATION_SUCCESS;
         if(cpu.getRegTI()>0 && cpu.getRegPI()==EError.VALIDATION_SUCCESS)
         {
-            executeCommand(memory.GetAt(cpu.getRegIC()));
+            errorCode = executeCommand(memory.GetAt(cpu.getRegIC()));
             cpu.setRegIC((short)(cpu.getRegIC()+1));
             cpu.setRegTI((short)(cpu.getRegTI()-1));
+
+            //TODO handle error code, maybe call interupt?
         }
     }
 
@@ -90,18 +93,16 @@ public class CRM
     }
 
     /*commands that can be executed by RM and VM */
-    public void executeCommand(CCell command){
+    public short executeCommand(CCell command){
 
         CCommand cmd = new CCommand();
-        int errorCode = ValidateCommand(command.cell, cmd);
+        short errorCode = ValidateCommand(command.cell, cmd);
 
         if(errorCode!=EError.VALIDATION_SUCCESS)
         {
-            cpu.setRegPI((short)errorCode);
-            return;
+            cpu.setRegPI(errorCode);
+            return errorCode;
         }
-
-        boolean bNum = cmd.bNumber;
 
         switch(cmd.cmd)
         {
@@ -294,8 +295,9 @@ public class CRM
 
         if(errorCode!=EError.VALIDATION_SUCCESS)
         {
-            cpu.setRegPI((short)errorCode);
+            cpu.setRegPI(errorCode);
         }
+        return errorCode;
     }
 
     short ValidateCommand(String strCommand, CCommand command)
@@ -434,88 +436,3 @@ public class CRM
     private short cmdLP(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
 
 }
-
-
-
-//TODO check whats needed, remove/keep after.
-
-//        int commandIndex;
-//        //get command name
-//        String cmd = command.replaceAll("[^A-Za-z]+", "");
-//        if(Arrays.asList(commands).indexOf(cmd) == -1){
-//            System.out.println("No command found");
-//            return;
-//        }
-//        //get passed value
-//        String value = command.replaceAll("\\D+","");
-//get command index in cmdR
-//        int commandIndex = commands.indexOf(cmd.cmd);
-//        switch(commandIndex){
-//            case 0:
-//                cpu.setRegPI(value.charAt(0));  //PIxyz PI = x x=0..9
-//                break;
-//            case 1:
-//                cpu.setRegTI(value.charAt(0));  //TIxyz TI = x x=0..9
-//                break;
-//            case 2:
-//                cpu.setRegSP((short)( (Character.getNumericValue(value.charAt(0)) * 100) +
-//                        (Character.getNumericValue(value.charAt(1)) * 10)
-//                        + (Character.getNumericValue(value.charAt(2)))));
-//                break;
-//            case 3:
-//                cpu.setRegINT((short)( (Character.getNumericValue(value.charAt(0)) * 100) +
-//                        (Character.getNumericValue(value.charAt(1)) * 10)
-//                        + (Character.getNumericValue(value.charAt(2)))));
-//                break;
-//            case 4:
-//                cd.setRegSB((short)( (Character.getNumericValue(value.charAt(0)) * 100) +
-//                        (Character.getNumericValue(value.charAt(1)) * 10)
-//                        + (Character.getNumericValue(value.charAt(2)))));
-//                break;
-//            case 5:
-//                cd.setRegDB((short)( (Character.getNumericValue(value.charAt(0)) * 100) +
-//                        (Character.getNumericValue(value.charAt(1)) * 10)
-//                        + (Character.getNumericValue(value.charAt(2)))));
-//                break;
-//            case 6:
-//                cd.setRegST((short)( (Character.getNumericValue(value.charAt(0)) * 100) +
-//                        (Character.getNumericValue(value.charAt(1)) * 10)
-//                        + (Character.getNumericValue(value.charAt(2)))));
-//                break;
-//            case 7:
-//                cd.setRegDT((short)( (Character.getNumericValue(value.charAt(0)) * 100) +
-//                        (Character.getNumericValue(value.charAt(1)) * 10)
-//                        + (Character.getNumericValue(value.charAt(2)))));
-//                break;
-//            case 8:
-//                cd.setRegSZ((short)( (Character.getNumericValue(value.charAt(0)) * 100) +
-//                        (Character.getNumericValue(value.charAt(1)) * 10)
-//                        + (Character.getNumericValue(value.charAt(2)))));
-//                break;
-//
-//                //kanalu irenginys BS DB ST DT SZ
-//            case 9:
-//                cpu.setRegPTR((short) ((Character.getNumericValue(value.charAt(0)) * 10) +
-//                        (Character.getNumericValue(value.charAt(1)))));
-//                break;
-//
-//            case 10:
-//                cpu.setRegMOD();
-//                break;
-//            case 11:
-//                memory.CALLI();
-//                break;
-//            case 12:
-//                memory.IRETN();
-//                break;
-//            case 13:
-//                START();
-//                break;
-//            case 14:
-//                cd.XCHGN();
-//                break;
-//            default:
-//                System.out.println("Error finding command");
-//        }
-//        Controller.output = "Executed command: " + cmdR[commandIndex] + " value: " + value;
-//        System.out.println(Controller.output);
