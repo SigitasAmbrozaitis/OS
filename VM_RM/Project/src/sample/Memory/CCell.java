@@ -65,10 +65,30 @@ public class CCell {
         return EError.VALIDATION_SUCCESS;
     }
 
-       public boolean Cmp(CCell value)
+    public boolean CmpString(CCell value)
     {
         return this.cell.compareTo(value.cell) == 0;
     }
+
+    //return 1 if this is greater.
+    //return -1 if this is less
+    //return 0 if equal
+    //return -2 on fail
+    public short CmpNumber(CCell value)
+    {
+        short ret = 0;
+        try
+        {
+            ret = (short)(Short.parseShort(this.cell) > Short.parseShort(value.cell) ? 1:-1);
+            ret = (short)(Short.parseShort(this.cell) == Short.parseShort(value.cell) ? 0:ret);
+        }catch(Exception e)
+        {
+            return -2;
+        }
+        return ret;
+    }
+
+
 
 
 }

@@ -127,10 +127,10 @@ class CCPU {
     public short getRegCT() { return regCT; }
     public void setRegCT(short regCT) { this.regCT = regCT; }
 
-    public short isRegSI() {return regSI; }
+    public short getRegSI() {return regSI; }
     public void setRegSI(short regSI) {this.regSI = regSI; }
 
-    public boolean isRegC() { return regC;}
+    public boolean getRegC() { return regC;}
     public void setRegC(boolean regC) { this.regC = regC; }
 
     public CCell ConvertRegToCCell(String reg)

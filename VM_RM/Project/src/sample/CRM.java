@@ -356,9 +356,34 @@ public class CRM
     private short cmdSP(short input){cpu.setRegSP(input); return EError.VALIDATION_SUCCESS;}
     private short cmdIN(short input){cpu.setRegINT(input); return EError.VALIDATION_SUCCESS;}
     private short cmdPTR(short input){cpu.setRegPTR(input); return EError.VALIDATION_SUCCESS;}
-    private short cmdCALLI(){ return EError.VALIDATION_SUCCESS;}//TODO implement
-    private short cmdRETN(){ return EError.VALIDATION_SUCCESS;}//TODO implement
-    private short cmdSTART(){ return EError.VALIDATION_SUCCESS;}//TODO implement
+    private short cmdCALLI()
+    {
+        cmdPU("MOD");
+        cmdPU("PTR");
+        cmdPU("C");
+        cmdPU("R");
+        cmdPU("IC");
+        cmdPU("SP");
+        cmdPU("CT");
+        cmdPU("TI");
+
+        cpu.setRegIC(cpu.getRegINT());
+        cpu.setRegTI((short)1);
+        return EError.VALIDATION_SUCCESS;
+    }
+    private short cmdRETN()
+    {
+        cmdPO("TI");
+        cmdPO("CT");
+        cmdPO("SP");
+        cmdPO("IC");
+        cmdPO("R");
+        cmdPO("C");
+        cmdPO("PTR");
+        cmdPO("MOD");
+        return EError.VALIDATION_SUCCESS;
+    }
+    private short cmdSTART(){ return EError.VALIDATION_SUCCESS;}//TODO implement, starts virtual machine
     private short cmdBS(short input)
     {
         if(input > 99) return EError.ACCESS_VIOLATION;//memory block cant be >99
@@ -390,7 +415,7 @@ public class CRM
         return EError.VALIDATION_SUCCESS;
     }
 
-    private short cmdXCHGN(){ return EError.VALIDATION_SUCCESS;}//TODO implement
+    private short cmdXCHGN(){ return EError.VALIDATION_SUCCESS;}//TODO implement, maybe it should have different input in GUI?
 
     private short cmdAD(short input){ cpu.getRegR().Add(memory.GetAt(input)); return EError.VALIDATION_SUCCESS;}
     private short cmdSB(short input){ cpu.getRegR().Sub(memory.GetAt(input)); return EError.VALIDATION_SUCCESS;}
@@ -407,16 +432,48 @@ public class CRM
     private short cmdLO(String reg) {  return EError.VALIDATION_SUCCESS;  }
     private short cmdCR(short input)
     {
-        boolean equal = cpu.getRegR().Cmp(memory.GetAt(input));
-        cpu.setRegC(equal);
+        cpu.setRegC(cpu.getRegR().CmpString(memory.GetAt(input)));
         return EError.VALIDATION_SUCCESS;
     }
-    private short cmdRL(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
-    private short cmdRG(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
-    private short cmdCZ(String reg) { return EError.VALIDATION_SUCCESS;}//TODO implement
-    private short cmdJC(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
-    private short cmdJP(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
-    private short cmdCA(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
+    private short cmdRL(short input)
+    {
+        cpu.setRegC(cpu.getRegR().CmpNumber(memory.GetAt(input)) < 0);
+        return EError.VALIDATION_SUCCESS;
+    }
+    private short cmdRG(short input)
+    {
+        cpu.setRegC(cpu.getRegR().CmpNumber(memory.GetAt(input)) > 0);
+        return EError.VALIDATION_SUCCESS;
+    }
+    private short cmdCZ(String reg)
+    {
+        cpu.setRegC(cpu.ConvertRegToCCell(reg).CmpString(new CCell("00000")));
+        return EError.VALIDATION_SUCCESS;
+    }
+    private short cmdJC(short input)
+    {
+        if(cpu.getRegC()) cpu.setRegIC((short)(input-1));
+        return EError.VALIDATION_SUCCESS;
+    }
+    private short cmdJP(short input)
+    {
+        cpu.setRegIC((short)(input-1));
+        return EError.VALIDATION_SUCCESS;
+    }
+    private short cmdCA(short input)
+    {
+        cmdPU("MOD");
+        cmdPU("PTR");
+        cmdPU("C");
+        cmdPU("R");
+        cmdPU("IC");
+        cmdPU("SP");
+        cmdPU("CT");
+        cmdPU("TI");
+
+        cpu.setRegIC((short)(input-1));
+        return EError.VALIDATION_SUCCESS;
+    }
     private short cmdPU(String reg)
     {
         memory.GetAt(cpu.getRegSP()).cell = cpu.ConvertRegToCCell(reg).cell;
@@ -431,7 +488,18 @@ public class CRM
         errorCode = cpu.SetRegFromCCell(reg, memory.GetAt(cpu.getRegSP()));
         return errorCode;
     }
-    private short cmdRETRN(){ return EError.VALIDATION_SUCCESS;}//TODO implement
+    private short cmdRETRN()
+    {
+        cmdPO("TI");
+        cmdPO("CT");
+        cmdPO("SP");
+        cmdPO("IC");
+        cmdPO("R");
+        cmdPO("C");
+        cmdPO("PTR");
+        cmdPO("MOD");
+        return EError.VALIDATION_SUCCESS;
+    }
     private short cmdSY(short input){cpu.setRegSI(input); return EError.VALIDATION_SUCCESS;}
     private short cmdLP(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
 
