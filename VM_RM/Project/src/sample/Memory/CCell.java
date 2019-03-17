@@ -88,6 +88,11 @@ public class CCell {
         return ret;
     }
 
+    public CCell Copy()
+    {
+        return new CCell(this.cell);
+    }
+
 
 
 

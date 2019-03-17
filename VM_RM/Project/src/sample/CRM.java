@@ -423,13 +423,13 @@ public class CRM
     private short cmdDI(short input){ cpu.getRegR().Div(memory.GetAt(input)); return EError.VALIDATION_SUCCESS;}
     private short cmdCHNGR()
     {
-        cpu.setRegR( memory.GetAt((short)(cpu.getRegIC()+1)));
+        cpu.setRegR( memory.GetAt((short)(cpu.getRegIC()+1)).Copy());
         cpu.setRegIC((short)(cpu.getRegIC()+1));
         cpu.setRegTI((short)(cpu.getRegTI()-1));
         return EError.VALIDATION_SUCCESS;}
-    private short cmdLR(short input){  cpu.setRegR( memory.GetAt(input)); return EError.VALIDATION_SUCCESS;}
-    private short cmdSR(short input){ memory.GetAt(input).cell = cpu.getRegR().cell; return EError.VALIDATION_SUCCESS;}
-    private short cmdLO(String reg) {  return EError.VALIDATION_SUCCESS;  }
+    private short cmdLR(short input){  cpu.setRegR( memory.GetAt(input).Copy()); return EError.VALIDATION_SUCCESS;}
+    private short cmdSR(short input){ memory.GetAt(input).cell = cpu.getRegR().Copy().cell; return EError.VALIDATION_SUCCESS;}
+    private short cmdLO(String reg) {  return EError.VALIDATION_SUCCESS;  } //TODO implement
     private short cmdCR(short input)
     {
         cpu.setRegC(cpu.getRegR().CmpString(memory.GetAt(input)));
@@ -485,7 +485,7 @@ public class CRM
         short errorCode;
         errorCode = cmdSP((short)(cpu.getRegSP()+1));
         if (errorCode!=EError.VALIDATION_SUCCESS) return errorCode;
-        errorCode = cpu.SetRegFromCCell(reg, memory.GetAt(cpu.getRegSP()));
+        errorCode = cpu.SetRegFromCCell(reg, memory.GetAt(cpu.getRegSP()).Copy());
         return errorCode;
     }
     private short cmdRETRN()
