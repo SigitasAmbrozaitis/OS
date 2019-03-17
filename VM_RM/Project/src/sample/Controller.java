@@ -71,9 +71,9 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         crm1 = new CRM();
         //for testing purposes add values to memory cells
-//        crm1.getMemory().memory.get(0).block.get(0).cell = "a";
-//        crm1.getMemory().memory.get(0).block.get(1).cell = "b";
-//        crm1.getMemory().memory.get(1).block.get(1).cell = "basd";
+        crm1.getMemory().memory.get(0).block.get(0).cell = "a";
+        crm1.getMemory().memory.get(0).block.get(1).cell = "b";
+        crm1.getMemory().memory.get(2).block.get(1).cell = "basd";
 
 
         column_0.setCellValueFactory(new PropertyValueFactory<>("blockNumber"));
