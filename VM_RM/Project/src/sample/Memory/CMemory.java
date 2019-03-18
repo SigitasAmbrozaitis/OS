@@ -20,4 +20,5 @@ public class CMemory {
     {
         return memory.elementAt(index/10).block.elementAt(index%10);
     }
+    public CBlock GetBlockAt(short index) {return memory.elementAt(index);}
 }

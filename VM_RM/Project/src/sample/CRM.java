@@ -11,6 +11,8 @@ import sample.Enumerators.ERCommand;
 
 import sample.Memory.CMemory;
 import sample.Memory.CCell;
+import sample.Memory.CPaging;
+
 
 /*Real Machine implementation*/
 public class CRM
@@ -25,6 +27,7 @@ public class CRM
     private CCPU cpu;
     private CCD cd;
     private CMemory memory;
+    private CPaging page;
 
     //getters for GUI
     public CCPU getCpu()
@@ -36,7 +39,7 @@ public class CRM
     {
         return memory;
     }
-
+    public Vector<CVM> VMs;
 
     /*commands that can be executed by rm*/
     private String[] cmd2 = { "PI","TI","SP","BS","DB","ST","DT","SZ","IN","AD","SB","MP","DI","LR","SR","LO","CR","RL","RG","CZ","JC","JP","CA","PU","PO","SY","LP"};
@@ -48,6 +51,8 @@ public class CRM
         cpu = new CCPU();
         cd = new CCD();
         memory = new CMemory();
+
+        VMs = new Vector<CVM>();
 
         commands.addAll( Arrays.asList(cmd2));
         commands.addAll( Arrays.asList(cmd3));
@@ -383,7 +388,13 @@ public class CRM
         cmdPO("MOD");
         return EError.VALIDATION_SUCCESS;
     }
-    private short cmdSTART(){ return EError.VALIDATION_SUCCESS;}//TODO implement, starts virtual machine
+    private short cmdSTART(){
+        VMs.add(new CVM(new CPaging(memory, (short)8)));
+
+
+        return EError.VALIDATION_SUCCESS;
+    }//TODO implement, starts virtual machine
+
     private short cmdBS(short input)
     {
         if(input > 99) return EError.ACCESS_VIOLATION;//memory block cant be >99

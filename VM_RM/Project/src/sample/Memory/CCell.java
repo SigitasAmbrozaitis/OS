@@ -4,10 +4,14 @@ import sample.Enumerators.EError;
 public class CCell {
     public String cell;
     //boolean free;
-
+    private static int num = 0;
     public CCell()
     {
         cell = "00000";
+
+        cell = String.valueOf(num++); //TODO remove this
+
+
         //free = true;
     }
 

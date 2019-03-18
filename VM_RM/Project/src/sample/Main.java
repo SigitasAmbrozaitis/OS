@@ -19,14 +19,14 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        CRM crm1 = new CRM();
-        CVM cvm = new CVM(crm1);
-        CVM cvm2 = new CVM(crm1);
-        CVM cvm3= new CVM(crm1);
-        System.out.println("Dabar: " + cvm.currentAddress + "VM nr: " + cvm.VMcounter);
-        System.out.println(crm1.getMemory().memory.get(20).getBlockNumber());
-        for(VMBlock x : cvm2.vm1.vmMemory)
-            System.out.println("Real Address: " + x.realAddress + " Virtual Address: " + x.virtualAddress);
+//        CRM crm1 = new CRM();
+//        CVM cvm = new CVM(crm1);
+//        CVM cvm2 = new CVM(crm1);
+//        CVM cvm3= new CVM(crm1);
+//        System.out.println("Dabar: " + cvm.currentAddress + "VM nr: " + cvm.VMcounter);
+//        System.out.println(crm1.getMemory().memory.get(20).getBlockNumber());
+//        for(VMBlock x : cvm2.vm1.vmMemory)
+//            System.out.println("Real Address: " + x.realAddress + " Virtual Address: " + x.virtualAddress);
 
         launch(args);
     }

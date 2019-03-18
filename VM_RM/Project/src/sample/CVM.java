@@ -4,6 +4,8 @@ import sample.Enumerators.EError;
 import sample.Enumerators.ERCommand;
 import sample.Memory.CBlock;
 import sample.Memory.CCell;
+import sample.Memory.CMemory;
+import sample.Memory.CPaging;
 
 import java.util.Arrays;
 import java.util.Vector;
@@ -14,7 +16,7 @@ public class CVM {
     private String[] cmd5 = {"XCHGN", "CHNGR","RETRN"};
     private Vector<String> commands = new Vector<String>();
     private CCPU cpu ;
-
+    private CPaging page;
     private class CCommand
     {
         public String cmd;
@@ -44,6 +46,22 @@ public class CVM {
 
         commands.addAll( Arrays.asList(cmd2));
         commands.addAll( Arrays.asList(cmd5));
+    }
+
+    CVM(CPaging page)
+    {
+        this.page = page;
+        Vector<String> test = new Vector<String>();
+
+        for(short i=0; i<100; ++i)
+        {
+            test.add(page.GetAt(i).cell);
+            System.out.println(i+":"+page.GetAt(i).cell);
+        }
+
+        int a = 0;
+
+
     }
 
 
