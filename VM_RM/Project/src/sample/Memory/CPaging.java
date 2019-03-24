@@ -2,6 +2,10 @@ package sample.Memory;
 
 public class CPaging {
 
+    public CMemory getMemory() {
+        return memory;
+    }
+
     CMemory memory;
     short adress;
     CBlock pagingTable;
@@ -9,7 +13,6 @@ public class CPaging {
     public CPaging( CMemory mem, short adress )
     {
         this.memory = mem;
-
         pagingTable = memory.GetBlockAt(adress);
     }
 

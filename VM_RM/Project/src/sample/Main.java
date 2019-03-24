@@ -27,6 +27,10 @@ public class Main extends Application {
 //        System.out.println(crm1.getMemory().memory.get(20).getBlockNumber());
 //        for(VMBlock x : cvm2.vm1.vmMemory)
 //            System.out.println("Real Address: " + x.realAddress + " Virtual Address: " + x.virtualAddress);
+       // CRM crm1 = new CRM();
+       // crm1.ReadCommandInput("PI101");
+
+
 
         launch(args);
     }

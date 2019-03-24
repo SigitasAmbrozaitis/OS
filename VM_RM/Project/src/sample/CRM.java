@@ -388,9 +388,29 @@ public class CRM
         cmdPO("MOD");
         return EError.VALIDATION_SUCCESS;
     }
-    private short cmdSTART(){
-        VMs.add(new CVM(new CPaging(memory, (short)8)));
+    private short saveRMState(){
+        cmdPU("MOD");
+        cmdPU("PTR");
+        cmdPU("C");
+        cmdPU("R");
+        cmdPU("IC");
+        cmdPU("SP");
+        cmdPU("CT");
 
+
+        return EError.VALIDATION_SUCCESS;
+    }
+    private short cmdSTART(){
+        //save real machine state
+        short errorCode = saveRMState();
+        if(errorCode!=EError.VALIDATION_SUCCESS)
+        {
+            cpu.setRegPI(errorCode);
+            return errorCode;
+        }
+
+        VMs.add(new CVM(new CPaging(memory, (short)8)));
+        System.out.println("Wassuo wassup");
 
         return EError.VALIDATION_SUCCESS;
     }//TODO implement, starts virtual machine
