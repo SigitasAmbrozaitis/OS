@@ -6,6 +6,7 @@ import sample.Memory.CBlock;
 import sample.Memory.CCell;
 import sample.Memory.CMemory;
 import sample.Memory.CPaging;
+import sample.Enumerators.EVCommand;
 
 import java.util.Arrays;
 import java.util.Vector;
@@ -13,7 +14,7 @@ import java.util.Vector;
 public class CVM {
 
     private String[] cmd2 = { "AD","SB","MP","DI","LR","SR","LO","CR","RL","RG","CZ","JC","JP","CA","PU","PO","SY","LP"};
-    private String[] cmd5 = {"XCHGN", "CHNGR","RETRN"};
+    private String[] cmd5 = { "CHNGR","RETRN"};
     private Vector<String> commands = new Vector<String>();
     private VCCPU cpu ;
     //private CCPU rcpu;
@@ -72,112 +73,112 @@ public class CVM {
 
         switch(cmd.cmd)
         {
-            case ERCommand.E_AD:
+            case EVCommand.E_AD:
                 if(cmd.bNumber)
                 {
                     errorCode = cmdAD((short)Integer.parseInt(cmd.param));
                 }else errorCode = EError.COMMAND_VIOLATION;
                 break;
-            case ERCommand.E_CA:
+            case EVCommand.E_CA:
                 if(cmd.bNumber)
                 {
                     errorCode = cmdCA((short)Integer.parseInt(cmd.param));
                 }else errorCode = EError.COMMAND_VIOLATION;
                 break;
-            case ERCommand.E_CHNGR:
+            case EVCommand.E_CHNGR:
                 errorCode = cmdCHNGR();
                 break;
-            case ERCommand.E_CR:
+            case EVCommand.E_CR:
                 if(cmd.bNumber)
                 {
                     errorCode = cmdCR((short)Integer.parseInt(cmd.param));
                 }else errorCode = EError.COMMAND_VIOLATION;
                 break;
-            case ERCommand.E_CZ:
+            case EVCommand.E_CZ:
                 if(!cmd.bNumber)
                 {
                     errorCode = cmdCZ(cmd.param);
                 }else errorCode = EError.COMMAND_VIOLATION;
                 break;
-            case ERCommand.E_DI:
+            case EVCommand.E_DI:
                 if(cmd.bNumber)
                 {
                     errorCode = cmdDI((short)Integer.parseInt(cmd.param));
                 }else errorCode = EError.COMMAND_VIOLATION;
                 break;
-            case ERCommand.E_JC:
+            case EVCommand.E_JC:
                 if(cmd.bNumber)
                 {
                     errorCode = cmdJC((short)Integer.parseInt(cmd.param));
                 }else errorCode = EError.COMMAND_VIOLATION;
                 break;
-            case ERCommand.E_JP:
+            case EVCommand.E_JP:
                 if(cmd.bNumber)
                 {
                     errorCode = cmdJP((short)Integer.parseInt(cmd.param));
                 }else errorCode = EError.COMMAND_VIOLATION;
                 break;
-            case ERCommand.E_LO:
+            case EVCommand.E_LO:
                 if(!cmd.bNumber)
                 {
                     errorCode = cmdLO(cmd.param);
                 }else errorCode = EError.COMMAND_VIOLATION;
                 break;
-            case ERCommand.E_LR:
+            case EVCommand.E_LR:
                 if(cmd.bNumber)
                 {
                     errorCode = cmdLR((short)Integer.parseInt(cmd.param));
                 }else errorCode = EError.COMMAND_VIOLATION;
                 break;
-            case ERCommand.E_MP:
+            case EVCommand.E_MP:
                 if(cmd.bNumber)
                 {
                     errorCode = cmdMP((short)Integer.parseInt(cmd.param));
                 }else errorCode = EError.COMMAND_VIOLATION;
                 break;
-            case ERCommand.E_PO:
+            case EVCommand.E_PO:
                 if(!cmd.bNumber)
                 {
                     errorCode = cmdPO(cmd.param);
                 }else errorCode = EError.COMMAND_VIOLATION;
                 break;
-            case ERCommand.E_PU:
+            case EVCommand.E_PU:
                 if(!cmd.bNumber)
                 {
                     errorCode = cmdPU(cmd.param);
                 }else errorCode = EError.COMMAND_VIOLATION;
                 break;
-            case ERCommand.E_RG:
+            case EVCommand.E_RG:
                 if(cmd.bNumber)
                 {
                     errorCode = cmdRG((short)Integer.parseInt(cmd.param));
                 }else errorCode = EError.COMMAND_VIOLATION;
                 break;
-            case ERCommand.E_RL:
+            case EVCommand.E_RL:
                 if(cmd.bNumber)
                 {
                     errorCode = cmdRL((short)Integer.parseInt(cmd.param));
                 }else errorCode = EError.COMMAND_VIOLATION;
                 break;
-            case ERCommand.E_SB:
+            case EVCommand.E_SB:
                 if(cmd.bNumber)
                 {
                     errorCode = cmdSB((short)Integer.parseInt(cmd.param));
                 }else errorCode = EError.COMMAND_VIOLATION;
                 break;
-            case ERCommand.E_SR:
+            case EVCommand.E_SR:
                 if(cmd.bNumber)
                 {
                     errorCode = cmdSR((short)Integer.parseInt(cmd.param));
                 }else errorCode = EError.COMMAND_VIOLATION;
                 break;
-            case ERCommand.E_RETRN:
+            case EVCommand.E_RETRN:
                 errorCode = cmdRETRN();
                 break;
-            case ERCommand.E_SY:
+            case EVCommand.E_SY:
                 //errorCode = cmdSY((short)Integer.parseInt(cmd.param));
                 break;
-            case ERCommand.E_LP:
+            case EVCommand.E_LP:
                 errorCode = cmdLP((short)Integer.parseInt(cmd.param));
                 break;
             default: errorCode = EError.COMMAND_VIOLATION;
@@ -225,33 +226,33 @@ public class CVM {
         return EError.VALIDATION_SUCCESS;
     }
 
-    private short cmdSP(short input){cpu.setVregSP(input); return EError.VALIDATION_SUCCESS;}
-    private short cmdAD(short input){ cpu.getVregR().Add(page.getMemory().GetAt(input)); return EError.VALIDATION_SUCCESS;}
-    private short cmdSB(short input){ cpu.getVregR().Sub(page.getMemory().GetAt(input)); return EError.VALIDATION_SUCCESS;}
-    private short cmdMP(short input){ cpu.getVregR().Mul(page.getMemory().GetAt(input)); return EError.VALIDATION_SUCCESS;}
-    private short cmdDI(short input){ cpu.getVregR().Div(page.getMemory().GetAt(input)); return EError.VALIDATION_SUCCESS;}
+    private short cmdSP(short input){ cpu.setVregSP(input); return EError.VALIDATION_SUCCESS;}
+    private short cmdAD(short input){ cpu.getVregR().Add(page.GetAt(input)); return EError.VALIDATION_SUCCESS;}
+    private short cmdSB(short input){ cpu.getVregR().Sub(page.GetAt(input)); return EError.VALIDATION_SUCCESS;}
+    private short cmdMP(short input){ cpu.getVregR().Mul(page.GetAt(input)); return EError.VALIDATION_SUCCESS;}
+    private short cmdDI(short input){ cpu.getVregR().Div(page.GetAt(input)); return EError.VALIDATION_SUCCESS;}
     private short cmdCHNGR()
     {
-        cpu.setVregR( page.getMemory().GetAt((short)(cpu.getVregIC()+1)));
+        cpu.setVregR( page.GetAt((short)(cpu.getVregIC()+1)));
         cpu.setVregIC((short)(cpu.getVregIC()+1));
        // cpu.setRegTI((short)(cpu.getRegTI()-1)); //No TI reg in VM
         return EError.VALIDATION_SUCCESS;}
-    private short cmdLR(short input){  cpu.setVregR( page.getMemory().GetAt(input)); return EError.VALIDATION_SUCCESS;}
-    private short cmdSR(short input){ page.getMemory().GetAt(input).cell = cpu.getVregR().cell; return EError.VALIDATION_SUCCESS;}
+    private short cmdLR(short input){  cpu.setVregR( page.GetAt(input)); return EError.VALIDATION_SUCCESS;}
+    private short cmdSR(short input){ page.GetAt(input).cell = cpu.getVregR().cell; return EError.VALIDATION_SUCCESS;}
     private short cmdLO(String reg) {  return EError.VALIDATION_SUCCESS;  }
     private short cmdCR(short input)
     {
-        cpu.setVregC(cpu.getVregR().CmpString(page.getMemory().GetAt(input)));
+        cpu.setVregC(cpu.getVregR().CmpString(page.GetAt(input)));
         return EError.VALIDATION_SUCCESS;
     }
     private short cmdRL(short input)
     {
-        cpu.setVregC(cpu.getVregR().CmpNumber(page.getMemory().GetAt(input)) < 0);
+        cpu.setVregC(cpu.getVregR().CmpNumber(page.GetAt(input)) < 0);
         return EError.VALIDATION_SUCCESS;
     }
     private short cmdRG(short input)
     {
-        cpu.setVregC(cpu.getVregR().CmpNumber(page.getMemory().GetAt(input)) > 0);
+        cpu.setVregC(cpu.getVregR().CmpNumber(page.GetAt(input)) > 0);
         return EError.VALIDATION_SUCCESS;
     }
     private short cmdCZ(String reg)
@@ -285,7 +286,7 @@ public class CVM {
     }
     private short cmdPU(String reg)
     {
-        page.getMemory().GetAt(cpu.getVregSP()).cell = cpu.ConvertRegToCCell(reg).cell;
+        page.GetAt(cpu.getVregSP()).cell = cpu.ConvertRegToCCell(reg).cell;
         cmdSP((short)(cpu.getVregSP()-1));
         return EError.VALIDATION_SUCCESS;
     }
@@ -294,7 +295,7 @@ public class CVM {
         short errorCode;
         errorCode = cmdSP((short)(cpu.getVregSP()+1));
         if (errorCode!=EError.VALIDATION_SUCCESS) return errorCode;
-        errorCode = cpu.SetRegFromCCell(reg, page.getMemory().GetAt(cpu.getVregSP()));
+        errorCode = cpu.SetRegFromCCell(reg, page.GetAt(cpu.getVregSP()));
         return errorCode;
     }
     private short cmdRETRN()

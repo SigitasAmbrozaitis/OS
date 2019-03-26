@@ -2,10 +2,6 @@ package sample.Memory;
 
 public class CPaging {
 
-    public CMemory getMemory() {
-        return memory;
-    }
-
     CMemory memory;
     short adress;
     CBlock pagingTable;
