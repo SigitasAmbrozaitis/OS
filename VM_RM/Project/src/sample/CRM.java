@@ -65,8 +65,9 @@ public class CRM
         String[] commands = input.split(" ");
         Vector<String> commandsVec = new Vector<>(Arrays.asList(commands));
 
+        short preIndex = (short)(cpu.getRegTI()>0?cpu.getRegIC():0);
         short startIndex = (short)(cpu.getRegTI()>0?cpu.getRegIC()+cpu.getRegTI():0);
-        cpu.setRegIC(startIndex);
+        cpu.setRegIC(preIndex);
         cpu.setRegTI((short)(commandsVec.size() + cpu.getRegTI()));
 
         //keep in mind that three might be unexecuted commands
