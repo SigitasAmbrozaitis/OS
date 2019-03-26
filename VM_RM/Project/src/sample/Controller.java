@@ -78,9 +78,6 @@ public class Controller implements Initializable {
 //        crm1.getMemory().memory.get(2).block.get(1).cell = "basd";
 //        crm1.getMemory().memory.get(0).block.get(4).cell = "basd";
 
-        System.out.println(crm1.getMemory().memory.get(0).block.get(4).cell);
-
-
         column_0.setCellValueFactory(new PropertyValueFactory<>("blockNumber"));
         column_1.setCellValueFactory(new PropertyValueFactory<>("Cell0"));
         column_2.setCellValueFactory(new PropertyValueFactory<>("Cell1"));
@@ -92,14 +89,8 @@ public class Controller implements Initializable {
         column_8.setCellValueFactory(new PropertyValueFactory<>("Cell7"));
         column_9.setCellValueFactory(new PropertyValueFactory<>("Cell8"));
         column_10.setCellValueFactory(new PropertyValueFactory<>("Cell9"));
-
         memoryTable.setItems(getCBlock());
 
-//        crm1.executeCommand("PI101");
-//        crm1.executeCommand("TI401");
-//        crm1.executeCommand("SP111");
-//        crm1.executeCommand("IN100");
-//        crm1.executeCommand("PTR19");
         crm1.getCpu().printCPURegisters();
         crm1.getCpu().updateRegistersCCPUController();
         crm1.getCCD().updateRegisterCCDController();
@@ -113,15 +104,19 @@ public class Controller implements Initializable {
 
     private void execute(){
         String command = commandInput.getText();
-        System.out.println(command);
-        crm1.ReadCommandInput(command);
-        commandInput.clear();
-        label.setText(output);
-        crm1.getCpu().updateRegistersCCPUController();
-        crm1.getCCD().updateRegisterCCDController();
-        updateRegistersGUI();
-        updateMemoryTableGUI();
-        crm1.getCpu().printCPURegisters();
+        if(command.isEmpty()){
+            label.setText("No command to write");
+        }else {
+            System.out.println(command);
+            crm1.ReadCommandInput(command);
+            commandInput.clear();
+            label.setText(output);
+            crm1.getCpu().updateRegistersCCPUController();
+            crm1.getCCD().updateRegisterCCDController();
+            updateRegistersGUI();
+            updateMemoryTableGUI();
+            crm1.getCpu().printCPURegisters();
+        }
     }
 
     private void updateRegistersGUI(){
