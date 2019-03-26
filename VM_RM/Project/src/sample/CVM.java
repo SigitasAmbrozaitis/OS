@@ -19,6 +19,8 @@ public class CVM {
     private VCCPU cpu ;
     //private CCPU rcpu;
     private CPaging page;
+
+    short memSize = 100;
     private class CCommand
     {
         public String cmd;
@@ -218,7 +220,7 @@ public class CVM {
         }
 
         if(!bReg && !bNum && cmd.length()!=5) return EError.COMMAND_VIOLATION;
-        if(nParam < 0 || nParam > 999) return EError.ACCESS_VIOLATION;
+        if(nParam < 0 || nParam >= memSize) return EError.ACCESS_VIOLATION;
 
         command.cmd = cmd;
         command.param = param;
@@ -226,6 +228,7 @@ public class CVM {
         return EError.VALIDATION_SUCCESS;
     }
 
+    //TODO update project document to add this command
     private short cmdSP(short input){ cpu.setVregSP(input); return EError.VALIDATION_SUCCESS;}
     private short cmdAD(short input){ cpu.getVregR().Add(page.GetAt(input)); return EError.VALIDATION_SUCCESS;}
     private short cmdSB(short input){ cpu.getVregR().Sub(page.GetAt(input)); return EError.VALIDATION_SUCCESS;}
@@ -235,11 +238,12 @@ public class CVM {
     {
         cpu.setVregR( page.GetAt((short)(cpu.getVregIC()+1)));
         cpu.setVregIC((short)(cpu.getVregIC()+1));
+        //TODO discuss if VM shouldnt have TI since its used together with IC to execute commands
        // cpu.setRegTI((short)(cpu.getRegTI()-1)); //No TI reg in VM
         return EError.VALIDATION_SUCCESS;}
-    private short cmdLR(short input){  cpu.setVregR( page.GetAt(input)); return EError.VALIDATION_SUCCESS;}
+    private short cmdLR(short input){  cpu.setVregR( page.GetAtCopy(input)); return EError.VALIDATION_SUCCESS;}
     private short cmdSR(short input){ page.GetAt(input).cell = cpu.getVregR().cell; return EError.VALIDATION_SUCCESS;}
-    private short cmdLO(String reg) {  return EError.VALIDATION_SUCCESS;  }
+    private short cmdLO(String reg) {  return EError.VALIDATION_SUCCESS;  } //TODO implement
     private short cmdCR(short input)
     {
         cpu.setVregC(cpu.getVregR().CmpString(page.GetAt(input)));
@@ -272,14 +276,14 @@ public class CVM {
     }
     private short cmdCA(short input)
     {
-        cmdPU("MOD");
-        cmdPU("PTR");
+        //cmdPU("MOD");
+        //cmdPU("PTR");
         cmdPU("C");
         cmdPU("R");
         cmdPU("IC");
         cmdPU("SP");
         cmdPU("CT");
-        cmdPU("TI");
+        //cmdPU("TI");
 
         cpu.setVregIC((short)(input-1));
         return EError.VALIDATION_SUCCESS;
@@ -300,14 +304,14 @@ public class CVM {
     }
     private short cmdRETRN()
     {
-        cmdPO("TI");
+        //cmdPO("TI");
         cmdPO("CT");
         cmdPO("SP");
         cmdPO("IC");
         cmdPO("R");
         cmdPO("C");
-        cmdPO("PTR");
-        cmdPO("MOD");
+        //cmdPO("PTR");
+        //cmdPO("MOD");
         return EError.VALIDATION_SUCCESS;
     }
   //  private short cmdSY(short input){cpu.setRegSI(input); return EError.VALIDATION_SUCCESS;}
