@@ -96,7 +96,7 @@ public class Controller implements Initializable {
         crm1.getCCD().updateRegisterCCDController();
         updateRegistersGUI();
         updateMemoryTableGUI();
-       // updateVMcount();
+        updateVMcount();
 
         button_execute.setOnAction(event -> execute());
         button_tick.setOnAction(event -> Tick());
@@ -148,9 +148,9 @@ public class Controller implements Initializable {
         return memory;
     }
 
-   /* private void updateVMcount(){
-        vm_count.setText(""+CVM.VMcounter);
-    }*/
+    private void updateVMcount(){
+        vm_count.setText(""+crm1.VMs.size());
+    }
 
     private void Tick()
     {
