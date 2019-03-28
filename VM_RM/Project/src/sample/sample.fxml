@@ -216,5 +216,6 @@
             <Font size="18.0" />
          </font>
       </Label>
+      <Button fx:id="button_reset" layoutX="223.0" layoutY="136.0" mnemonicParsing="false" text="Reset" />
    </children>
 </AnchorPane>

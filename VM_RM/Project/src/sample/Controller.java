@@ -16,6 +16,7 @@ public class Controller implements Initializable {
     @FXML private TextField commandInput;
     @FXML private Button button_execute;
     @FXML private Button button_tick;
+    @FXML private Button button_reset;
     @FXML public Label label;
     @FXML private Label mod;
     @FXML private Label r;
@@ -100,6 +101,7 @@ public class Controller implements Initializable {
 
         button_execute.setOnAction(event -> execute());
         button_tick.setOnAction(event -> Tick());
+        button_reset.setOnAction(event -> initialize(location, resources));
     }
 
     private void execute(){

@@ -11,6 +11,8 @@ public class CCell {
 
         cell = String.valueOf(num++); //TODO remove this
 
+        if((cell.equals("999")))
+            num = 0;
 
         //free = true;
     }
