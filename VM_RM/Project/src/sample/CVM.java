@@ -266,7 +266,7 @@ public class CVM {
         return EError.VALIDATION_SUCCESS;}
     private short cmdLR(short input){  cpu.setVregR( page.GetAtCopy(input)); return EError.VALIDATION_SUCCESS;}
     private short cmdSR(short input){ page.GetAt(input).cell = cpu.getVregR().cell; return EError.VALIDATION_SUCCESS;}
-    private short cmdLO(String reg) {  return EError.VALIDATION_SUCCESS;  } //TODO implement
+    private short cmdLO(String reg) {  cpu.setVregR(cpu.ConvertRegToCCell(reg));return EError.VALIDATION_SUCCESS;  }
     private short cmdCR(short input)
     {
         cpu.setVregC(cpu.getVregR().CmpString(page.GetAt(input)));

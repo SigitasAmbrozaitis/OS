@@ -492,7 +492,7 @@ public class CRM
         return EError.VALIDATION_SUCCESS;}
     private short cmdLR(short input){  cpu.setRegR( memory.GetAt(input).Copy()); return EError.VALIDATION_SUCCESS;}
     private short cmdSR(short input){ memory.GetAt(input).cell = cpu.getRegR().Copy().cell; return EError.VALIDATION_SUCCESS;}
-    private short cmdLO(String reg) {  return EError.VALIDATION_SUCCESS;  } //TODO implement
+    private short cmdLO(String reg) {  cpu.setRegR(cpu.ConvertRegToCCell(reg)); return EError.VALIDATION_SUCCESS;  }
     private short cmdCR(short input)
     {
         cpu.setRegC(cpu.getRegR().CmpString(memory.GetAt(input)));
