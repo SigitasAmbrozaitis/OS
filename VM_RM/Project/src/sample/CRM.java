@@ -378,12 +378,12 @@ public class CRM
     {
         cmdPU("MOD");
         cmdPU("PTR");
-        cmdPU("C");
-        cmdPU("R");
-        cmdPU("IC");
-        cmdPU("SP");
-        cmdPU("CT");
-        cmdPU("TI");
+        cmdPU("__C");
+        cmdPU("__R");
+        cmdPU("_IC");
+        cmdPU("_SP");
+        cmdPU("_CT");
+        cmdPU("_TI");
 
         cpu.setRegIC(cpu.getRegINT());
         cpu.setRegTI((short)1);
@@ -391,12 +391,12 @@ public class CRM
     }
     private short cmdRETN()
     {
-        cmdPO("TI");
-        cmdPO("CT");
-        cmdPO("SP");
-        cmdPO("IC");
-        cmdPO("R");
-        cmdPO("C");
+        cmdPO("_TI");
+        cmdPO("_CT");
+        cmdPO("_SP");
+        cmdPO("_IC");
+        cmdPO("__R");
+        cmdPO("__C");
         cmdPO("PTR");
         cmdPO("MOD");
         return EError.VALIDATION_SUCCESS;
@@ -404,11 +404,11 @@ public class CRM
     private short saveRMState(){
         cmdPU("MOD");
         cmdPU("PTR");
-        cmdPU("C");
-        cmdPU("R");
-        cmdPU("IC");
-        cmdPU("SP");
-        cmdPU("CT");
+        cmdPU("__C");
+        cmdPU("__R");
+        cmdPU("_IC");
+        cmdPU("_SP");
+        cmdPU("_CT");
 
 
         return EError.VALIDATION_SUCCESS;
@@ -527,12 +527,12 @@ public class CRM
     {
         cmdPU("MOD");
         cmdPU("PTR");
-        cmdPU("C");
-        cmdPU("R");
-        cmdPU("IC");
-        cmdPU("SP");
-        cmdPU("CT");
-        cmdPU("TI");
+        cmdPU("__C");
+        cmdPU("__R");
+        cmdPU("_IC");
+        cmdPU("_SP");
+        cmdPU("_CT");
+        cmdPU("_TI");
 
         cpu.setRegIC((short)(input-1));
         return EError.VALIDATION_SUCCESS;
@@ -553,12 +553,12 @@ public class CRM
     }
     private short cmdRETRN()
     {
-        cmdPO("TI");
-        cmdPO("CT");
-        cmdPO("SP");
-        cmdPO("IC");
-        cmdPO("R");
-        cmdPO("C");
+        cmdPO("_TI");
+        cmdPO("_CT");
+        cmdPO("_SP");
+        cmdPO("_IC");
+        cmdPO("__R");
+        cmdPO("__C");
         cmdPO("PTR");
         cmdPO("MOD");
         return EError.VALIDATION_SUCCESS;
