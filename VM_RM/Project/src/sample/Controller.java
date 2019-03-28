@@ -16,7 +16,7 @@ public class Controller implements Initializable {
     @FXML private TextField commandInput;
     @FXML private Button button_execute;
     @FXML private Button button_tick;
-    @FXML private Button button_reset;
+    //@FXML private Button button_reset;
     @FXML public Label label;
     @FXML private Label mod;
     @FXML private Label r;
@@ -63,9 +63,18 @@ public class Controller implements Initializable {
     @FXML private TableColumn<CBlock, String> column_8;
     @FXML private TableColumn<CBlock, String> column_9;
     @FXML private TableColumn<CBlock, String> column_10;
+    @FXML private Label cvm_R;
+    @FXML private Label cvm_C;
+    @FXML private Label cvm_IC;
+    @FXML private Label cvm_CT;
+    @FXML private Label cvm_SP;
+    static String cvm_R_output;
+    static String cvm_C_output;
+    static String cvm_IC_output;
+    static String cvm_CT_output;
+    static String cvm_SP_output;
 
-    @FXML
-    private Label vm_count;
+    @FXML private Label vm_count;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -98,17 +107,18 @@ public class Controller implements Initializable {
         updateRegistersGUI();
         updateMemoryTableGUI();
         updateVMcount();
+        checkVMs();
 
         button_execute.setOnAction(event -> execute());
         button_tick.setOnAction(event -> Tick());
-        button_reset.setOnAction(event -> initialize(location, resources));
+        //button_reset.setOnAction(event -> initialize(location, resources));
     }
 
     private void execute(){
         String command = commandInput.getText();
         if(command.isEmpty()){
             label.setText("No command to write");
-        }else {
+        }else{
             System.out.println(command);
             crm1.ReadCommandInput(command);
             commandInput.clear();
@@ -118,6 +128,8 @@ public class Controller implements Initializable {
             updateRegistersGUI();
             updateMemoryTableGUI();
             crm1.getCpu().printCPURegisters();
+            updateVMcount();
+            checkVMs();
         }
     }
 
@@ -162,5 +174,18 @@ public class Controller implements Initializable {
         updateRegistersGUI();
         updateMemoryTableGUI();
         crm1.getCpu().printCPURegisters();
+        updateVMcount();
+        checkVMs();
+    }
+
+    private void checkVMs(){
+        if(crm1.VMs.size() > 0){
+            crm1.VMs.elementAt(0).updateRegistersVMCPU();
+            cvm_R.setText(cvm_R_output);
+            cvm_SP.setText(cvm_SP_output);
+            cvm_C.setText(cvm_C_output);
+            cvm_CT.setText(cvm_CT_output);
+            cvm_IC.setText(cvm_IC_output);
+        }
     }
 }

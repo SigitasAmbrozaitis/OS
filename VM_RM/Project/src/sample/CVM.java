@@ -341,6 +341,12 @@ public class CVM {
     private short cmdLP(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
 
 
-
+    void updateRegistersVMCPU(){
+        Controller.cvm_C_output = ""+cpu.getVregC();
+        Controller.cvm_R_output = ""+cpu.getVregR().cell;
+        Controller.cvm_IC_output = ""+cpu.getVregIC();
+        Controller.cvm_CT_output = ""+cpu.getVregCT();
+        Controller.cvm_SP_output = ""+cpu.getVregSP();
+    }
 
 }
