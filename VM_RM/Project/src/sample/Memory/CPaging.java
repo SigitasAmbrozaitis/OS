@@ -14,11 +14,11 @@ public class CPaging {
 
     public CCell GetAt(short index)
     {
-//        short a = Short.parseShort(pagingTable.block.elementAt(index/10).cell);
-//        short b = (short)(index%10);
-//        CCell cell = memory.GetAt((short)(a*10+b));
-//        return cell;
-        return memory.GetAt((short)(Short.parseShort(pagingTable.block.elementAt(index/10).cell)*10+ index%10));
+        short a = Short.parseShort(pagingTable.block.elementAt(index/10).cell);
+        short b = (short)(index%10);
+        CCell cell = memory.GetAt((short)(a*10+b));
+        return cell;
+        //return memory.GetAt((short)(Short.parseShort(pagingTable.block.elementAt(index/10).cell)*10+ index%10));
     }
 
     public CCell GetAtCopy(short index)

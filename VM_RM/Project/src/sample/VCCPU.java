@@ -12,6 +12,16 @@ public class VCCPU {
     private boolean vregC;
     private short vregCT;
 
+    VCCPU()
+    {
+        vregR = new CCell();
+        vregSP = 99;
+        vregIC = 0;
+        vregC = false;
+        vregCT = 0;
+    }
+
+
     public String[] registers = {"__R", "__C", "_IC", "_SP", "_CT"};
 
     public CCell getVregR() {

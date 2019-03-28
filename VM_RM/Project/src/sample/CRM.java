@@ -9,6 +9,7 @@ import java.util.Vector;
 import sample.Enumerators.EError;
 import sample.Enumerators.ERCommand;
 
+import sample.Memory.CBlock;
 import sample.Memory.CMemory;
 import sample.Memory.CCell;
 import sample.Memory.CPaging;
@@ -80,13 +81,24 @@ public class CRM
     public void Tick()
     {
         short errorCode = EError.VALIDATION_SUCCESS;
-        if(cpu.getRegTI()>0 && cpu.getRegPI()==EError.VALIDATION_SUCCESS)
+        if(cpu.getRegMod())
         {
-            errorCode = executeCommand(memory.GetAt(cpu.getRegIC()));
-            cpu.setRegIC((short)(cpu.getRegIC()+1));
-            cpu.setRegTI((short)(cpu.getRegTI()-1));
+            if(cpu.getRegTI()>0 && cpu.getRegPI()==EError.VALIDATION_SUCCESS)
+            {
 
-            //TODO handle error code, maybe call interupt?
+                    errorCode = executeCommand(memory.GetAt(cpu.getRegIC()));
+                    cpu.setRegIC((short)(cpu.getRegIC()+1));
+                    cpu.setRegTI((short)(cpu.getRegTI()-1));
+                }
+
+
+                //TODO handle error code, maybe call interupt?
+            }
+        else
+        {
+            for(int i=0; i<VMs.size(); ++i)
+                VMs.elementAt(i).Tick();
+
         }
     }
 
@@ -410,8 +422,27 @@ public class CRM
             return errorCode;
         }
 
-        VMs.add(new CVM(new CPaging(memory, (short)8)));
-        System.out.println("Wassuo wassup");
+        short pageAdress = 10;
+        CBlock temp = memory.GetBlockAt(pageAdress);
+        temp.block.elementAt(0).cell = "00011";
+        temp.block.elementAt(1).cell = "00020";
+        temp.block.elementAt(2).cell = "00030";
+        temp.block.elementAt(3).cell = "00040";
+        temp.block.elementAt(4).cell = "00050";
+        temp.block.elementAt(5).cell = "00060";
+        temp.block.elementAt(6).cell = "00070";
+        temp.block.elementAt(7).cell = "00080";
+        temp.block.elementAt(8).cell = "00090";
+        temp.block.elementAt(9).cell = "00099";
+
+
+
+        CPaging page = new CPaging(memory, pageAdress);
+
+        short ic = FillExampleCommands(page);
+
+
+        VMs.add(new CVM(page, ic));
 
         return EError.VALIDATION_SUCCESS;
     }//TODO implement, starts virtual machine
@@ -457,7 +488,7 @@ public class CRM
     {
         cpu.setRegR( memory.GetAt((short)(cpu.getRegIC()+1)).Copy());
         cpu.setRegIC((short)(cpu.getRegIC()+1));
-        cpu.setRegTI((short)(cpu.getRegTI()-1));
+        //cpu.setRegTI((short)(cpu.getRegTI()-1));
         return EError.VALIDATION_SUCCESS;}
     private short cmdLR(short input){  cpu.setRegR( memory.GetAt(input).Copy()); return EError.VALIDATION_SUCCESS;}
     private short cmdSR(short input){ memory.GetAt(input).cell = cpu.getRegR().Copy().cell; return EError.VALIDATION_SUCCESS;}
@@ -535,4 +566,29 @@ public class CRM
     private short cmdSY(short input){cpu.setRegSI(input); return EError.VALIDATION_SUCCESS;}
     private short cmdLP(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
 
+
+
+    //TODO delete when not needed anymore
+    private short FillExampleCommands(CPaging page)
+    {
+        short commandIndex = 0;
+        page.GetAt(commandIndex++).cell = "AD090";
+        page.GetAt(commandIndex++).cell = "AD090";
+        page.GetAt(commandIndex++).cell = "AD090";
+        page.GetAt(commandIndex++).cell = "AD090";
+        page.GetAt(commandIndex++).cell = "AD090";
+        page.GetAt(commandIndex++).cell = "AD090";
+        page.GetAt(commandIndex++).cell = "AD090";
+        page.GetAt(commandIndex++).cell = "AD090";
+        page.GetAt(commandIndex++).cell = "AD090";
+        page.GetAt(commandIndex++).cell = "AD090";
+        page.GetAt(commandIndex++).cell = "AD090";
+        page.GetAt(commandIndex++).cell = "AD090";
+        page.GetAt(commandIndex++).cell = "AD090";
+        page.GetAt(commandIndex++).cell = "AD090";
+        page.GetAt(commandIndex++).cell = "AD090";
+        page.GetAt(commandIndex++).cell = "AD090";
+
+        return commandIndex;//commands added
+    }
 }

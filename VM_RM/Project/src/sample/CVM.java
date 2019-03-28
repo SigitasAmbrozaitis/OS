@@ -21,6 +21,7 @@ public class CVM {
     private CPaging page;
 
     short memSize = 100;
+    short ti;
     private class CCommand
     {
         public String cmd;
@@ -37,7 +38,12 @@ public class CVM {
 
     public void Tick()
     {
-
+        if(ti>0)
+        {
+            executeCommand(page.GetAt(cpu.getVregIC()));
+            cpu.setVregIC((short)(cpu.getVregIC()+1));
+            --ti;
+        }
     }
 
   /*  CVM(CRM crm){
@@ -61,7 +67,24 @@ public class CVM {
             System.out.println(i+":"+page.GetAt(i).cell);
         }
         int a = 0;
-       // page.GetAt((short)2).cell = "69";
+        // page.GetAt((short)2).cell = "69";
+        System.out.println("cell2: " + page.GetAt((short)2).cell);
+
+    }
+
+    CVM(CPaging page, short ic)
+    {
+        cpu = new VCCPU();
+        this.ti = ic;
+        this.page = page;
+        Vector<String> test = new Vector<String>();
+        for(short i=0; i<100; ++i)
+        {
+            test.add(page.GetAt(i).cell);
+            System.out.println(i+":"+page.GetAt(i).cell);
+        }
+        int a = 0;
+        // page.GetAt((short)2).cell = "69";
         System.out.println("cell2: " + page.GetAt((short)2).cell);
 
     }
