@@ -15,10 +15,27 @@ public class CMemory {
         }
     }
 
+    public CMemory(short memoryNeeded)
+    {
+        memory = new Vector<CBlock>(memoryNeeded);
+        for(int i=0; i<100; ++i)
+        {
+            memory.add(new CBlock());
+            memory.get(i).blockNumber = i;
+        }
+    }
+
 
     public CCell GetAt(short index)
     {
         return memory.elementAt(index/10).block.elementAt(index%10);
     }
     public CBlock GetBlockAt(short index) {return memory.elementAt(index);}
+    public String ToString()
+    {
+        String output = "";
+        for(CBlock block : memory)
+            output += block.ToString();
+        return output;
+    }
 }

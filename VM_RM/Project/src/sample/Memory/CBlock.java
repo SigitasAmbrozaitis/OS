@@ -18,6 +18,14 @@ public class CBlock{
         }
     }
 
+    public String ToString()
+    {
+        String output = "";
+        for(CCell cell : block)
+            output+=(cell.cell+" ");
+        return output;
+    }
+
 
     /**
      *Getters for populating memory table on GUI
