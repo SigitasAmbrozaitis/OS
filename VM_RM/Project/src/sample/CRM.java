@@ -3,16 +3,19 @@ package sample;
 /*imports*/
 
 
-import java.util.Arrays;
-import java.util.Vector;
-
 import sample.Enumerators.EError;
 import sample.Enumerators.ERCommand;
-
 import sample.Memory.CBlock;
-import sample.Memory.CMemory;
 import sample.Memory.CCell;
+import sample.Memory.CMemory;
 import sample.Memory.CPaging;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
+import java.util.Vector;
 
 
 /*Real Machine implementation*/
@@ -336,6 +339,7 @@ public class CRM
                 if(cmd.bNumber)
                 {
                     errorCode = cmdSZ((short)Integer.parseInt(cmd.param));
+                  //  System.out.println("SZ: " + cd.getRegSZ());
                 }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_TI:
@@ -345,6 +349,7 @@ public class CRM
                 }else errorCode = EError.COMMAND_VIOLATION;
                 break;
             case ERCommand.E_XCHNG:
+                //System.out.println("AAAAAAAAAAAAAAasilas");
                 errorCode = cmdXCHGN();
                 break;
             case ERCommand.E_RETRN:
@@ -524,7 +529,157 @@ public class CRM
         return EError.VALIDATION_SUCCESS;
     }
 
-    private short cmdXCHGN(){ return EError.VALIDATION_SUCCESS;}//TODO implement, maybe it should have different input in GUI?
+    private short cmdXCHGN(){
+
+        int inputNumber=0, outputNumber=0; //inputNumber - block or object number to be copied
+                                           //outputNumber - block or object number to be pasted into
+        int objectOrBlockInput = -1, objectOrBlockOutput=-1; // defines locations
+                                                             // 0 - block, 1 - object
+        int wordsNumber = -1; //how many words to copy
+
+        if( cd.getRegSZ() == 0){ //by default 0
+            //interrupt
+            System.out.println("Please set register SZ to the number of words you wish to copy");
+            //return EError.COMMAND_VIOLATION;
+        }
+        else {
+            wordsNumber = cd.getRegSZ();
+        }
+
+        if((cd.getRegST() == 0 && cd.getRegSB() == 0) || (cd.getRegDB() == 0 && cd.getRegDT() == 0)){
+            //interrupt
+            System.out.println("Missing input/output information");
+           // return  EError.COMMAND_VIOLATION;
+        }
+        else {
+            if (cd.getRegST() != 0){
+                objectOrBlockInput = 1;
+                inputNumber = cd.getRegST();
+            }
+            else{
+                objectOrBlockInput = 0;
+                inputNumber = cd.getRegSB();
+            }
+            if (cd.getRegDB() != 0){
+                objectOrBlockOutput = 0;
+                outputNumber = cd.getRegDB();
+            }
+            else{
+                objectOrBlockOutput = 1;
+                outputNumber = cd.getRegDT();
+            }
+        }
+        if(objectOrBlockInput == 0) { //copying from block in memory
+
+            if(wordsNumber > memory.GetBlockAt((short) inputNumber).block.size()){
+                System.out.println("Duheli, perdaug prasai, gausi interupta");
+                //interrupt and return
+            }
+            if(objectOrBlockOutput == 0){
+                System.out.println("Kopinam is takelio nr: " + inputNumber + " i takeli nr: " + outputNumber);
+                for(int i=0; i < wordsNumber; i++){
+                    memory.GetBlockAt((short)outputNumber).block.get(i).cell = memory.GetBlockAt((short) inputNumber).block.get(i).cell;
+                }
+            }
+            if(objectOrBlockOutput == 1){
+                String words[] = new String[wordsNumber];
+                for(int i=0; i < wordsNumber; i++){
+                    words[i]= memory.GetBlockAt((short) inputNumber).block.get(i).cell;
+                }
+                outputCD(words, wordsNumber);
+
+            }
+        }
+        else if(objectOrBlockInput == 1){
+            String words[] = new String[wordsNumber];
+            if(inputNumber == 1){
+                //PALAUKT KOL SIGIS PADARYS PAGING NORMALIAI
+                // GAUT IS SIGIO INPUT
+            }
+            else if(inputNumber == 2){
+                //read how many needed words
+                int count = wordsNumber;
+                BufferedReader br = null;
+                try {
+                    br = new BufferedReader(new FileReader("hdd.txt"));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    String line;
+                    int i=0;
+                    while ((line = br.readLine()) != null && count > 0) {
+                        // process the line
+                        words[i] = line;
+                        i++;
+                        count--;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        br.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println(Arrays.toString(words));
+            }
+            else if(inputNumber == 3){
+                //Gauti is Pofkes input lauko reiksmes
+            }
+            if(objectOrBlockOutput == 0){
+                for(int i=0; i < wordsNumber; i++){
+                    memory.GetBlockAt((short)outputNumber).block.get(i).cell = words[i];
+                }
+            }
+            else if(objectOrBlockOutput == 1){
+                outputCD(words, outputNumber);
+            }
+
+
+        }
+        System.out.println("Valio inputNumber: " + +inputNumber + " objectOrBlockInput: " + objectOrBlockInput +
+                " objectOrBlockOutput: " + objectOrBlockOutput + " wordsNumber: " + wordsNumber);
+        return EError.VALIDATION_SUCCESS;
+    }
+    //TODO implement, maybe it should have different input in GUI?
+private void outputCD(String[] data, int outputNumber){
+
+        switch(outputNumber){
+            case 1:
+                //Laukiam Sigio, vartotojo atmintis, VM blablabla
+                //DUOT SIGIUI REIKSMES
+                break;
+            case 2:
+                String output = "";
+                for(int i=0; i < data.length; i++){
+                    output += data[i] + "\r\n"; //add each word in new line
+                }
+                writeToHdd("hdd.txt", output);
+                break;
+            case 3:
+                //String[] data idet i Pofkes langa
+                break;
+            default:
+                System.out.println("Error");
+                break;
+        }
+}
+private void writeToHdd(String filename, String output){
+    try {
+        // Open given file in append mode.
+        BufferedWriter out = new BufferedWriter(
+                new FileWriter(filename, true));
+        System.out.println("irasinesiu: " + output);
+        out.write(output);
+        out.close();
+    }
+    catch (IOException e) {
+        System.out.println("exception occoured" + e);
+    }
+}
+
 
     private short cmdAD(short input){ cpu.getRegR().Add(memory.GetAt(input)); return EError.VALIDATION_SUCCESS;}
     private short cmdSB(short input){ cpu.getRegR().Sub(memory.GetAt(input)); return EError.VALIDATION_SUCCESS;}

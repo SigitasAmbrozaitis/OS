@@ -29,10 +29,10 @@ class CCPU {
 
 
 
-    public void printCPURegisters(){
+   /* public void printCPURegisters(){
         System.out.println("PI: " + regPI + "\nTI:" + regTI +
                 "\nSP: " + regSP+ "\nINT: " + regINT +"\nPTR: " + regPTR);
-    }
+    }*/
 
     public void updateRegistersCCPUController(){
         Controller.PIoutput = ""+regPI;

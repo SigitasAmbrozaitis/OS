@@ -8,67 +8,68 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="877.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
       <TextField fx:id="commandInput" layoutX="59.0" layoutY="53.0" />
-      <Button fx:id="button_execute" layoutX="223.0" layoutY="53.0" mnemonicParsing="false" text="Execute" />
-      <Label fx:id="label" layoutX="59.0" layoutY="98.0" prefHeight="17.0" prefWidth="223.0" />
-      <AnchorPane layoutX="280.0" layoutY="14.0" prefHeight="269.0" prefWidth="335.0">
+      <Button fx:id="button_execute" layoutX="223.0" layoutY="53.0" mnemonicParsing="false" text="Write to memory" />
+      <Label fx:id="label" layoutX="59.0" layoutY="78.0" prefHeight="17.0" prefWidth="223.0" />
+      <AnchorPane layoutX="353.0" layoutY="14.0" prefHeight="269.0" prefWidth="335.0">
          <children>
             <AnchorPane layoutX="14.0" layoutY="15.0" prefHeight="240.0" prefWidth="170.0">
                <children>
-                  <Label layoutX="14.0" layoutY="1.0" prefHeight="17.0" prefWidth="46.0" text="MOD">
+                  <Label layoutX="14.0" layoutY="1.0" prefHeight="27.0" prefWidth="52.0" text="MOD:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="45.0" layoutY="20.0" text="R">
+                  <Label layoutX="45.0" layoutY="20.0" text="R:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="25.0" layoutY="40.0" text="PTR">
+                  <Label layoutX="25.0" layoutY="40.0" text="PTR:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="40.0" layoutY="60.0" text="IC">
+                  <Label layoutX="40.0" layoutY="60.0" text="IC:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="30.0" layoutY="80.0" text="INT">
+                  <Label layoutX="30.0" layoutY="80.0" text="INT:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="s" layoutX="38.0" layoutY="100.0" text="SP">
+                  <Label fx:id="s" layoutX="38.0" layoutY="100.0" text="SP:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="45.0" layoutY="120.0" text="C">
+                  <Label layoutX="45.0" layoutY="120.0" text="C:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="42.0" layoutY="140.0" text="PI">
+                  <Label layoutX="42.0" layoutY="140.0" text="PI:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="42.0" layoutY="159.0" text="SI">
+                  <Label layoutX="42.0" layoutY="159.0" text="SI:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="41.0" layoutY="178.0" text="TI">
+                  <Label layoutX="41.0" layoutY="178.0" text="TI:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="35.0" layoutY="195.0" text="CT">
+                  <Label layoutX="35.0" layoutY="195.0" text="CT:">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -132,27 +133,27 @@
             </AnchorPane>
             <AnchorPane layoutX="184.0" layoutY="15.0" prefHeight="116.0" prefWidth="136.0">
                <children>
-                  <Label layoutX="10.0" layoutY="1.0" prefHeight="17.0" prefWidth="46.0" text="SB">
+                  <Label layoutX="10.0" layoutY="1.0" prefHeight="17.0" prefWidth="46.0" text="SB:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="10.0" layoutY="21.0" text="DB">
+                  <Label layoutX="10.0" layoutY="21.0" text="DB:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="12.0" layoutY="40.0" text="ST">
+                  <Label layoutX="12.0" layoutY="40.0" text="ST:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="10.0" layoutY="60.0" text="DT">
+                  <Label layoutX="10.0" layoutY="60.0" text="DT:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="12.0" layoutY="80.0" text="SZ">
+                  <Label layoutX="12.0" layoutY="80.0" text="SZ:">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -206,15 +207,74 @@
             </TableView>
          </content>
       </ScrollPane>
-      <Label layoutX="610.0" layoutY="36.0" text="VM count:">
+      <Label layoutX="670.0" layoutY="36.0" text="VM count:">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label fx:id="vm_count" layoutX="699.0" layoutY="36.0">
+      <Label fx:id="vm_count" layoutX="777.0" layoutY="36.0" prefHeight="27.0" prefWidth="37.0">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
+      <AnchorPane layoutX="670.0" layoutY="78.0" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <Label layoutX="7.0" layoutY="10.0" text="CVM_R:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="cvm_R" layoutX="77.0" layoutY="10.0" prefHeight="27.0" prefWidth="65.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="8.0" layoutY="40.0" text="CVM_C:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="cvm_C" layoutX="77.0" layoutY="40.0" prefHeight="27.0" prefWidth="65.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="6.0" layoutY="67.0" text="CVM_IC:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="cvm_IC" layoutX="77.0" layoutY="67.0" prefHeight="27.0" prefWidth="65.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="6.0" layoutY="94.0" text="CVM_CT:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="cvm_CT" layoutX="77.0" layoutY="94.0" prefHeight="27.0" prefWidth="65.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="7.0" layoutY="121.0" text="CVM_SP:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="cvm_SP" layoutX="77.0" layoutY="121.0" prefHeight="27.0" prefWidth="65.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <TextField fx:id="cd_input" layoutX="59.0" layoutY="153.0" />
+      <TextField fx:id="cd_output" editable="false" layoutX="59.0" layoutY="199.0" />
+      <Text layoutX="59.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Channel device input" />
+      <Text layoutX="59.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Channel device output" />
+      <Button fx:id="button_cd_enter" layoutX="223.0" layoutY="153.0" mnemonicParsing="false" text="Enter" />
    </children>
 </AnchorPane>
