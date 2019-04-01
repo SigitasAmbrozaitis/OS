@@ -97,7 +97,7 @@ public class Controller implements Initializable {
         column_10.setCellValueFactory(new PropertyValueFactory<>("Cell9"));
         memoryTable.setItems(getCBlock());
 
-        crm1.getCpu().printCPURegisters();
+        //crm1.getCpu().printCPURegisters();
         crm1.getCpu().updateRegistersCCPUController();
         crm1.getCCD().updateRegisterCCDController();
         updateRegistersGUI();
@@ -124,7 +124,7 @@ public class Controller implements Initializable {
             crm1.getCCD().updateRegisterCCDController();
             updateRegistersGUI();
             updateMemoryTableGUI();
-            crm1.getCpu().printCPURegisters();
+          //  crm1.getCpu().printCPURegisters();
             updateVMcount();
             checkVMs();
         }
@@ -172,7 +172,7 @@ public class Controller implements Initializable {
         crm1.getCCD().updateRegisterCCDController();
         updateRegistersGUI();
         updateMemoryTableGUI();
-        crm1.getCpu().printCPURegisters();
+      //  crm1.getCpu().printCPURegisters();
         updateVMcount();
         checkVMs();
     }
