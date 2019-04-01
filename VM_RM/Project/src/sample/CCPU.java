@@ -61,7 +61,7 @@ class CCPU {
         this.regPI = 0;
         this.regSI = 0;
         this.regTI = 0;
-        this.regMOD = true;
+        this.regMOD = false;
     }
 
     CCPU(CCell R, short PTR, short IC, short SP, short INT, short CT, boolean C, short PI, short SI, short TI, boolean MOD )

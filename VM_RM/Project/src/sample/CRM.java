@@ -81,39 +81,55 @@ public class CRM
     public void Tick()
     {
         short errorCode = EError.VALIDATION_SUCCESS;
-        if(cpu.getRegMod())
-        {
-            if(cpu.getRegTI()>0 && cpu.getRegPI()==EError.VALIDATION_SUCCESS)
-            {
 
-                    errorCode = executeCommand(memory.GetAt(cpu.getRegIC()));
-                    cpu.setRegIC((short)(cpu.getRegIC()+1));
-                    cpu.setRegTI((short)(cpu.getRegTI()-1));
-            } else {
-                    /**
-                     * switch that handles PI interruptions (executes command that is at INT)
-                     */
-                    switch (cpu.getRegPI()) {
-                        case EError.ACCESS_VIOLATION:
-                            errorCode = executeCommand(memory.GetAt(cpu.getRegINT()));
-                            break;
-                        case EError.COMMAND_VIOLATION:
-                            errorCode = executeCommand(memory.GetAt(cpu.getRegINT()));
-                            break;
-                        case EError.MEMORY_VIOLATION:
-                            errorCode = executeCommand(memory.GetAt(cpu.getRegINT()));
-                            break;
-                        case EError.ASSIGMENT_VIOLATION:
-                            errorCode = executeCommand(memory.GetAt(cpu.getRegINT()));
-                            break;
-                    }
-                }
-            }
-        else
+        //execute command in RM or VM
+
+        if(!cpu.getRegMod())
         {
+            //supervisor
+            executeCommand(memory.GetAt(cpu.getRegIC()));
+            cpu.setRegIC((short)(cpu.getRegIC()+1));
+            cpu.setRegTI((short)(cpu.getRegTI()-1));
+        }else
+        {
+            //user
             for(int i=0; i<VMs.size(); ++i)
                 VMs.elementAt(i).Tick();
+        }
 
+        //check for interupts
+        if(cpu.getRegTI()==0 || (short)(cpu.getRegPI()+cpu.getRegSI())!=EError.VALIDATION_SUCCESS)
+        {
+                /**
+                 * switch that handles PI interruptions (executes command that is at INT)
+                 */
+                //SA:
+                //should be called CALLI, i suggest in adress INT place commands IRETN
+                //Is the switch really needed since we dont have separate registers for separate interupts
+                //and all interupts are handled by 1 command?
+                switch (cpu.getRegPI()) {
+                    case EError.VALIDATION_SUCCESS:
+                        //everything fine
+                        break;
+                    case EError.ACCESS_VIOLATION:
+                        errorCode = executeCommand(memory.GetAt(cpu.getRegINT()));
+                        break;
+                    case EError.COMMAND_VIOLATION:
+                        errorCode = executeCommand(memory.GetAt(cpu.getRegINT()));
+                        break;
+                    case EError.MEMORY_VIOLATION:
+                        errorCode = executeCommand(memory.GetAt(cpu.getRegINT()));
+                        break;
+                    case EError.ASSIGMENT_VIOLATION:
+                        errorCode = executeCommand(memory.GetAt(cpu.getRegINT()));
+                        break;
+                    default:
+                        System.out.println("Unknown Error");
+                        break;
+                }
+
+                //TODO handle SI interupt if si != 0
+                //TODO handle TI interupt if ti == 0
         }
     }
 
@@ -424,8 +440,6 @@ public class CRM
         cmdPU("_IC");
         cmdPU("_SP");
         cmdPU("_CT");
-
-
         return EError.VALIDATION_SUCCESS;
     }
     private short cmdSTART(){
