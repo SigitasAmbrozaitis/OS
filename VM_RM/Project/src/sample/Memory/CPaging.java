@@ -2,17 +2,32 @@ package sample.Memory;
 
 public class CPaging {
 
-    CMemory memory;
-    short adress;
-    CBlock pagingTable;
+    static CMemory memory;
 
-    public CPaging( CMemory mem, short adress )
+    static CBlock pagingTable;
+
+
+
+
+    public static void SetPageMemory(CMemory mem)
     {
-        this.memory = mem;
-        pagingTable = memory.GetBlockAt(adress);
+        memory = mem;
+
     }
 
-    public CCell GetAt(short index)
+    public static void SetPageBlock(short blockIndex)
+    {
+        pagingTable = memory.GetBlockAt(blockIndex);
+    }
+
+    public static void SetPage(CMemory mem, short blockIndex)
+    {
+        SetPageMemory(mem);
+        SetPageBlock(blockIndex);
+    }
+
+
+    public static CCell GetAt(short index)
     {
         short a = Short.parseShort(pagingTable.block.elementAt(index/10).cell);
         short b = (short)(index%10);
@@ -21,7 +36,7 @@ public class CPaging {
         //return memory.GetAt((short)(Short.parseShort(pagingTable.block.elementAt(index/10).cell)*10+ index%10));
     }
 
-    public CCell GetAtCopy(short index)
+    public static CCell GetAtCopy(short index)
     {
         return new CCell(GetAt(index).cell);
     }

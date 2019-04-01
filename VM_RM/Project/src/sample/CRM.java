@@ -52,6 +52,7 @@ public class CRM
         cpu = new CCPU();
         cd = new CCD();
         memory = new CMemory();
+        CPaging.SetPageMemory(memory);
 
         VMs = new Vector<CVM>();
 
@@ -391,9 +392,6 @@ public class CRM
         command.bNumber = bNum;
         return EError.VALIDATION_SUCCESS;
     }
-//    private void START(){
-//        cpu.setRegIC((short)0);
-//    }
 
     private short cmdPI(short input){cpu.setRegPI((short)(input/100)); return EError.VALIDATION_SUCCESS;}
     private short cmdTI(short input){cpu.setRegTI((short)(input/100)); return EError.VALIDATION_SUCCESS;}
@@ -451,7 +449,11 @@ public class CRM
             return errorCode;
         }
 
+        //TODO remove:HardCoded PTR setting
         short pageAdress = 10;
+        cpu.setRegPTR(pageAdress);
+
+        //TODO remove: HardCoded memory setting
         CBlock temp = memory.GetBlockAt(pageAdress);
         temp.block.elementAt(0).cell = "00011";
         temp.block.elementAt(1).cell = "00020";
@@ -464,12 +466,10 @@ public class CRM
         temp.block.elementAt(8).cell = "00090";
         temp.block.elementAt(9).cell = "00099";
 
-
-
-        CPaging page = new CPaging(memory, pageAdress);
-
-        short ic = FillExampleCommands(page);
-        VMs.add(new CVM(page, ic, cpu));
+        //TODO no need to give TI
+        CPaging.SetPageBlock(cpu.getRegPTR());
+        FillExampleCommands();
+        VMs.add(new CVM(cpu));
 
         return EError.VALIDATION_SUCCESS;
     }//TODO implement, starts virtual machine
@@ -596,7 +596,7 @@ public class CRM
 
 
     //TODO delete when not needed anymore
-    private short FillExampleCommands(CPaging page)
+    private short FillExampleCommands()
     {
         short commandIndex = 0;
         page.GetAt(commandIndex++).cell = "AD090";

@@ -15,13 +15,9 @@ public class CVM {
 
     private String[] cmd2 = { "AD","SB","MP","DI","LR","SR","LO","CR","RL","RG","CZ","JC","JP","CA","PU","PO","SY","LP"};
     private String[] cmd5 = { "CHNGR","RETRN"};
-    private Vector<String> commands = new Vector<String>();
     private CCPU cpu ;
-    //private CCPU rcpu;
-    private CPaging page;
 
     short memSize = 100;
-    short ti;
     private class CCommand
     {
         public String cmd;
@@ -33,19 +29,19 @@ public class CVM {
   //  static int currentAddress = 200;
   //  static int VMcounter=0;
     //VMMemory vm1;
-    //TODO JURGIS implements this
-    //TODO copy paste VM commands from RM
+
 
     public void Tick()
     {
-        if(ti>0)
+        if(cpu.getRegTI()>0)
         {
-            executeCommand(page.GetAt(cpu.getRegIC()));
+            executeCommand(CPaging.GetAt(cpu.getRegIC()));
             cpu.setRegIC((short)(cpu.getRegIC()+1));
-            --ti;
+            cpu.setRegTI((short)(cpu.getRegTI()-1));
         }
         /**
          * should handle VM PI and SI interruptions but don't know yet how to implement them
+         * SA: VM probably will only set registers and they will be checked in RM`s Tick?
          */
 //        switch (cpu.getRegPI()) {
 //            case EError.ACCESS_VIOLATION:
@@ -80,20 +76,9 @@ public class CVM {
 //        }
     }
 
-  /*  CVM(CRM crm){
-
-       // System.out.println("mmry address: " + crm.getMemory().GetAt((short) 2));
-        vm1 = new VMMemory(currentAddress);
-        currentAddress +=100;
-        VMcounter++;
-        //write to CBlock
-        commands.addAll( Arrays.asList(cmd2));
-        commands.addAll( Arrays.asList(cmd5));
-    }*/
-
     CVM(CPaging page)
     {
-        this.page = page;
+        CPaging.SetPageBlock(cpu.getRegPTR());
         Vector<String> test = new Vector<String>();
         for(short i=0; i<100; ++i)
         {
@@ -106,21 +91,18 @@ public class CVM {
 
     }
 
-    CVM(CPaging page, short ic, CCPU cpu)
+    CVM(CCPU cpu)
     {
         this.cpu = cpu;
-        this.ti = ic;
-        this.page = page;
+        CPaging.SetPageBlock(cpu.getRegPTR());
         Vector<String> test = new Vector<String>();
+
+        //TODO remove this loop
         for(short i=0; i<100; ++i)
         {
-            test.add(page.GetAt(i).cell);
-            System.out.println(i+":"+page.GetAt(i).cell);
+            test.add(CPaging.GetAt(i).cell);
+            System.out.println(i+":"+CPaging.GetAt(i).cell);
         }
-        int a = 0;
-        // page.GetAt((short)2).cell = "69";
-        System.out.println("cell2: " + page.GetAt((short)2).cell);
-
     }
 
 
@@ -287,33 +269,33 @@ public class CVM {
 
     //TODO update project document to add this command
     private short cmdSP(short input){ cpu.setRegSP(input); return EError.VALIDATION_SUCCESS;}
-    private short cmdAD(short input){ cpu.getRegR().Add(page.GetAt(input)); return EError.VALIDATION_SUCCESS;}
-    private short cmdSB(short input){ cpu.getRegR().Sub(page.GetAt(input)); return EError.VALIDATION_SUCCESS;}
-    private short cmdMP(short input){ cpu.getRegR().Mul(page.GetAt(input)); return EError.VALIDATION_SUCCESS;}
-    private short cmdDI(short input){ cpu.getRegR().Div(page.GetAt(input)); return EError.VALIDATION_SUCCESS;}
+    private short cmdAD(short input){ cpu.getRegR().Add(CPaging.GetAt(input)); return EError.VALIDATION_SUCCESS;}
+    private short cmdSB(short input){ cpu.getRegR().Sub(CPaging.GetAt(input)); return EError.VALIDATION_SUCCESS;}
+    private short cmdMP(short input){ cpu.getRegR().Mul(CPaging.GetAt(input)); return EError.VALIDATION_SUCCESS;}
+    private short cmdDI(short input){ cpu.getRegR().Div(CPaging.GetAt(input)); return EError.VALIDATION_SUCCESS;}
     private short cmdCHNGR()
     {
-        cpu.setRegR( page.GetAt((short)(cpu.getRegIC()+1)));
+        cpu.setRegR( CPaging.GetAt((short)(cpu.getRegIC()+1)));
         cpu.setRegIC((short)(cpu.getRegIC()+1));
         //TODO discuss if VM shouldnt have TI since its used together with IC to execute commands
        // cpu.setRegTI((short)(cpu.getRegTI()-1)); //No TI reg in VM
         return EError.VALIDATION_SUCCESS;}
-    private short cmdLR(short input){  cpu.setRegR( page.GetAtCopy(input)); return EError.VALIDATION_SUCCESS;}
-    private short cmdSR(short input){ page.GetAt(input).cell = cpu.getRegR().cell; return EError.VALIDATION_SUCCESS;}
+    private short cmdLR(short input){  cpu.setRegR( CPaging.GetAtCopy(input)); return EError.VALIDATION_SUCCESS;}
+    private short cmdSR(short input){ CPaging.GetAt(input).cell = cpu.getRegR().cell; return EError.VALIDATION_SUCCESS;}
     private short cmdLO(String reg) {  cpu.setRegR(cpu.ConvertRegToCCell(reg));return EError.VALIDATION_SUCCESS;  }
     private short cmdCR(short input)
     {
-        cpu.setRegC(cpu.getRegR().CmpString(page.GetAt(input)));
+        cpu.setRegC(cpu.getRegR().CmpString(CPaging.GetAt(input)));
         return EError.VALIDATION_SUCCESS;
     }
     private short cmdRL(short input)
     {
-        cpu.setRegC(cpu.getRegR().CmpNumber(page.GetAt(input)) < 0);
+        cpu.setRegC(cpu.getRegR().CmpNumber(CPaging.GetAt(input)) < 0);
         return EError.VALIDATION_SUCCESS;
     }
     private short cmdRG(short input)
     {
-        cpu.setRegC(cpu.getRegR().CmpNumber(page.GetAt(input)) > 0);
+        cpu.setRegC(cpu.getRegR().CmpNumber(CPaging.GetAt(input)) > 0);
         return EError.VALIDATION_SUCCESS;
     }
     private short cmdCZ(String reg)
@@ -347,7 +329,7 @@ public class CVM {
     }
     private short cmdPU(String reg)
     {
-        page.GetAt(cpu.getRegSP()).cell = cpu.ConvertRegToCCell(reg).cell;
+        CPaging.GetAt(cpu.getRegSP()).cell = cpu.ConvertRegToCCell(reg).cell;
         cmdSP((short)(cpu.getRegSP()-1));
         return EError.VALIDATION_SUCCESS;
     }
@@ -356,7 +338,7 @@ public class CVM {
         short errorCode;
         errorCode = cmdSP((short)(cpu.getRegSP()+1));
         if (errorCode!=EError.VALIDATION_SUCCESS) return errorCode;
-        errorCode = cpu.SetRegFromCCell(reg, page.GetAt(cpu.getRegSP()));
+        errorCode = cpu.SetRegFromCCell(reg, CPaging.GetAt(cpu.getRegSP()));
         return errorCode;
     }
     private short cmdRETRN()
