@@ -36,6 +36,11 @@ public class CPaging {
         //return memory.GetAt((short)(Short.parseShort(pagingTable.block.elementAt(index/10).cell)*10+ index%10));
     }
 
+    public static CBlock GetBlockAt(short index)
+    {
+        return memory.GetBlockAt(Short.parseShort(pagingTable.block.elementAt(index).cell));
+    }
+
     public static CCell GetAtCopy(short index)
     {
         return new CCell(GetAt(index).cell);
