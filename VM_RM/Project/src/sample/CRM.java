@@ -89,10 +89,25 @@ public class CRM
                     errorCode = executeCommand(memory.GetAt(cpu.getRegIC()));
                     cpu.setRegIC((short)(cpu.getRegIC()+1));
                     cpu.setRegTI((short)(cpu.getRegTI()-1));
+            } else {
+                    /**
+                     * switch that handles PI interruptions (executes command that is at INT)
+                     */
+                    switch (cpu.getRegPI()) {
+                        case EError.ACCESS_VIOLATION:
+                            errorCode = executeCommand(memory.GetAt(cpu.getRegINT()));
+                            break;
+                        case EError.COMMAND_VIOLATION:
+                            errorCode = executeCommand(memory.GetAt(cpu.getRegINT()));
+                            break;
+                        case EError.MEMORY_VIOLATION:
+                            errorCode = executeCommand(memory.GetAt(cpu.getRegINT()));
+                            break;
+                        case EError.ASSIGMENT_VIOLATION:
+                            errorCode = executeCommand(memory.GetAt(cpu.getRegINT()));
+                            break;
+                    }
                 }
-
-
-                //TODO handle error code, maybe call interupt?
             }
         else
         {
@@ -440,8 +455,6 @@ public class CRM
         CPaging page = new CPaging(memory, pageAdress);
 
         short ic = FillExampleCommands(page);
-
-
         VMs.add(new CVM(page, ic));
 
         return EError.VALIDATION_SUCCESS;
