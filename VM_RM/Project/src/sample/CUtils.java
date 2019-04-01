@@ -47,6 +47,18 @@ public class CUtils {
         return Arrays.asList(strData).indexOf(subStr)!=-1;
     }
 
+    public static String NormalizeString(String str)
+    {
+        if(str.length()==5) return str;
+        String dummyStr = "";
+        for(int i=0; i<5-str.length(); ++i)
+        {
+            dummyStr += "0";
+        }
+
+        return dummyStr + str;
+    }
+
 
 
 

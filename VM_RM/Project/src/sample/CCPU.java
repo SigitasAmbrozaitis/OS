@@ -172,7 +172,10 @@ class CCPU {
                 returnValue.cell = Short.toString(this.regTI);
                 break;
         }
-        return returnValue;
+        returnValue.cell = CUtils.NormalizeString(returnValue.cell);
+
+
+        return  returnValue;
     }
 
     public short SetRegFromCCell(String reg, CCell cell)
