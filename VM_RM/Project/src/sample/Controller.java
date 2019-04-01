@@ -76,20 +76,13 @@ public class Controller implements Initializable {
     //channel device
     @FXML private TextField cd_input;
     @FXML private TextField cd_output;
+    static String cd_output_output;
     @FXML private Button button_cd_enter;
 
     @FXML private Label vm_count;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         crm1 = new CRM();
-        //for testing purposes add values to memory cells
-//        crm1.getMemory().memory.get(0).block.get(0).cell = "a";
-//        crm1.getMemory().memory.get(0).block.get(1).cell = "b";
-//        crm1.getMemory().memory.get(0).block.get(2).cell = "b";
-//        crm1.getMemory().memory.get(0).block.get(3).cell = "b";
-//        crm1.getMemory().memory.get(0).block.get(4).cell = "b";
-//        crm1.getMemory().memory.get(2).block.get(1).cell = "basd";
-//        crm1.getMemory().memory.get(0).block.get(4).cell = "basd";
 
         column_0.setCellValueFactory(new PropertyValueFactory<>("blockNumber"));
         column_1.setCellValueFactory(new PropertyValueFactory<>("Cell0"));
@@ -154,6 +147,7 @@ public class Controller implements Initializable {
         st.setText(SToutput);
         dt.setText(DToutput);
         sz.setText(SZoutput);
+        cd_output.setText(cd_output_output);
     }
 
     private void updateMemoryTableGUI(){ memoryTable.setItems(getCBlock()); }
