@@ -16,7 +16,7 @@ public class CVM {
     private String[] cmd2 = { "AD","SB","MP","DI","LR","SR","LO","CR","RL","RG","CZ","JC","JP","CA","PU","PO","SY","LP"};
     private String[] cmd5 = { "CHNGR","RETRN"};
     private Vector<String> commands = new Vector<String>();
-    private VCCPU cpu ;
+    private CCPU cpu ;
     //private CCPU rcpu;
     private CPaging page;
 
@@ -40,8 +40,8 @@ public class CVM {
     {
         if(ti>0)
         {
-            executeCommand(page.GetAt(cpu.getVregIC()));
-            cpu.setVregIC((short)(cpu.getVregIC()+1));
+            executeCommand(page.GetAt(cpu.getRegIC()));
+            cpu.setRegIC((short)(cpu.getRegIC()+1));
             --ti;
         }
         /**
@@ -106,9 +106,9 @@ public class CVM {
 
     }
 
-    CVM(CPaging page, short ic)
+    CVM(CPaging page, short ic, CCPU cpu)
     {
-        cpu = new VCCPU();
+        this.cpu = cpu;
         this.ti = ic;
         this.page = page;
         Vector<String> test = new Vector<String>();
@@ -286,49 +286,49 @@ public class CVM {
     }
 
     //TODO update project document to add this command
-    private short cmdSP(short input){ cpu.setVregSP(input); return EError.VALIDATION_SUCCESS;}
-    private short cmdAD(short input){ cpu.getVregR().Add(page.GetAt(input)); return EError.VALIDATION_SUCCESS;}
-    private short cmdSB(short input){ cpu.getVregR().Sub(page.GetAt(input)); return EError.VALIDATION_SUCCESS;}
-    private short cmdMP(short input){ cpu.getVregR().Mul(page.GetAt(input)); return EError.VALIDATION_SUCCESS;}
-    private short cmdDI(short input){ cpu.getVregR().Div(page.GetAt(input)); return EError.VALIDATION_SUCCESS;}
+    private short cmdSP(short input){ cpu.setRegSP(input); return EError.VALIDATION_SUCCESS;}
+    private short cmdAD(short input){ cpu.getRegR().Add(page.GetAt(input)); return EError.VALIDATION_SUCCESS;}
+    private short cmdSB(short input){ cpu.getRegR().Sub(page.GetAt(input)); return EError.VALIDATION_SUCCESS;}
+    private short cmdMP(short input){ cpu.getRegR().Mul(page.GetAt(input)); return EError.VALIDATION_SUCCESS;}
+    private short cmdDI(short input){ cpu.getRegR().Div(page.GetAt(input)); return EError.VALIDATION_SUCCESS;}
     private short cmdCHNGR()
     {
-        cpu.setVregR( page.GetAt((short)(cpu.getVregIC()+1)));
-        cpu.setVregIC((short)(cpu.getVregIC()+1));
+        cpu.setRegR( page.GetAt((short)(cpu.getRegIC()+1)));
+        cpu.setRegIC((short)(cpu.getRegIC()+1));
         //TODO discuss if VM shouldnt have TI since its used together with IC to execute commands
        // cpu.setRegTI((short)(cpu.getRegTI()-1)); //No TI reg in VM
         return EError.VALIDATION_SUCCESS;}
-    private short cmdLR(short input){  cpu.setVregR( page.GetAtCopy(input)); return EError.VALIDATION_SUCCESS;}
-    private short cmdSR(short input){ page.GetAt(input).cell = cpu.getVregR().cell; return EError.VALIDATION_SUCCESS;}
-    private short cmdLO(String reg) {  cpu.setVregR(cpu.ConvertRegToCCell(reg));return EError.VALIDATION_SUCCESS;  }
+    private short cmdLR(short input){  cpu.setRegR( page.GetAtCopy(input)); return EError.VALIDATION_SUCCESS;}
+    private short cmdSR(short input){ page.GetAt(input).cell = cpu.getRegR().cell; return EError.VALIDATION_SUCCESS;}
+    private short cmdLO(String reg) {  cpu.setRegR(cpu.ConvertRegToCCell(reg));return EError.VALIDATION_SUCCESS;  }
     private short cmdCR(short input)
     {
-        cpu.setVregC(cpu.getVregR().CmpString(page.GetAt(input)));
+        cpu.setRegC(cpu.getRegR().CmpString(page.GetAt(input)));
         return EError.VALIDATION_SUCCESS;
     }
     private short cmdRL(short input)
     {
-        cpu.setVregC(cpu.getVregR().CmpNumber(page.GetAt(input)) < 0);
+        cpu.setRegC(cpu.getRegR().CmpNumber(page.GetAt(input)) < 0);
         return EError.VALIDATION_SUCCESS;
     }
     private short cmdRG(short input)
     {
-        cpu.setVregC(cpu.getVregR().CmpNumber(page.GetAt(input)) > 0);
+        cpu.setRegC(cpu.getRegR().CmpNumber(page.GetAt(input)) > 0);
         return EError.VALIDATION_SUCCESS;
     }
     private short cmdCZ(String reg)
     {
-        cpu.setVregC(cpu.ConvertRegToCCell(reg).CmpString(new CCell("00000")));
+        cpu.setRegC(cpu.ConvertRegToCCell(reg).CmpString(new CCell("00000")));
         return EError.VALIDATION_SUCCESS;
     }
     private short cmdJC(short input)
     {
-        if(cpu.getVregC()) cpu.setVregIC((short)(input-1));
+        if(cpu.getRegC()) cpu.setRegIC((short)(input-1));
         return EError.VALIDATION_SUCCESS;
     }
     private short cmdJP(short input)
     {
-        cpu.setVregIC((short)(input-1));
+        cpu.setRegIC((short)(input-1));
         return EError.VALIDATION_SUCCESS;
     }
     private short cmdCA(short input)
@@ -342,21 +342,21 @@ public class CVM {
         cmdPU("CT");
         //cmdPU("TI");
 
-        cpu.setVregIC((short)(input-1));
+        cpu.setRegIC((short)(input-1));
         return EError.VALIDATION_SUCCESS;
     }
     private short cmdPU(String reg)
     {
-        page.GetAt(cpu.getVregSP()).cell = cpu.ConvertRegToCCell(reg).cell;
-        cmdSP((short)(cpu.getVregSP()-1));
+        page.GetAt(cpu.getRegSP()).cell = cpu.ConvertRegToCCell(reg).cell;
+        cmdSP((short)(cpu.getRegSP()-1));
         return EError.VALIDATION_SUCCESS;
     }
     private short cmdPO(String reg)
     {
         short errorCode;
-        errorCode = cmdSP((short)(cpu.getVregSP()+1));
+        errorCode = cmdSP((short)(cpu.getRegSP()+1));
         if (errorCode!=EError.VALIDATION_SUCCESS) return errorCode;
-        errorCode = cpu.SetRegFromCCell(reg, page.GetAt(cpu.getVregSP()));
+        errorCode = cpu.SetRegFromCCell(reg, page.GetAt(cpu.getRegSP()));
         return errorCode;
     }
     private short cmdRETRN()
@@ -376,11 +376,11 @@ public class CVM {
 
 
     void updateRegistersVMCPU(){
-        Controller.cvm_C_output = ""+cpu.getVregC();
-        Controller.cvm_R_output = ""+cpu.getVregR().cell;
-        Controller.cvm_IC_output = ""+cpu.getVregIC();
-        Controller.cvm_CT_output = ""+cpu.getVregCT();
-        Controller.cvm_SP_output = ""+cpu.getVregSP();
+        Controller.cvm_C_output = ""+cpu.getRegC();
+        Controller.cvm_R_output = ""+cpu.getRegR().cell;
+        Controller.cvm_IC_output = ""+cpu.getRegIC();
+        Controller.cvm_CT_output = ""+cpu.getRegCT();
+        Controller.cvm_SP_output = ""+cpu.getRegSP();
     }
 
 }

@@ -455,7 +455,7 @@ public class CRM
         CPaging page = new CPaging(memory, pageAdress);
 
         short ic = FillExampleCommands(page);
-        VMs.add(new CVM(page, ic));
+        VMs.add(new CVM(page, ic, cpu));
 
         return EError.VALIDATION_SUCCESS;
     }//TODO implement, starts virtual machine
