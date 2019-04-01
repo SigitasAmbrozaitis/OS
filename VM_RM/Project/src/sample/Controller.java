@@ -73,9 +73,12 @@ public class Controller implements Initializable {
     static String cvm_IC_output;
     static String cvm_CT_output;
     static String cvm_SP_output;
+    //channel device
+    @FXML private TextField cd_input;
+    @FXML private TextField cd_output;
+    @FXML private Button button_cd_enter;
 
     @FXML private Label vm_count;
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         crm1 = new CRM();
@@ -112,6 +115,7 @@ public class Controller implements Initializable {
         button_execute.setOnAction(event -> execute());
         button_tick.setOnAction(event -> Tick());
         //button_reset.setOnAction(event -> initialize(location, resources));
+        button_cd_enter.setOnAction(event -> cd_enter());
     }
 
     private void execute(){
@@ -187,5 +191,13 @@ public class Controller implements Initializable {
             cvm_CT.setText(cvm_CT_output);
             cvm_IC.setText(cvm_IC_output);
         }
+    }
+
+    /**
+     * method for channel device input handling
+     */
+    private void cd_enter(){
+        String channelDeviceInput = cd_input.getText(); //gets input
+        //probably will call a method here from channel device class and give the input as a parameter
     }
 }
