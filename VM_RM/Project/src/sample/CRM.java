@@ -148,6 +148,7 @@ public class CRM
                     cpu.setRegSI((short)0);
                 }
                 //TODO handle TI interupt if ti == 0
+                if(cpu.getRegTI()==0) cpu.setRegTI((short)10);
         }
     }
 
