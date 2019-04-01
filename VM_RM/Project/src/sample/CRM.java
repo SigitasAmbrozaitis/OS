@@ -40,7 +40,8 @@ public class CRM
     {
         return memory;
     }
-    public Vector<CVM> VMs;
+//    public Vector<CVM> VMs;
+    CVM VM;
 
     /*commands that can be executed by rm*/
     private String[] cmd2 = { "PI","TI","SP","BS","DB","ST","DT","SZ","IN","AD","SB","MP","DI","LR","SR","LO","CR","RL","RG","CZ","JC","JP","CA","PU","PO","SY","LP"};
@@ -54,7 +55,8 @@ public class CRM
         memory = new CMemory();
         CPaging.SetPageMemory(memory);
 
-        VMs = new Vector<CVM>();
+//        VMs = new Vector<CVM>();
+
 
         commands.addAll( Arrays.asList(cmd2));
         commands.addAll( Arrays.asList(cmd3));
@@ -63,19 +65,25 @@ public class CRM
 
     public void  ReadCommandInput(String input)
     {
-        //split string to commands
-        String[] commands = input.split(" ");
-        Vector<String> commandsVec = new Vector<>(Arrays.asList(commands));
-
-        short preIndex = (short)(cpu.getRegTI()>0?cpu.getRegIC():0);
-        short startIndex = (short)(cpu.getRegTI()>0?cpu.getRegIC()+cpu.getRegTI():0);
-        cpu.setRegIC(preIndex);
-        cpu.setRegTI((short)(commandsVec.size() + cpu.getRegTI()));
-
-        //keep in mind that three might be unexecuted commands
-        for(int i=0; i<commandsVec.size(); ++i)
+        if(!cpu.getRegMod())
         {
-            memory.GetAt((short)( startIndex  + i)).cell = commandsVec.elementAt(i);
+            //split string to commands
+            String[] commands = input.split(" ");
+            Vector<String> commandsVec = new Vector<>(Arrays.asList(commands));
+
+            short preIndex = (short)(cpu.getRegTI()>0?cpu.getRegIC():0);
+            short startIndex = (short)(cpu.getRegTI()>0?cpu.getRegIC()+cpu.getRegTI():0);
+            cpu.setRegIC(preIndex);
+            cpu.setRegTI((short)(commandsVec.size() + cpu.getRegTI()));
+
+            //keep in mind that three might be unexecuted commands
+            for(int i=0; i<commandsVec.size(); ++i)
+            {
+                memory.GetAt((short)( startIndex  + i)).cell = commandsVec.elementAt(i);
+            }
+        }else
+        {
+            VM.ReadCommandInput(input);
         }
     }
 
@@ -94,8 +102,9 @@ public class CRM
         }else
         {
             //user
-            for(int i=0; i<VMs.size(); ++i)
-                VMs.elementAt(i).Tick();
+//            for(int i=0; i<VMs.size(); ++i)
+//                VMs.elementAt(i).Tick();
+            VM.Tick();
         }
 
         //check for interupts
@@ -129,7 +138,15 @@ public class CRM
                         break;
                 }
 
+
+
                 //TODO handle SI interupt if si != 0
+
+                if(cpu.getRegSI() == 4)
+                {
+                    cmdCHNGM();
+                    cpu.setRegSI((short)0);
+                }
                 //TODO handle TI interupt if ti == 0
         }
     }
@@ -467,9 +484,11 @@ public class CRM
         temp.block.elementAt(9).cell = "00099";
 
         //TODO no need to give TI
-        CPaging.SetPageBlock(cpu.getRegPTR());
-        FillExampleCommands();
-        VMs.add(new CVM(cpu));
+//        FillExampleCommands();
+        VM = new CVM(cpu);
+
+        //change mod
+        cmdCHNGM();
 
         return EError.VALIDATION_SUCCESS;
     }//TODO implement, starts virtual machine

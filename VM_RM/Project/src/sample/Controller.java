@@ -161,7 +161,8 @@ public class Controller implements Initializable {
     }
 
     private void updateVMcount(){
-        vm_count.setText(""+crm1.VMs.size());
+        //TODO enable this when we will have multiple VM
+        //vm_count.setText(""+crm1.VMs.size());
     }
 
     private void Tick()
@@ -177,14 +178,26 @@ public class Controller implements Initializable {
     }
 
     private void checkVMs(){
-        if(crm1.VMs.size() > 0){
-            crm1.VMs.elementAt(0).updateRegistersVMCPU();
+        //TODO enable this when we will have multiple VM
+//        if(crm1.VMs.size() > 0){
+//            crm1.VMs.elementAt(0).updateRegistersVMCPU();
+//            cvm_R.setText(cvm_R_output);
+//            cvm_SP.setText(cvm_SP_output);
+//            cvm_C.setText(cvm_C_output);
+//            cvm_CT.setText(cvm_CT_output);
+//            cvm_IC.setText(cvm_IC_output);
+//        }
+        if(crm1.VM!=null)
+        {
+            crm1.VM.updateRegistersVMCPU();
             cvm_R.setText(cvm_R_output);
             cvm_SP.setText(cvm_SP_output);
             cvm_C.setText(cvm_C_output);
             cvm_CT.setText(cvm_CT_output);
             cvm_IC.setText(cvm_IC_output);
         }
+
+
     }
 
     /**

@@ -29,7 +29,23 @@ public class CVM {
   //  static int currentAddress = 200;
   //  static int VMcounter=0;
     //VMMemory vm1;
+    public void  ReadCommandInput(String input)
+    {
+        //split string to commands
+        String[] commands = input.split(" ");
+        Vector<String> commandsVec = new Vector<>(Arrays.asList(commands));
 
+        short preIndex = (short)(cpu.getRegTI()>0?cpu.getRegIC():0);
+        short startIndex = (short)(cpu.getRegTI()>0?cpu.getRegIC()+cpu.getRegTI():0);
+        cpu.setRegIC(preIndex);
+        cpu.setRegTI((short)(commandsVec.size() + cpu.getRegTI()));
+
+        //keep in mind that three might be unexecuted commands
+        for(int i=0; i<commandsVec.size(); ++i)
+        {
+            CPaging.GetAt((short)( startIndex  + i)).cell = commandsVec.elementAt(i);
+        }
+    }
 
     public void Tick()
     {
@@ -38,6 +54,9 @@ public class CVM {
             executeCommand(CPaging.GetAt(cpu.getRegIC()));
             cpu.setRegIC((short)(cpu.getRegIC()+1));
             cpu.setRegTI((short)(cpu.getRegTI()-1));
+        }else
+        {
+            cpu.setRegSI((short)4);
         }
         /**
          * should handle VM PI and SI interruptions but don't know yet how to implement them
@@ -111,6 +130,11 @@ public class CVM {
 
         CCommand cmd = new CCommand();
         short errorCode = ValidateCommand(command.cell, cmd);
+        if(errorCode!=EError.VALIDATION_SUCCESS)
+        {
+            cpu.setRegPI(errorCode);
+            return errorCode;
+        }
 
         switch(cmd.cmd)
         {
@@ -225,7 +249,7 @@ public class CVM {
             default: errorCode = EError.COMMAND_VIOLATION;
 
         }
-
+        cpu.setRegPI(errorCode);
         return errorCode;
     }
 
