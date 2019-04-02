@@ -124,6 +124,7 @@ public class CRM
             /**
              *was thinking that there might be different variations of interruption handling in the future,
              *that's why I used switch
+             * 
              */
                 switch (cpu.getRegPI()) {
                     case EError.VALIDATION_SUCCESS:
@@ -162,18 +163,22 @@ public class CRM
                         cpu.setRegIC((short)(regR.cell.charAt(2) + regR.cell.charAt(3)));//next two bytes indicate the address in the VM's memory
                         break;
                     case 2:
-                        //TODO consult master Sigitas
+                        //TODO consult GrandMaster Jurgis
                         /**
                          * VM's request to send data to output device.
                          * The value in Registry R is treated as: the first two bytes indicate how many words will be entered,
                          * the next two bytes indicate the address in the virtual machine's memory.
+                         *
+                         * Master:Consult with GrandMaster Jurgis. He is responsible for data exchange.
                          */
                         break;
                     case 3:
-                        //TODO consult master Sigitas
+                        //TODO consult GrandMaster Jurgis
                         /**
                          * the request of the VM's to extract additional memory according to register R,
                          * not more than 10 blocks.
+                         *
+                         * Master:Consult with GrandMaster Jurgis. He is responsible for data exchange.
                          */
                         break;
                     case 4:
