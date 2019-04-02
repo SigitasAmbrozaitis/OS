@@ -79,6 +79,8 @@ public class Controller implements Initializable {
     static String cd_output_output;
     @FXML private Button button_cd_enter;
 
+    public static String channelDeviceInput;
+
     @FXML private Label vm_count;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -230,7 +232,11 @@ public class Controller implements Initializable {
      * method for channel device input handling
      */
     private void cd_enter(){
-        String channelDeviceInput = cd_input.getText(); //gets input
+        channelDeviceInput = cd_input.getText(); //gets input
+        cd_input.clear();
         //probably will call a method here from channel device class and give the input as a parameter
+    }
+    public String getChannelDeviceInput(){
+        return channelDeviceInput;
     }
 }
