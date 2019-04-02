@@ -699,6 +699,9 @@ private void outputCD(String[] data, int outputNumber){
                 break;
             case 3:
                 //String[] data idet i Pofkes langa
+                //for testing purposes
+                //Jurgi, replace "hello" with what you want to output. Should be a String
+                getCCD().updateCdOutputOuput("hello");
                 break;
             default:
                 System.out.println("Error");

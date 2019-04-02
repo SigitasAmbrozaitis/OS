@@ -17,9 +17,9 @@ public class CCD {
         Controller.SToutput = ""+regST;
         Controller.DToutput = ""+regDT;
         Controller.SZoutput = ""+regSZ;
-
-        Controller.cd_output_output = "";//+what you want to output
-
+    }
+    void updateCdOutputOuput(String input){
+        Controller.cd_output_output = ""+input;
     }
 
 

@@ -150,7 +150,31 @@ public class Controller implements Initializable {
         cd_output.setText(cd_output_output);
     }
 
-    private void updateMemoryTableGUI(){ memoryTable.setItems(getCBlock()); }
+    private void updateMemoryTableGUI(){
+        column_0.setVisible(false);
+        column_1.setVisible(false);
+        column_2.setVisible(false);
+        column_3.setVisible(false);
+        column_4.setVisible(false);
+        column_5.setVisible(false);
+        column_4.setVisible(false);
+        column_7.setVisible(false);
+        column_8.setVisible(false);
+        column_9.setVisible(false);
+
+        memoryTable.setItems(getCBlock());
+
+        column_0.setVisible(true);
+        column_1.setVisible(true);
+        column_2.setVisible(true);
+        column_3.setVisible(true);
+        column_4.setVisible(true);
+        column_5.setVisible(true);
+        column_4.setVisible(true);
+        column_7.setVisible(true);
+        column_8.setVisible(true);
+        column_9.setVisible(true);
+    }
 
     private ObservableList<CBlock> getCBlock(){
         ObservableList<CBlock> memory = FXCollections.observableArrayList();
