@@ -3,6 +3,7 @@ package sample;
 /*imports*/
 
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import sample.Enumerators.EError;
 import sample.Enumerators.ERCommand;
 import sample.Memory.CBlock;
@@ -120,37 +121,75 @@ public class CRM
                 //should be called CALLI, i suggest in adress INT place commands IRETN
                 //Is the switch really needed since we dont have separate registers for separate interupts
                 //and all interupts are handled by 1 command?
+            /**
+             *was thinking that there might be different variations of interruption handling in the future,
+             *that's why I used switch
+             */
                 switch (cpu.getRegPI()) {
                     case EError.VALIDATION_SUCCESS:
                         //everything fine
                         break;
                     case EError.ACCESS_VIOLATION:
-                        errorCode = executeCommand(memory.GetAt(cpu.getRegINT()));
+                        errorCode = cmdCALLI();
+                        System.out.println("ACCESS VIOLATION INTERRUPTION");
+                        errorCode = cmdRETN();
                         break;
                     case EError.COMMAND_VIOLATION:
-                        errorCode = executeCommand(memory.GetAt(cpu.getRegINT()));
+                        errorCode = cmdCALLI();
+                        System.out.println("COMMAND VIOLATION INTERRUPTION");
+                        errorCode = cmdRETN();
                         break;
                     case EError.MEMORY_VIOLATION:
-                        errorCode = executeCommand(memory.GetAt(cpu.getRegINT()));
+                        errorCode = cmdCALLI();
+                        System.out.println("MEMORY VIOLATION INTERRUPTION");
+                        errorCode = cmdRETN();
                         break;
                     case EError.ASSIGMENT_VIOLATION:
-                        errorCode = executeCommand(memory.GetAt(cpu.getRegINT()));
+                        errorCode = cmdCALLI();
+                        System.out.println("ASSIGMENT VIOLATION INTERRUPTION");
+                        errorCode = cmdRETN();
                         break;
                     default:
                         System.out.println("Unknown Error");
                         break;
                 }
 
-
-
-                //TODO handle SI interupt if si != 0
-
-                if(cpu.getRegSI() == 4)
-                {
-                    cmdCHNGM();
-                    cpu.setRegSI((short)0);
+                //handles SI interupt if si != 0
+                switch (cpu.getRegSI()) {
+                    case 1:
+                        CCell regR = cpu.getRegR(); //gets regR value
+                        cpu.setRegTI((short)(regR.cell.charAt(0) + regR.cell.charAt(1)));//first two bytes indicate how many words will be recorded
+                        cpu.setRegIC((short)(regR.cell.charAt(2) + regR.cell.charAt(3)));//next two bytes indicate the address in the VM's memory
+                        break;
+                    case 2:
+                        //TODO consult master Sigitas
+                        /**
+                         * VM's request to send data to output device.
+                         * The value in Registry R is treated as: the first two bytes indicate how many words will be entered,
+                         * the next two bytes indicate the address in the virtual machine's memory.
+                         */
+                        break;
+                    case 3:
+                        //TODO consult master Sigitas
+                        /**
+                         * the request of the VM's to extract additional memory according to register R,
+                         * not more than 10 blocks.
+                         */
+                        break;
+                    case 4:
+                        cmdCHNGM();
+                        cpu.setRegSI((short)0);
+                        break;
+                    default:
+                        System.out.println("Unknown Error");
+                        break;
                 }
-                //TODO handle TI interupt if ti == 0
+
+                //nterupt if ti == 0
+                if(cpu.getRegTI() == 0){
+                    errorCode = cmdCALLI();
+                    //TODO in future calls OS interrupts processor
+                }
         }
     }
 
