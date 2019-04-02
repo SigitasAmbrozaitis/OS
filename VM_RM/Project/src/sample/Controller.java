@@ -236,7 +236,7 @@ public class Controller implements Initializable {
         cd_input.clear();
         //probably will call a method here from channel device class and give the input as a parameter
     }
-    public String getChannelDeviceInput(){
+    public static String getChannelDeviceInput(){
         return channelDeviceInput;
     }
 }
