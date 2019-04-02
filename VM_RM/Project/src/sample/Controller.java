@@ -79,7 +79,7 @@ public class Controller implements Initializable {
     static String cd_output_output;
     @FXML private Button button_cd_enter;
 
-    public static String channelDeviceInput;
+    private static String channelDeviceInput = "";
 
     @FXML private Label vm_count;
     @Override
