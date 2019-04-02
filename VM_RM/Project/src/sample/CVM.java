@@ -34,16 +34,11 @@ public class CVM {
         //split string to commands
         String[] commands = input.split(" ");
         Vector<String> commandsVec = new Vector<>(Arrays.asList(commands));
-
-        short preIndex = (short)(cpu.getRegTI()>0?cpu.getRegIC():0);
-        short startIndex = (short)(cpu.getRegTI()>0?cpu.getRegIC()+cpu.getRegTI():0);
-        cpu.setRegIC(preIndex);
-        cpu.setRegTI((short)(commandsVec.size() + cpu.getRegTI()));
-
+        cpu.setRegIC((short)0);
         //keep in mind that three might be unexecuted commands
         for(int i=0; i<commandsVec.size(); ++i)
         {
-            CPaging.GetAt((short)( startIndex  + i)).cell = commandsVec.elementAt(i);
+            CPaging.GetAt((short)(i)).cell = commandsVec.elementAt(i);
         }
     }
 

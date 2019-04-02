@@ -60,7 +60,7 @@ class CCPU {
         this.regC = false;
         this.regPI = 0;
         this.regSI = 0;
-        this.regTI = 0;
+        this.regTI = 10;
         this.regMOD = false;
     }
 
@@ -172,7 +172,8 @@ class CCPU {
                 returnValue.cell = Short.toString(this.regTI);
                 break;
         }
-        returnValue.cell = CUtils.NormalizeString(returnValue.cell);
+        if(reg != "MOD" && reg != "__C")
+            returnValue.cell = CUtils.NormalizeString(returnValue.cell);
 
 
         return  returnValue;

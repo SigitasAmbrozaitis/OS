@@ -58,7 +58,7 @@ public class CRM
         cd = new CCD();
         memory = new CMemory();
         CPaging.SetPageMemory(memory);
-
+        memory.GetAt(cpu.getRegINT()).cell = "JP000";
 //        VMs = new Vector<CVM>();
 
 
@@ -74,16 +74,13 @@ public class CRM
             //split string to commands
             String[] commands = input.split(" ");
             Vector<String> commandsVec = new Vector<>(Arrays.asList(commands));
+            cpu.setRegIC((short)0);
+            cpu.setRegPI(EError.VALIDATION_SUCCESS);
+            cpu.setRegSI((short)0);
 
-            short preIndex = (short)(cpu.getRegTI()>0?cpu.getRegIC():0);
-            short startIndex = (short)(cpu.getRegTI()>0?cpu.getRegIC()+cpu.getRegTI():0);
-            cpu.setRegIC(preIndex);
-            cpu.setRegTI((short)(commandsVec.size() + cpu.getRegTI()));
-
-            //keep in mind that three might be unexecuted commands
             for(int i=0; i<commandsVec.size(); ++i)
             {
-                memory.GetAt((short)( startIndex  + i)).cell = commandsVec.elementAt(i);
+                memory.GetAt((short)(i)).cell = commandsVec.elementAt(i);
             }
         }else
         {
@@ -124,7 +121,7 @@ public class CRM
             /**
              *was thinking that there might be different variations of interruption handling in the future,
              *that's why I used switch
-             * 
+             *
              */
                 switch (cpu.getRegPI()) {
                     case EError.VALIDATION_SUCCESS:
@@ -157,6 +154,8 @@ public class CRM
 
                 //handles SI interupt if si != 0
                 switch (cpu.getRegSI()) {
+                    case 0:
+                        break;
                     case 1:
                         CCell regR = cpu.getRegR(); //gets regR value
                         cpu.setRegTI((short)(regR.cell.charAt(0) + regR.cell.charAt(1)));//first two bytes indicate how many words will be recorded
@@ -184,6 +183,7 @@ public class CRM
                     case 4:
                         cmdCHNGM();
                         cpu.setRegSI((short)0);
+                        loadRMState();
                         break;
                     default:
                         System.out.println("Unknown Error");
@@ -191,8 +191,16 @@ public class CRM
                 }
 
                 //nterupt if ti == 0
-                if(cpu.getRegTI() == 0){
-                    errorCode = cmdCALLI();
+                if(cpu.getRegTI() == 0)
+                {
+                    if(cpu.getRegMod())
+                    {
+                        loadRMState();
+                        //cmdCHNGM();
+                    }
+                    //for now just reset ti to 10
+                    cpu.setRegTI((short)10);
+                    //errorCode = cmdCALLI();
                     //TODO in future calls OS interrupts processor
                 }
         }
@@ -504,6 +512,17 @@ public class CRM
         cmdPU("_IC");
         cmdPU("_SP");
         cmdPU("_CT");
+        return EError.VALIDATION_SUCCESS;
+    }
+    private short loadRMState()
+    {
+        cmdPO("_CT");
+        cmdPO("_SP");
+        cmdPO("_IC");
+        cmdPO("__R");
+        cmdPO("__C");
+        cmdPO("PTR");
+        cmdPO("MOD");
         return EError.VALIDATION_SUCCESS;
     }
     private short cmdSTART(){
