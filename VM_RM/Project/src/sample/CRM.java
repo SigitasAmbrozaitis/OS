@@ -15,6 +15,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
 
@@ -630,11 +631,17 @@ public class CRM
 
     private short cmdXCHGN(){
 
-        int inputNumber=0, outputNumber=0; //inputNumber - block or object number to be copied
+      //  int inputNumber=0, outputNumber=0; //inputNumber - block or object number to be copied
                                            //outputNumber - block or object number to be pasted into
-        int objectOrBlockInput = -1, objectOrBlockOutput=-1; // defines locations
+      //  int objectOrBlockInput = -1, objectOrBlockOutput=-1; // defines locations
                                                              // 0 - block, 1 - object
+        int inputMode=0; //1 - copy from VM
+                         //2 - copy from hdd
+                         //3 - copy from input field
+        int blockToBeCopied = -1;
         int wordsNumber = -1; //how many words to copy
+        ArrayList<String> hdd = new ArrayList<String>();
+        hdd = populateHDD(hdd,"hdd.txt");
 
         if( cd.getRegSZ() == 0){ //by default 0
             //interrupt
@@ -644,12 +651,33 @@ public class CRM
         else {
             wordsNumber = cd.getRegSZ();
         }
-
-        if((cd.getRegST() == 0 && cd.getRegSB() == 0) || (cd.getRegDB() == 0 && cd.getRegDT() == 0)){
-            //interrupt
-            System.out.println("Missing input/output information");
-           // return  EError.COMMAND_VIOLATION;
+        //Validate input
+        if(cd.getRegST() == 0){
+            System.out.println("Missing input data");
+            //return EError.COMMAND_VIOLATION;
         }
+        if(cd.getRegST() != 0 && cd.getRegSB()!=0){
+            if(cd.getRegST() == 1){
+                inputMode = cd.getRegST();
+                blockToBeCopied = cd.getRegSB();
+            }
+            if(cd.getRegST() == 2){
+                inputMode = cd.getRegST();
+                blockToBeCopied = cd.getRegSB();
+            }
+            if(cd.getRegST() == 3){
+                inputMode = cd.getRegST();
+                //from input field, no block number needed
+            }
+        }
+        else{
+            System.out.println("Missing input data");
+            //return EError.COMMAND_VIOLATION;
+        }
+        System.out.println("Input mode: " + inputMode +" num of words: "+ wordsNumber +" block: " + blockToBeCopied);
+
+
+/*
         else {
             if (cd.getRegST() != 0){
                 objectOrBlockInput = 1;
@@ -726,6 +754,13 @@ public class CRM
             }
             else if(inputNumber == 3){
                 //Gauti is Pofkes input lauko reiksmes
+                if(Controller.getChannelDeviceInput().equals(" ")){
+                    System.out.println("INTERRUPT PER GALVA BLIA");
+                }
+                else{
+                    words = Controller.getChannelDeviceInput().split(" ");
+                }
+
             }
             if(objectOrBlockOutput == 0){
                 for(int i=0; i < wordsNumber; i++){
@@ -735,11 +770,10 @@ public class CRM
             else if(objectOrBlockOutput == 1){
                 outputCD(words, outputNumber);
             }
-
-
         }
-        System.out.println("Valio inputNumber: " + +inputNumber + " objectOrBlockInput: " + objectOrBlockInput +
-                " objectOrBlockOutput: " + objectOrBlockOutput + " wordsNumber: " + wordsNumber);
+*/
+       // System.out.println("Valio inputNumber: " + +inputNumber + " objectOrBlockInput: " + objectOrBlockInput +
+         //       " objectOrBlockOutput: " + objectOrBlockOutput + " wordsNumber: " + wordsNumber);
         return EError.VALIDATION_SUCCESS;
     }
     //TODO implement, maybe it should have different input in GUI?
@@ -761,7 +795,8 @@ private void outputCD(String[] data, int outputNumber){
                 //String[] data idet i Pofkes langa
                 //for testing purposes
                 //Jurgi, replace "hello" with what you want to output. Should be a String
-                getCCD().updateCdOutputOuput("hello");
+                String result = Arrays.toString(data);
+                getCCD().updateCdOutputOuput(result);
                 break;
             default:
                 System.out.println("Error");
@@ -780,6 +815,31 @@ private void writeToHdd(String filename, String output){
     catch (IOException e) {
         System.out.println("exception occoured" + e);
     }
+}
+private ArrayList<String> populateHDD(ArrayList<String> alist, String filename){
+    BufferedReader br = null;
+    try {
+        br = new BufferedReader(new FileReader(filename));
+    } catch (FileNotFoundException e) {
+        e.printStackTrace();
+    }
+    try {
+        String line;
+        int i=0;
+        while ((line = br.readLine()) != null) {
+            // process the line
+            alist.add(line);
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    return alist;
 }
 
 
