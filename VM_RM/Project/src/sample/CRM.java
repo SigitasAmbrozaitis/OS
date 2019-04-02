@@ -157,12 +157,21 @@ public class CRM
                     case 0:
                         break;
                     case 1:
-                        CCell regR = cpu.getRegR(); //gets regR value
-                        cpu.setRegTI((short)(regR.cell.charAt(0) + regR.cell.charAt(1)));//first two bytes indicate how many words will be recorded
-                        cpu.setRegIC((short)(regR.cell.charAt(2) + regR.cell.charAt(3)));//next two bytes indicate the address in the VM's memory
+                        //TODO implement "waiting for R" (just like in c++ cin waits for input)
+//                        String regR = cpu.getRegR().cell;
+//                        while (true){
+//                            cpu.setRegIC();
+//                            if(!regR.equals(cpu.getRegR().cell))
+//                                break;
+//                        }
+                        cmdSZ((short)(cpu.getRegR().cell.charAt(0) + cpu.getRegR().cell.charAt(1)));//first two bytes indicate how many words will be recorded
+                        cmdDB((short)(cpu.getRegR().cell.charAt(2) + cpu.getRegR().cell.charAt(3)));//next two bytes indicate the address in the VM's memory
+                        //cmdBS((short)1);
+                        cmdST((short)3);
+                        cmdDT((short)1);
+                        cmdXCHGN();
                         break;
                     case 2:
-                        //TODO consult GrandMaster Jurgis
                         /**
                          * VM's request to send data to output device.
                          * The value in Registry R is treated as: the first two bytes indicate how many words will be entered,
@@ -170,15 +179,42 @@ public class CRM
                          *
                          * Master:Consult with GrandMaster Jurgis. He is responsible for data exchange.
                          */
+                        //TODO implement "waiting for R" (just like in c++ cin waits for input)
+                        cmdDT((short)3);
+                        cmdST((short)1);
+                        cmdSZ((short)(cpu.getRegR().cell.charAt(0)+cpu.getRegR().cell.charAt(1)));
+                        cmdBS((short)(cpu.getRegR().cell.charAt(2)+cpu.getRegR().cell.charAt(3)));
+                        cmdXCHGN();
                         break;
                     case 3:
-                        //TODO consult GrandMaster Jurgis
                         /**
                          * the request of the VM's to extract additional memory according to register R,
                          * not more than 10 blocks.
                          *
                          * Master:Consult with GrandMaster Jurgis. He is responsible for data exchange.
                          */
+                        //what command allocates VM's memory?
+
+                        //TODO implement "waiting for R" (just like in c++ cin waits for input)
+                        //TODO remove sigis hardcoded VM memory
+                        short pageAdress = 10;
+                        int regR = Integer.parseInt(cpu.getRegR().cell);
+                        if(regR > 10){
+                            System.out.println("More that 10 blocks. Change R value");
+                        } else {
+
+                            CBlock temp = memory.GetBlockAt((short)(pageAdress+regR));
+                            temp.block.elementAt(0).cell = "00111";
+                            temp.block.elementAt(1).cell = "00220";
+                            temp.block.elementAt(2).cell = "00330";
+                            temp.block.elementAt(3).cell = "00440";
+                            temp.block.elementAt(4).cell = "00550";
+                            temp.block.elementAt(5).cell = "00660";
+                            temp.block.elementAt(6).cell = "00770";
+                            temp.block.elementAt(7).cell = "00880";
+                            temp.block.elementAt(8).cell = "00990";
+                            temp.block.elementAt(9).cell = "00999";
+                        }
                         break;
                     case 4:
                         cmdCHNGM();

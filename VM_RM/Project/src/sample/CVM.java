@@ -53,41 +53,6 @@ public class CVM {
         {
             cpu.setRegSI((short)4);
         }
-        /**
-         * should handle VM PI and SI interruptions but don't know yet how to implement them
-         * SA: VM probably will only set registers and they will be checked in RM`s Tick?
-         */
-//        switch (cpu.getRegPI()) {
-//            case EError.ACCESS_VIOLATION:
-//                errorCode = executeCommand(memory.GetAt(cpu.getRegINT()));
-//                break;
-//            case EError.COMMAND_VIOLATION:
-//                errorCode = executeCommand(memory.GetAt(cpu.getRegINT()));
-//                break;
-//            case EError.MEMORY_VIOLATION:
-//                errorCode = executeCommand(memory.GetAt(cpu.getRegINT()));
-//                break;
-//            case EError.ASSIGMENT_VIOLATION:
-//                errorCode = executeCommand(memory.GetAt(cpu.getRegINT()));
-//                break;
-//        }
-//        /**
-//         * switch that handles SI interruptions
-//         */
-//        switch (cpu.getRegSI()) {
-//            case 1:
-//
-//                break;
-//            case 2:
-//
-//                break;
-//            case 3:
-//
-//                break;
-//            case 4:
-//
-//                break;
-//        }
     }
 
     CVM(CPaging page)
