@@ -63,16 +63,16 @@ public class Controller implements Initializable {
     @FXML private TableColumn<CBlock, String> column_8;
     @FXML private TableColumn<CBlock, String> column_9;
     @FXML private TableColumn<CBlock, String> column_10;
-    @FXML private Label cvm_R;
-    @FXML private Label cvm_C;
-    @FXML private Label cvm_IC;
-    @FXML private Label cvm_CT;
-    @FXML private Label cvm_SP;
-    static String cvm_R_output;
-    static String cvm_C_output;
-    static String cvm_IC_output;
-    static String cvm_CT_output;
-    static String cvm_SP_output;
+//    @FXML private Label cvm_R;
+//    @FXML private Label cvm_C;
+//    @FXML private Label cvm_IC;
+//    @FXML private Label cvm_CT;
+//    @FXML private Label cvm_SP;
+//    static String cvm_R_output;
+//    static String cvm_C_output;
+//    static String cvm_IC_output;
+//    static String cvm_CT_output;
+//    static String cvm_SP_output;
     //channel device
     @FXML private TextField cd_input;
     @FXML private TextField cd_output;
@@ -103,7 +103,7 @@ public class Controller implements Initializable {
         updateRegistersGUI();
         updateMemoryTableGUI();
         updateVMcount();
-        checkVMs();
+        //checkVMs();
 
         button_execute.setOnAction(event -> execute());
         button_tick.setOnAction(event -> Tick());
@@ -126,7 +126,7 @@ public class Controller implements Initializable {
             updateMemoryTableGUI();
           //  crm1.getCpu().printCPURegisters();
             updateVMcount();
-            checkVMs();
+            //checkVMs();
         }
     }
 
@@ -198,31 +198,33 @@ public class Controller implements Initializable {
         updateMemoryTableGUI();
       //  crm1.getCpu().printCPURegisters();
         updateVMcount();
-        checkVMs();
+        //checkVMs();
     }
-
-    private void checkVMs(){
-        //TODO enable this when we will have multiple VM
-//        if(crm1.VMs.size() > 0){
-//            crm1.VMs.elementAt(0).updateRegistersVMCPU();
+/**
+ * probably will delete later
+ */
+//    private void checkVMs(){
+//        //TODO enable this when we will have multiple VM
+////        if(crm1.VMs.size() > 0){
+////            crm1.VMs.elementAt(0).updateRegistersVMCPU();
+////            cvm_R.setText(cvm_R_output);
+////            cvm_SP.setText(cvm_SP_output);
+////            cvm_C.setText(cvm_C_output);
+////            cvm_CT.setText(cvm_CT_output);
+////            cvm_IC.setText(cvm_IC_output);
+////        }
+//        if(crm1.VM!=null)
+//        {
+//            crm1.VM.updateRegistersVMCPU();
 //            cvm_R.setText(cvm_R_output);
 //            cvm_SP.setText(cvm_SP_output);
 //            cvm_C.setText(cvm_C_output);
 //            cvm_CT.setText(cvm_CT_output);
 //            cvm_IC.setText(cvm_IC_output);
 //        }
-        if(crm1.VM!=null)
-        {
-            crm1.VM.updateRegistersVMCPU();
-            cvm_R.setText(cvm_R_output);
-            cvm_SP.setText(cvm_SP_output);
-            cvm_C.setText(cvm_C_output);
-            cvm_CT.setText(cvm_CT_output);
-            cvm_IC.setText(cvm_IC_output);
-        }
-
-
-    }
+//
+//
+//    }
 
     /**
      * method for channel device input handling

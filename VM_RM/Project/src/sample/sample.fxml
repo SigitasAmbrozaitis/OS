@@ -217,60 +217,6 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <AnchorPane layoutX="670.0" layoutY="78.0" prefHeight="200.0" prefWidth="200.0">
-         <children>
-            <Label layoutX="7.0" layoutY="10.0" text="CVM_R:">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="cvm_R" layoutX="77.0" layoutY="10.0" prefHeight="27.0" prefWidth="65.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label layoutX="8.0" layoutY="40.0" text="CVM_C:">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="cvm_C" layoutX="77.0" layoutY="40.0" prefHeight="27.0" prefWidth="65.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label layoutX="6.0" layoutY="67.0" text="CVM_IC:">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="cvm_IC" layoutX="77.0" layoutY="67.0" prefHeight="27.0" prefWidth="65.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label layoutX="6.0" layoutY="94.0" text="CVM_CT:">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="cvm_CT" layoutX="77.0" layoutY="94.0" prefHeight="27.0" prefWidth="65.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label layoutX="7.0" layoutY="121.0" text="CVM_SP:">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="cvm_SP" layoutX="77.0" layoutY="121.0" prefHeight="27.0" prefWidth="65.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
       <TextField fx:id="cd_input" layoutX="59.0" layoutY="153.0" />
       <TextField fx:id="cd_output" editable="false" layoutX="59.0" layoutY="199.0" />
       <Text layoutX="59.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Channel device input" />

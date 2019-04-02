@@ -380,13 +380,15 @@ public class CVM {
   //  private short cmdSY(short input){cpu.setRegSI(input); return EError.VALIDATION_SUCCESS;}
     private short cmdLP(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
 
-
-    void updateRegistersVMCPU(){
-        Controller.cvm_C_output = ""+cpu.getRegC();
-        Controller.cvm_R_output = ""+cpu.getRegR().cell;
-        Controller.cvm_IC_output = ""+cpu.getRegIC();
-        Controller.cvm_CT_output = ""+cpu.getRegCT();
-        Controller.cvm_SP_output = ""+cpu.getRegSP();
-    }
+/**
+ * probably will delete later
+ */
+//    void updateRegistersVMCPU(){
+//        Controller.cvm_C_output = ""+cpu.getRegC();
+//        Controller.cvm_R_output = ""+cpu.getRegR().cell;
+//        Controller.cvm_IC_output = ""+cpu.getRegIC();
+//        Controller.cvm_CT_output = ""+cpu.getRegCT();
+//        Controller.cvm_SP_output = ""+cpu.getRegSP();
+//    }
 
 }
