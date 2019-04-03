@@ -1,13 +1,18 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import sample.Memory.CBlock;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -79,6 +84,8 @@ public class Controller implements Initializable {
     static String cd_output_output;
     @FXML private Button button_cd_enter;
 
+    @FXML private Button button_restart;
+
     private static String channelDeviceInput = "";
 
     @FXML private Label vm_count;
@@ -109,7 +116,13 @@ public class Controller implements Initializable {
 
         button_execute.setOnAction(event -> execute());
         button_tick.setOnAction(event -> Tick());
-        //button_reset.setOnAction(event -> initialize(location, resources));
+        button_restart.setOnAction(event -> {
+            try {
+                Main.restart();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
         button_cd_enter.setOnAction(event -> cd_enter());
     }
 

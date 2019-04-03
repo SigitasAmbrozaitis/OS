@@ -5,10 +5,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import sample.Memory.CBlock;
+
+import java.io.IOException;
 
 public class Main extends Application {
-
+    static Stage primaryStage;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -16,6 +17,17 @@ public class Main extends Application {
         primaryStage.setTitle("OS");
         primaryStage.setScene(new Scene(root, 877, 600));
         primaryStage.show();
+        Main.primaryStage = primaryStage;
+    }
+
+    static void restart() throws IOException {
+        primaryStage.close();
+        Stage newStage = new Stage();
+        Parent root = FXMLLoader.load(Main.class.getResource("sample.fxml"));
+        newStage.setTitle("OS");
+        newStage.setScene(new Scene(root, 877, 600));
+        newStage.show();
+        primaryStage = newStage;
     }
 
     public static void main(String[] args) {
@@ -29,9 +41,6 @@ public class Main extends Application {
 //            System.out.println("Real Address: " + x.realAddress + " Virtual Address: " + x.virtualAddress);
        // CRM crm1 = new CRM();
        // crm1.ReadCommandInput("PI101");
-
-
-
         launch(args);
     }
 }
