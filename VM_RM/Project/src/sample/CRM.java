@@ -685,7 +685,7 @@ public class CRM
         String [] inputData = new String[wordsNumber];
         if(inputMode == 1){
             for(int i=0; i < wordsNumber; i++){
-                inputData[i] = CPaging.GetBlockAt((short) blockToBeCopied).block.get(i).cell;
+                inputData[i] = CPaging.GetBlockAt((short) (blockToBeCopied*10)).block.get(i).cell;
             }
         }
         else if(inputMode == 2){ //read input from hard drive
