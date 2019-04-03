@@ -642,10 +642,16 @@ public class CRM
         int wordsNumber = -1; //how many words to copy
         ArrayList<String> hdd = new ArrayList<String>();
         hdd = populateHDD(hdd,"hdd.txt");
+        System.out.println(Arrays.toString(hdd.toArray()) + " size: " + hdd.size());
+        //cd.setRegSB((short)-1);
 
         if( cd.getRegSZ() == 0){ //by default 0
             //interrupt
             System.out.println("Please set register SZ to the number of words you wish to copy");
+            //return EError.COMMAND_VIOLATION;
+        }
+        else if(cd.getRegSZ() > 10){
+            System.out.println("Error, too many words");
             //return EError.COMMAND_VIOLATION;
         }
         else {
@@ -653,10 +659,10 @@ public class CRM
         }
         //Validate input
         if(cd.getRegST() == 0){
-            System.out.println("Missing input data");
+            System.out.println("Missing input dataa");
             //return EError.COMMAND_VIOLATION;
         }
-        if(cd.getRegST() != 0 && cd.getRegSB()!=0){
+        if(cd.getRegST() != 0 && cd.getRegSB()!= -1){ //SB needs to be -1 by default
             if(cd.getRegST() == 1){
                 inputMode = cd.getRegST();
                 blockToBeCopied = cd.getRegSB();
@@ -671,127 +677,92 @@ public class CRM
             }
         }
         else{
-            System.out.println("Missing input data");
+            System.out.println("Missing input datsa");
             //return EError.COMMAND_VIOLATION;
         }
         System.out.println("Input mode: " + inputMode +" num of words: "+ wordsNumber +" block: " + blockToBeCopied);
-
-
-/*
-        else {
-            if (cd.getRegST() != 0){
-                objectOrBlockInput = 1;
-                inputNumber = cd.getRegST();
-            }
-            else{
-                objectOrBlockInput = 0;
-                inputNumber = cd.getRegSB();
-            }
-            if (cd.getRegDB() != 0){
-                objectOrBlockOutput = 0;
-                outputNumber = cd.getRegDB();
-            }
-            else{
-                objectOrBlockOutput = 1;
-                outputNumber = cd.getRegDT();
+        //get input from VM, may need validation if VM cells are not empty
+        String [] inputData = new String[wordsNumber];
+        if(inputMode == 1){
+            for(int i=0; i < wordsNumber; i++){
+                inputData[i] = CPaging.GetBlockAt((short) blockToBeCopied).block.get(i).cell;
             }
         }
-        if(objectOrBlockInput == 0) { //copying from block in memory
-
-            if(wordsNumber > memory.GetBlockAt((short) inputNumber).block.size()){
-                System.out.println("Duheli, perdaug prasai, gausi interupta");
-                //interrupt and return
+        else if(inputMode == 2){ //read input from hard drive
+            if(hdd.size()/10 < blockToBeCopied+1){
+                System.out.println("Error, there is not enough info in hddS");
+                //return EError.COMMAND_VIOLATION;
             }
-            if(objectOrBlockOutput == 0){
-                System.out.println("Kopinam is takelio nr: " + inputNumber + " i takeli nr: " + outputNumber);
-                for(int i=0; i < wordsNumber; i++){
-                    memory.GetBlockAt((short)outputNumber).block.get(i).cell = memory.GetBlockAt((short) inputNumber).block.get(i).cell;
-                }
-            }
-            if(objectOrBlockOutput == 1){
-                String words[] = new String[wordsNumber];
-                for(int i=0; i < wordsNumber; i++){
-                    words[i]= memory.GetBlockAt((short) inputNumber).block.get(i).cell;
-                }
-                outputCD(words, wordsNumber);
-
-            }
-        }
-        else if(objectOrBlockInput == 1){
-            String words[] = new String[wordsNumber];
-            if(inputNumber == 1){
-                //PALAUKT KOL SIGIS PADARYS PAGING NORMALIAI
-                // GAUT IS SIGIO INPUT
-            }
-            else if(inputNumber == 2){
-                //read how many needed words
-                int count = wordsNumber;
-                BufferedReader br = null;
-                try {
-                    br = new BufferedReader(new FileReader("hdd.txt"));
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    String line;
-                    int i=0;
-                    while ((line = br.readLine()) != null && count > 0) {
-                        // process the line
-                        words[i] = line;
-                        i++;
-                        count--;
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    try {
-                        br.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                System.out.println(Arrays.toString(words));
-            }
-            else if(inputNumber == 3){
-                //Gauti is Pofkes input lauko reiksmes
-                if(Controller.getChannelDeviceInput().equals(" ")){
-                    System.out.println("INTERRUPT PER GALVA BLIA");
+            else {
+                if (hdd.size() < wordsNumber) {
+                    System.out.println("Error, there is not enough info in hdd");
+                    //return EError.COMMAND_VIOLATION;
                 }
                 else{
-                    words = Controller.getChannelDeviceInput().split(" ");
+                    int j=0;
+                    for(int i=blockToBeCopied*10; i<wordsNumber+blockToBeCopied*10; i++){
+                        inputData[j] = hdd.get(i);
+                        j++;
+                    }
                 }
-
-            }
-            if(objectOrBlockOutput == 0){
-                for(int i=0; i < wordsNumber; i++){
-                    memory.GetBlockAt((short)outputNumber).block.get(i).cell = words[i];
-                }
-            }
-            else if(objectOrBlockOutput == 1){
-                outputCD(words, outputNumber);
             }
         }
-*/
+        else if(inputMode == 3){
+            if(Controller.getChannelDeviceInput().equals(" ")){
+                System.out.println("INTERRUPT PER GALVA BLIA");
+                //return EError.COMMAND_VIOLATION;
+            }
+            else{
+                inputData = Controller.getChannelDeviceInput().split(" ");
+                if(wordsNumber > inputData.length){
+                    System.out.println("INTERRUPT PER GALVA BLIAS");
+                    //return EError.COMMAND_VIOLATION;
+                }
+                inputData = Arrays.copyOf(inputData, wordsNumber); //take as many elements as needed
+
+            }
+        }
+        System.out.println(Arrays.toString(inputData));
+
+        //validation for output
+        if(cd.getRegDT() == 0){
+            System.out.println("Missing output information");
+            //return EError.COMMAND_VIOLATION;
+        }
+        else if((cd.getRegDT() == 1 || cd.getRegDT() == 2) && cd.getRegDB() == -1) { //DB needs to be set to -1 by default
+            System.out.println("Missing output information");
+            //return EError.COMMAND_VIOLATION;
+        }
+        else{
+            outputCD(inputData, cd.getRegDT(), cd.getRegDB(), hdd);
+        }
+
        // System.out.println("Valio inputNumber: " + +inputNumber + " objectOrBlockInput: " + objectOrBlockInput +
          //       " objectOrBlockOutput: " + objectOrBlockOutput + " wordsNumber: " + wordsNumber);
         return EError.VALIDATION_SUCCESS;
     }
-    //TODO implement, maybe it should have different input in GUI?
-private void outputCD(String[] data, int outputNumber){
 
-        switch(outputNumber){
+    //data - input data, outputMode - 1/2/3, blocktobepasted - block index
+private void outputCD(String[] data, int outputMode, int blockToBePasted, ArrayList<String> hdd){
+
+        switch(outputMode){
             case 1:
-                //Laukiam Sigio, vartotojo atmintis, VM blablabla
-                //DUOT SIGIUI REIKSMES
+                for(int i=0; i < data.length; i++)
+                    CPaging.GetBlockAt((short)blockToBePasted).block.get(i).cell = data[i];
                 break;
             case 2:
-                String output = "";
-                for(int i=0; i < data.length; i++){
-                    output += data[i] + "\r\n"; //add each word in new line
+                int j=0;
+                //System.out.println("NUO: " + blockToBePasted + " iki: " + blockToBePasted + data.length);
+                for(int i=blockToBePasted*10; i < blockToBePasted*10 + data.length; i++){
+                    hdd.set(i, data[j]);
+                    j++;
                 }
-                writeToHdd("hdd.txt", output);
+                System.out.println("ZDAAAAAAAAAARE");
+                System.out.println(Arrays.toString(hdd.toArray()));
+                writeToHdd("hdd.txt", hdd);
                 break;
             case 3:
+                System.out.println("ZDAROVA");
                 //String[] data idet i Pofkes langa
                 //for testing purposes
                 //Jurgi, replace "hello" with what you want to output. Should be a String
@@ -803,17 +774,29 @@ private void outputCD(String[] data, int outputNumber){
                 break;
         }
 }
-private void writeToHdd(String filename, String output){
+private void writeToHdd(String filename, ArrayList<String> output){
+
+        for(int i=0; i < output.size(); i++){
+            output.set(i, output.get(i)+ "\r\n");
+        }
+
+    FileWriter writer = null;
     try {
-        // Open given file in append mode.
-        BufferedWriter out = new BufferedWriter(
-                new FileWriter(filename, true));
-        System.out.println("irasinesiu: " + output);
-        out.write(output);
-        out.close();
+        writer = new FileWriter(filename);
+    } catch (IOException e) {
+        e.printStackTrace();
     }
-    catch (IOException e) {
-        System.out.println("exception occoured" + e);
+    for(String str: output) {
+        try {
+            writer.write(str);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    try {
+        writer.close();
+    } catch (IOException e) {
+        e.printStackTrace();
     }
 }
 private ArrayList<String> populateHDD(ArrayList<String> alist, String filename){
@@ -839,6 +822,7 @@ private ArrayList<String> populateHDD(ArrayList<String> alist, String filename){
             e.printStackTrace();
         }
     }
+
     return alist;
 }
 
