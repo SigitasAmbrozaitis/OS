@@ -20,11 +20,11 @@ public class CPaging {
         pagingTable = memory.GetBlockAt(blockIndex);
     }
 
-    public static void SetPage(CMemory mem, short blockIndex)
-    {
-        SetPageMemory(mem);
-        SetPageBlock(blockIndex);
-    }
+//    public static void SetPage(CMemory mem, short blockIndex)
+//    {
+//        SetPageMemory(mem);
+//        SetPageBlock(blockIndex);
+//    }
 
 
     public static CCell GetAt(short index)

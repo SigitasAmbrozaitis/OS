@@ -201,7 +201,7 @@ public class CVM {
                 errorCode = cmdRETRN();
                 break;
             case EVCommand.E_SY:
-                //errorCode = cmdSY((short)Integer.parseInt(cmd.param));
+                errorCode = cmdSY((short)Integer.parseInt(cmd.param));
                 break;
             case EVCommand.E_LP:
                 errorCode = cmdLP((short)Integer.parseInt(cmd.param));
@@ -337,8 +337,15 @@ public class CVM {
         //cmdPO("MOD");
         return EError.VALIDATION_SUCCESS;
     }
-  //  private short cmdSY(short input){cpu.setRegSI(input); return EError.VALIDATION_SUCCESS;}
-    private short cmdLP(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
+    private short cmdSY(short input){cpu.setRegSI(input); return EError.VALIDATION_SUCCESS;}
+    private short cmdLP(short input){
+        if(cpu.getRegCT() != 0) {
+            cpu.setRegCT((short) (cpu.getRegIC() - 1));
+        }else{
+            //TODO jump to cycle start
+            // cmdJP();
+        }
+        return EError.VALIDATION_SUCCESS;}//TODO implement
 
 /**
  * probably will delete later

@@ -6,4 +6,5 @@ public class EError {
     public final static short COMMAND_VIOLATION = 2;
     public final static short MEMORY_VIOLATION = 3; //no memory
     public final static short ASSIGMENT_VIOLATION = 4;
+    public final static short UNKNOWN_VIOLATION = 5;
 }

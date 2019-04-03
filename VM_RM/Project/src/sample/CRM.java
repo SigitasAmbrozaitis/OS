@@ -153,15 +153,31 @@ public class CRM
                         break;
                 }
 
-                //handles SI interupt if si != 0
-                cpu.setRegSI((short) 1);
-                System.out.println("RAWRRR  R: " + cpu.getRegR().cell);
+//            //TODO remove
+//                cpu.setRegSI((short) 2);
+//                cpu.setRegR(new CCell("03010"));
+//            short pageAdress = 10;
+//            cpu.setRegPTR(pageAdress);
+//            CPaging.SetPageBlock(pageAdress);
+//            CBlock temp = memory.GetBlockAt(pageAdress);
+//            temp.block.elementAt(0).cell = "00011";
+//            temp.block.elementAt(1).cell = "00020";
+//            temp.block.elementAt(2).cell = "00030";
+//            temp.block.elementAt(3).cell = "00040";
+//            temp.block.elementAt(4).cell = "00050";
+//            temp.block.elementAt(5).cell = "00060";
+//            temp.block.elementAt(6).cell = "00070";
+//            temp.block.elementAt(7).cell = "00080";
+//            temp.block.elementAt(8).cell = "00090";
+//            temp.block.elementAt(9).cell = "00099";
+
+
                 switch (cpu.getRegSI()) {
                     case 0:
                         break;
                     case 1:
-                        System.out.println("GAYYYYYYYYYYYYYYYYYYYYYYYY");
                         //TODO implement "waiting for R" (just like in c++ cin waits for input)
+                        //TODO implement "waiting for CD input"
 //                        String regR = cpu.getRegR().cell;
 //                        while (true){
 //                            cpu.setRegIC();
@@ -174,12 +190,18 @@ public class CRM
                         String SZval = valSZ.toString();
                         cmdSZ((short)(Integer.parseInt(SZval)));//first two bytes indicate how many words will be recorded
                        // cmdSZ((short) 2); //SZ must be 1-10
-                        System.out.println("@@@@@@@@@@@ SZ: " + cd.getRegSZ());
-                        cmdDB((short)(cpu.getRegR().cell.charAt(2) + cpu.getRegR().cell.charAt(3)));//next two bytes indicate the address in the VM's memory
+
+                        StringBuilder valDB = new StringBuilder();
+                        valDB.append(cpu.getRegR().cell.charAt(2));
+                        valDB.append(cpu.getRegR().cell.charAt(3));
+                        String DBval = valDB.toString();
+                        cmdDB((short)(Integer.parseInt(DBval)));//next two bytes indicate the address in the VM's memory
                         //cmdBS((short)1);
                         cmdST((short)3);
                         cmdDT((short)1);
-                        cmdXCHGN();
+                        errorCode = cmdXCHGN();
+                        if (errorCode == EError.UNKNOWN_VIOLATION)
+                            cpu.setRegIC((short)(cpu.getRegIC()-1));
                         break;
                     case 2:
                         /**
@@ -192,9 +214,19 @@ public class CRM
                         //TODO implement "waiting for R" (just like in c++ cin waits for input)
                         cmdDT((short)3);
                         cmdST((short)1);
-                        cmdSZ((short)(cpu.getRegR().cell.charAt(0)+cpu.getRegR().cell.charAt(1)));
-                        cmdBS((short)(cpu.getRegR().cell.charAt(2)+cpu.getRegR().cell.charAt(3)));
+                        valSZ = new StringBuilder();
+                        valSZ.append(cpu.getRegR().cell.charAt(0));
+                        valSZ.append(cpu.getRegR().cell.charAt(1));
+                        SZval = valSZ.toString();
+                        cmdSZ((short)(Integer.parseInt(SZval)));//first two bytes indicate how many words will be recorded
+                        StringBuilder valSB = new StringBuilder();
+                        valSB.append(cpu.getRegR().cell.charAt(2));
+                        valSB.append(cpu.getRegR().cell.charAt(3));
+                        String SBval = valSB.toString();
+                        cmdBS((short)(Integer.parseInt(SBval)));//next two bytes indicate the address in the VM's memory
                         cmdXCHGN();
+                        if (errorCode == EError.UNKNOWN_VIOLATION)
+                            cpu.setRegIC((short)(cpu.getRegIC()-1));
                         break;
                     case 3:
                         /**
@@ -203,28 +235,11 @@ public class CRM
                          *
                          * Master:Consult with GrandMaster Jurgis. He is responsible for data exchange.
                          */
-                        //what command allocates VM's memory?
+                        //VM's memory will be allocated by OS
 
                         //TODO implement "waiting for R" (just like in c++ cin waits for input)
                         //TODO remove sigis hardcoded VM memory
-                        short pageAdress = 10;
-                        int regR = Integer.parseInt(cpu.getRegR().cell);
-                        if(regR > 10){
-                            System.out.println("More that 10 blocks. Change R value");
-                        } else {
-
-                            CBlock temp = memory.GetBlockAt((short)(pageAdress+regR));
-                            temp.block.elementAt(0).cell = "00111";
-                            temp.block.elementAt(1).cell = "00220";
-                            temp.block.elementAt(2).cell = "00330";
-                            temp.block.elementAt(3).cell = "00440";
-                            temp.block.elementAt(4).cell = "00550";
-                            temp.block.elementAt(5).cell = "00660";
-                            temp.block.elementAt(6).cell = "00770";
-                            temp.block.elementAt(7).cell = "00880";
-                            temp.block.elementAt(8).cell = "00990";
-                            temp.block.elementAt(9).cell = "00999";
-                        }
+                        System.out.println("Here OS should allocate more memory to VM");
                         break;
                     case 4:
                         cmdCHNGM();
@@ -236,7 +251,7 @@ public class CRM
                         break;
                 }
 
-                //nterupt if ti == 0
+                //interupt if ti == 0
                 if(cpu.getRegTI() == 0)
                 {
                     if(cpu.getRegMod())
@@ -436,6 +451,7 @@ public class CRM
             case ERCommand.E_SZ:
                 if(cmd.bNumber)
                 {
+                    System.out.println(Integer.parseInt(cmd.param));
                     errorCode = cmdSZ((short)Integer.parseInt(cmd.param));
                   //  System.out.println("SZ: " + cd.getRegSZ());
                 }else errorCode = EError.COMMAND_VIOLATION;
@@ -657,19 +673,19 @@ public class CRM
         if( cd.getRegSZ() == 0){ //by default 0
             //interrupt
             System.out.println("Please set register SZ to the number of words you wish to copy");
-            //return EError.COMMAND_VIOLATION;
+            return EError.UNKNOWN_VIOLATION;
         }
         else if(cd.getRegSZ() > 10){
             System.out.println("Error, too many words");
-            //return EError.COMMAND_VIOLATION;
+            return EError.UNKNOWN_VIOLATION;
         }
         else {
             wordsNumber = cd.getRegSZ();
         }
         //Validate input
         if(cd.getRegST() == 0){
-            System.out.println("Missing input dataa");
-            //return EError.COMMAND_VIOLATION;
+            System.out.println("Missing input data");
+            return EError.UNKNOWN_VIOLATION;
         }
         if(cd.getRegST() != 0 && cd.getRegSB()!= -1){ //SB needs to be -1 by default
             if(cd.getRegST() == 1){
@@ -686,26 +702,26 @@ public class CRM
             }
         }
         else{
-            System.out.println("Missing input datsa");
-            //return EError.COMMAND_VIOLATION;
+            System.out.println("Missing input data");
+            return EError.UNKNOWN_VIOLATION;
         }
         System.out.println("Input mode: " + inputMode +" num of words: "+ wordsNumber +" block: " + blockToBeCopied);
         //get input from VM, may need validation if VM cells are not empty
         String [] inputData = new String[wordsNumber];
         if(inputMode == 1){
             for(int i=0; i < wordsNumber; i++){
-                inputData[i] = CPaging.GetBlockAt((short) (blockToBeCopied*10)).block.get(i).cell;
+                inputData[i] = CPaging.GetBlockAt((short) (blockToBeCopied)).block.get(i).cell;
             }
         }
         else if(inputMode == 2){ //read input from hard drive
             if(hdd.size()/10 < blockToBeCopied+1){
                 System.out.println("Error, there is not enough info in hddS");
-                //return EError.COMMAND_VIOLATION;
+                return EError.UNKNOWN_VIOLATION;
             }
             else {
                 if (hdd.size() < wordsNumber) {
                     System.out.println("Error, there is not enough info in hdd");
-                    //return EError.COMMAND_VIOLATION;
+                    return EError.UNKNOWN_VIOLATION;
                 }
                 else{
                     int j=0;
@@ -719,13 +735,13 @@ public class CRM
         else if(inputMode == 3){
             if(Controller.getChannelDeviceInput().equals(" ")){
                 System.out.println("INTERRUPT PER GALVA BLIA");
-                //return EError.COMMAND_VIOLATION;
+                return EError.UNKNOWN_VIOLATION;
             }
             else{
                 inputData = Controller.getChannelDeviceInput().split(" ");
                 if(wordsNumber > inputData.length){
                     System.out.println("INTERRUPT PER GALVA BLIAS");
-                    //return EError.COMMAND_VIOLATION;
+                    return EError.UNKNOWN_VIOLATION;
                 }
                 inputData = Arrays.copyOf(inputData, wordsNumber); //take as many elements as needed
 
@@ -736,11 +752,11 @@ public class CRM
         //validation for output
         if(cd.getRegDT() == 0){
             System.out.println("Missing output information");
-            //return EError.COMMAND_VIOLATION;
+            return EError.UNKNOWN_VIOLATION;
         }
         else if((cd.getRegDT() == 1 || cd.getRegDT() == 2) && cd.getRegDB() == -1) { //DB needs to be set to -1 by default
             System.out.println("Missing output information");
-            //return EError.COMMAND_VIOLATION;
+            return EError.UNKNOWN_VIOLATION;
         }
         else{
             outputCD(inputData, cd.getRegDT(), cd.getRegDB(), hdd);
@@ -920,7 +936,15 @@ private ArrayList<String> populateHDD(ArrayList<String> alist, String filename){
         return EError.VALIDATION_SUCCESS;
     }
     private short cmdSY(short input){cpu.setRegSI(input); return EError.VALIDATION_SUCCESS;}
-    private short cmdLP(short input){ return EError.VALIDATION_SUCCESS;}//TODO implement
+    private short cmdLP(short input){
+        if(cpu.getRegCT() != 0) {
+            cpu.setRegCT((short) (cpu.getRegIC() - 1));
+        }else{
+            //TODO jump to cycle start
+            // cmdJP();
+        }
+        return EError.VALIDATION_SUCCESS;
+    }//TODO implement
 
 
 
