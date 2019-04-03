@@ -154,10 +154,13 @@ public class CRM
                 }
 
                 //handles SI interupt if si != 0
+                cpu.setRegSI((short) 1);
+                System.out.println("RAWRRR  R: " + cpu.getRegR().cell);
                 switch (cpu.getRegSI()) {
                     case 0:
                         break;
                     case 1:
+                        System.out.println("GAYYYYYYYYYYYYYYYYYYYYYYYY");
                         //TODO implement "waiting for R" (just like in c++ cin waits for input)
 //                        String regR = cpu.getRegR().cell;
 //                        while (true){
@@ -165,7 +168,13 @@ public class CRM
 //                            if(!regR.equals(cpu.getRegR().cell))
 //                                break;
 //                        }
-                        cmdSZ((short)(cpu.getRegR().cell.charAt(0) + cpu.getRegR().cell.charAt(1)));//first two bytes indicate how many words will be recorded
+                        StringBuilder valSZ = new StringBuilder();
+                        valSZ.append(cpu.getRegR().cell.charAt(0));
+                        valSZ.append(cpu.getRegR().cell.charAt(1));
+                        String SZval = valSZ.toString();
+                        cmdSZ((short)(Integer.parseInt(SZval)));//first two bytes indicate how many words will be recorded
+                       // cmdSZ((short) 2); //SZ must be 1-10
+                        System.out.println("@@@@@@@@@@@ SZ: " + cd.getRegSZ());
                         cmdDB((short)(cpu.getRegR().cell.charAt(2) + cpu.getRegR().cell.charAt(3)));//next two bytes indicate the address in the VM's memory
                         //cmdBS((short)1);
                         cmdST((short)3);
