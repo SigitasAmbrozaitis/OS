@@ -61,7 +61,9 @@ public class CRM
         CPaging.SetPageMemory(memory);
         memory.GetAt(cpu.getRegINT()).cell = "JP000";
 //        VMs = new Vector<CVM>();
-
+        //default values for SB AND DB registers
+        cmdBS((short) -1);
+        cmdDB((short) -1);
 
         commands.addAll( Arrays.asList(cmd2));
         commands.addAll( Arrays.asList(cmd3));
@@ -154,22 +156,22 @@ public class CRM
                 }
 
 //            //TODO remove
-//                cpu.setRegSI((short) 2);
-//                cpu.setRegR(new CCell("03010"));
-//            short pageAdress = 10;
-//            cpu.setRegPTR(pageAdress);
-//            CPaging.SetPageBlock(pageAdress);
-//            CBlock temp = memory.GetBlockAt(pageAdress);
-//            temp.block.elementAt(0).cell = "00011";
-//            temp.block.elementAt(1).cell = "00020";
-//            temp.block.elementAt(2).cell = "00030";
-//            temp.block.elementAt(3).cell = "00040";
-//            temp.block.elementAt(4).cell = "00050";
-//            temp.block.elementAt(5).cell = "00060";
-//            temp.block.elementAt(6).cell = "00070";
-//            temp.block.elementAt(7).cell = "00080";
-//            temp.block.elementAt(8).cell = "00090";
-//            temp.block.elementAt(9).cell = "00099";
+                cpu.setRegSI((short) 2);
+                cpu.setRegR(new CCell("02010"));
+            short pageAdress = 10;
+            cpu.setRegPTR(pageAdress);
+            CPaging.SetPageBlock(pageAdress);
+            CBlock temp = memory.GetBlockAt(pageAdress);
+            temp.block.elementAt(0).cell = "00011";
+            temp.block.elementAt(1).cell = "00020";
+            temp.block.elementAt(2).cell = "00030";
+            temp.block.elementAt(3).cell = "00040";
+            temp.block.elementAt(4).cell = "00050";
+            temp.block.elementAt(5).cell = "00060";
+            temp.block.elementAt(6).cell = "00070";
+            temp.block.elementAt(7).cell = "00080";
+            temp.block.elementAt(8).cell = "00090";
+            temp.block.elementAt(9).cell = "00099";
 
 
                 switch (cpu.getRegSI()) {
@@ -687,7 +689,7 @@ public class CRM
             System.out.println("Missing input data");
             return EError.UNKNOWN_VIOLATION;
         }
-        if(cd.getRegST() != 0 && cd.getRegSB()!= -1){ //SB needs to be -1 by default
+        if((cd.getRegST() != 0 && cd.getRegSB()!= -1) || (cd.getRegST() == 3 && cd.getRegSB()== -1)){ //SB needs to be -1 by default
             if(cd.getRegST() == 1){
                 inputMode = cd.getRegST();
                 blockToBeCopied = cd.getRegSB();
