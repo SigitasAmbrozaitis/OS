@@ -59,7 +59,7 @@ public class CCell {
         return EError.VALIDATION_SUCCESS;
     }
 
-    public short Div(CCell value) //TODO test
+    public short Div(CCell value)
     {
         try
         {

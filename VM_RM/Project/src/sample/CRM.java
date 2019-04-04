@@ -156,30 +156,28 @@ public class CRM
                 }
 
 //            //TODO remove
-                cpu.setRegSI((short) 2);
-                cpu.setRegR(new CCell("02010"));
-            short pageAdress = 10;
-            cpu.setRegPTR(pageAdress);
-            CPaging.SetPageBlock(pageAdress);
-            CBlock temp = memory.GetBlockAt(pageAdress);
-            temp.block.elementAt(0).cell = "00011";
-            temp.block.elementAt(1).cell = "00020";
-            temp.block.elementAt(2).cell = "00030";
-            temp.block.elementAt(3).cell = "00040";
-            temp.block.elementAt(4).cell = "00050";
-            temp.block.elementAt(5).cell = "00060";
-            temp.block.elementAt(6).cell = "00070";
-            temp.block.elementAt(7).cell = "00080";
-            temp.block.elementAt(8).cell = "00090";
-            temp.block.elementAt(9).cell = "00099";
+//                cpu.setRegSI((short) 2);
+//                cpu.setRegR(new CCell("02010"));
+//            short pageAdress = 10;
+//            cpu.setRegPTR(pageAdress);
+//            CPaging.SetPageBlock(pageAdress);
+//            CBlock temp = memory.GetBlockAt(pageAdress);
+//            temp.block.elementAt(0).cell = "00011";
+//            temp.block.elementAt(1).cell = "00020";
+//            temp.block.elementAt(2).cell = "00030";
+//            temp.block.elementAt(3).cell = "00040";
+//            temp.block.elementAt(4).cell = "00050";
+//            temp.block.elementAt(5).cell = "00060";
+//            temp.block.elementAt(6).cell = "00070";
+//            temp.block.elementAt(7).cell = "00080";
+//            temp.block.elementAt(8).cell = "00090";
+//            temp.block.elementAt(9).cell = "00099";
 
 
                 switch (cpu.getRegSI()) {
                     case 0:
                         break;
                     case 1:
-                        //TODO implement "waiting for R" (just like in c++ cin waits for input)
-                        //TODO implement "waiting for CD input"
 //                        String regR = cpu.getRegR().cell;
 //                        while (true){
 //                            cpu.setRegIC();
@@ -213,7 +211,6 @@ public class CRM
                          *
                          * Master:Consult with GrandMaster Jurgis. He is responsible for data exchange.
                          */
-                        //TODO implement "waiting for R" (just like in c++ cin waits for input)
                         cmdDT((short)3);
                         cmdST((short)1);
                         valSZ = new StringBuilder();
@@ -239,8 +236,6 @@ public class CRM
                          */
                         //VM's memory will be allocated by OS
 
-                        //TODO implement "waiting for R" (just like in c++ cin waits for input)
-                        //TODO remove sigis hardcoded VM memory
                         System.out.println("Here OS should allocate more memory to VM");
                         break;
                     case 4:
@@ -490,8 +485,6 @@ public class CRM
 
     short ValidateCommand(String strCommand, CCommand command)
     {
-        //TODO check if validation is correct, had no time for that :D
-        /**Everything seems OK*/
         if(strCommand.length() != 5) return EError.COMMAND_VIOLATION;
 
         //Get command name
@@ -615,15 +608,13 @@ public class CRM
         temp.block.elementAt(8).cell = "00090";
         temp.block.elementAt(9).cell = "00099";
 
-        //TODO no need to give TI
-//        FillExampleCommands();
         VM = new CVM(cpu);
 
         //change mod
         cmdCHNGM();
 
         return EError.VALIDATION_SUCCESS;
-    }//TODO implement, starts virtual machine
+    }
 
     private short cmdBS(short input)
     {
@@ -681,27 +672,17 @@ public class CRM
             System.out.println("Error, too many words");
             return EError.UNKNOWN_VIOLATION;
         }
-        else {
-            wordsNumber = cd.getRegSZ();
-        }
+        else wordsNumber = cd.getRegSZ();
+
         //Validate input
         if(cd.getRegST() == 0){
             System.out.println("Missing input data");
             return EError.UNKNOWN_VIOLATION;
         }
         if((cd.getRegST() != 0 && cd.getRegSB()!= -1) || (cd.getRegST() == 3 && cd.getRegSB()== -1)){ //SB needs to be -1 by default
-            if(cd.getRegST() == 1){
-                inputMode = cd.getRegST();
-                blockToBeCopied = cd.getRegSB();
-            }
-            if(cd.getRegST() == 2){
-                inputMode = cd.getRegST();
-                blockToBeCopied = cd.getRegSB();
-            }
-            if(cd.getRegST() == 3){
-                inputMode = cd.getRegST();
-                //from input field, no block number needed
-            }
+            inputMode = cd.getRegST();
+            if(cd.getRegST() == 1 || cd.getRegST() == 2) blockToBeCopied = cd.getRegSB();
+
         }
         else{
             System.out.println("Missing input data");
@@ -711,9 +692,8 @@ public class CRM
         //get input from VM, may need validation if VM cells are not empty
         String [] inputData = new String[wordsNumber];
         if(inputMode == 1){
-            for(int i=0; i < wordsNumber; i++){
+            for(int i=0; i < wordsNumber; i++)
                 inputData[i] = CPaging.GetBlockAt((short) (blockToBeCopied)).block.get(i).cell;
-            }
         }
         else if(inputMode == 2){ //read input from hard drive
             if(hdd.size()/10 < blockToBeCopied+1){
@@ -736,13 +716,13 @@ public class CRM
         }
         else if(inputMode == 3){
             if(Controller.getChannelDeviceInput().equals(" ")){
-                System.out.println("INTERRUPT PER GALVA BLIA");
+                System.out.println("INTERRUPT");
                 return EError.UNKNOWN_VIOLATION;
             }
             else{
                 inputData = Controller.getChannelDeviceInput().split(" ");
                 if(wordsNumber > inputData.length){
-                    System.out.println("INTERRUPT PER GALVA BLIAS");
+                    System.out.println("INTERRUPT");
                     return EError.UNKNOWN_VIOLATION;
                 }
                 inputData = Arrays.copyOf(inputData, wordsNumber); //take as many elements as needed
@@ -784,15 +764,10 @@ private void outputCD(String[] data, int outputMode, int blockToBePasted, ArrayL
                     hdd.set(i, data[j]);
                     j++;
                 }
-                System.out.println("ZDAAAAAAAAAARE");
                 System.out.println(Arrays.toString(hdd.toArray()));
                 writeToHdd("hdd.txt", hdd);
                 break;
             case 3:
-                System.out.println("ZDAROVA");
-                //String[] data idet i Pofkes langa
-                //for testing purposes
-                //Jurgi, replace "hello" with what you want to output. Should be a String
                 String result = Arrays.toString(data);
                 getCCD().updateCdOutputOuput(result);
                 break;
@@ -800,58 +775,57 @@ private void outputCD(String[] data, int outputMode, int blockToBePasted, ArrayL
                 System.out.println("Error");
                 break;
         }
-}
-private void writeToHdd(String filename, ArrayList<String> output){
-
+    }
+    private void writeToHdd(String filename, ArrayList<String> output){
         for(int i=0; i < output.size(); i++){
             output.set(i, output.get(i)+ "\r\n");
         }
 
-    FileWriter writer = null;
-    try {
-        writer = new FileWriter(filename);
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-    for(String str: output) {
+        FileWriter writer = null;
         try {
-            writer.write(str);
+            writer = new FileWriter(filename);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for(String str: output) {
+            try {
+                writer.write(str);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    try {
-        writer.close();
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-}
-private ArrayList<String> populateHDD(ArrayList<String> alist, String filename){
-    BufferedReader br = null;
-    try {
-        br = new BufferedReader(new FileReader(filename));
-    } catch (FileNotFoundException e) {
-        e.printStackTrace();
-    }
-    try {
-        String line;
-        int i=0;
-        while ((line = br.readLine()) != null) {
-            // process the line
-            alist.add(line);
-        }
-    } catch (IOException e) {
-        e.printStackTrace();
-    } finally {
+    private ArrayList<String> populateHDD(ArrayList<String> alist, String filename){
+        BufferedReader br = null;
         try {
-            br.close();
-        } catch (IOException e) {
+            br = new BufferedReader(new FileReader(filename));
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-    }
+        try {
+            String line;
+            int i=0;
+            while ((line = br.readLine()) != null) {
+                // process the line
+                alist.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
-    return alist;
-}
+        return alist;
+    }
 
 
     private short cmdAD(short input){ cpu.getRegR().Add(memory.GetAt(input)); return EError.VALIDATION_SUCCESS;}
@@ -862,8 +836,8 @@ private ArrayList<String> populateHDD(ArrayList<String> alist, String filename){
     {
         cpu.setRegR( memory.GetAt((short)(cpu.getRegIC()+1)).Copy());
         cpu.setRegIC((short)(cpu.getRegIC()+1));
-        //cpu.setRegTI((short)(cpu.getRegTI()-1));
-        return EError.VALIDATION_SUCCESS;}
+        return EError.VALIDATION_SUCCESS;
+    }
     private short cmdLR(short input){  cpu.setRegR( memory.GetAt(input).Copy()); return EError.VALIDATION_SUCCESS;}
     private short cmdSR(short input){ memory.GetAt(input).cell = cpu.getRegR().Copy().cell; return EError.VALIDATION_SUCCESS;}
     private short cmdLO(String reg) {  cpu.setRegR(cpu.ConvertRegToCCell(reg)); return EError.VALIDATION_SUCCESS;  }
@@ -939,38 +913,12 @@ private ArrayList<String> populateHDD(ArrayList<String> alist, String filename){
     }
     private short cmdSY(short input){cpu.setRegSI(input); return EError.VALIDATION_SUCCESS;}
     private short cmdLP(short input){
+        if(input < 0 || input > 1000) return EError.COMMAND_VIOLATION;
         if(cpu.getRegCT() != 0) {
             cpu.setRegCT((short) (cpu.getRegIC() - 1));
         }else{
-            //TODO jump to cycle start
-            // cmdJP();
+            cmdJP(input);
         }
         return EError.VALIDATION_SUCCESS;
-    }//TODO implement
-
-
-
-    //TODO delete when not needed anymore
-    private short FillExampleCommands()
-    {
-        short commandIndex = 0;
-        page.GetAt(commandIndex++).cell = "AD090";
-        page.GetAt(commandIndex++).cell = "AD090";
-        page.GetAt(commandIndex++).cell = "AD090";
-        page.GetAt(commandIndex++).cell = "AD090";
-        page.GetAt(commandIndex++).cell = "AD090";
-        page.GetAt(commandIndex++).cell = "AD090";
-        page.GetAt(commandIndex++).cell = "AD090";
-        page.GetAt(commandIndex++).cell = "AD090";
-        page.GetAt(commandIndex++).cell = "AD090";
-        page.GetAt(commandIndex++).cell = "AD090";
-        page.GetAt(commandIndex++).cell = "AD090";
-        page.GetAt(commandIndex++).cell = "AD090";
-        page.GetAt(commandIndex++).cell = "AD090";
-        page.GetAt(commandIndex++).cell = "AD090";
-        page.GetAt(commandIndex++).cell = "AD090";
-        page.GetAt(commandIndex++).cell = "AD090";
-
-        return commandIndex;//commands added
     }
 }

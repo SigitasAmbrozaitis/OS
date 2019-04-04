@@ -75,13 +75,7 @@ public class CVM {
         this.cpu = cpu;
         CPaging.SetPageBlock(cpu.getRegPTR());
         Vector<String> test = new Vector<String>();
-
-        //TODO remove this loop
-        for(short i=0; i<100; ++i)
-        {
-            test.add(CPaging.GetAt(i).cell);
-            System.out.println(i+":"+CPaging.GetAt(i).cell);
-        }
+        cpu.setRegTI((short)11);
     }
 
 
@@ -251,7 +245,6 @@ public class CVM {
         return EError.VALIDATION_SUCCESS;
     }
 
-    //TODO update project document to add this command
     private short cmdSP(short input){ cpu.setRegSP(input); return EError.VALIDATION_SUCCESS;}
     private short cmdAD(short input){ cpu.getRegR().Add(CPaging.GetAt(input)); return EError.VALIDATION_SUCCESS;}
     private short cmdSB(short input){ cpu.getRegR().Sub(CPaging.GetAt(input)); return EError.VALIDATION_SUCCESS;}
@@ -261,9 +254,8 @@ public class CVM {
     {
         cpu.setRegR( CPaging.GetAt((short)(cpu.getRegIC()+1)));
         cpu.setRegIC((short)(cpu.getRegIC()+1));
-        //TODO discuss if VM shouldnt have TI since its used together with IC to execute commands
-       // cpu.setRegTI((short)(cpu.getRegTI()-1)); //No TI reg in VM
-        return EError.VALIDATION_SUCCESS;}
+        return EError.VALIDATION_SUCCESS;
+    }
     private short cmdLR(short input){  cpu.setRegR( CPaging.GetAtCopy(input)); return EError.VALIDATION_SUCCESS;}
     private short cmdSR(short input){ CPaging.GetAt(input).cell = cpu.getRegR().cell; return EError.VALIDATION_SUCCESS;}
     private short cmdLO(String reg) {  cpu.setRegR(cpu.ConvertRegToCCell(reg));return EError.VALIDATION_SUCCESS;  }
@@ -339,13 +331,14 @@ public class CVM {
     }
     private short cmdSY(short input){cpu.setRegSI(input); return EError.VALIDATION_SUCCESS;}
     private short cmdLP(short input){
+        if(input < 0 || input > memSize) return EError.COMMAND_VIOLATION;
         if(cpu.getRegCT() != 0) {
             cpu.setRegCT((short) (cpu.getRegIC() - 1));
         }else{
-            //TODO jump to cycle start
-            // cmdJP();
+            cmdJP(input);
         }
-        return EError.VALIDATION_SUCCESS;}//TODO implement
+        return EError.VALIDATION_SUCCESS;
+    }
 
 /**
  * probably will delete later

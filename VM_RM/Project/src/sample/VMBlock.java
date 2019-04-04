@@ -12,7 +12,5 @@ public class VMBlock {
         this.virtualAddress = vAddress;
         this.realAddress = rAddress;
         cBlock = new CBlock();
-
     }
-
 }
